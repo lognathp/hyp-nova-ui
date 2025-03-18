@@ -14,7 +14,7 @@ RUN npm run build -- --configuration=$ENV
 FROM nginx:latest AS ngi
 
 # Copy built Angular files from the previous stage to Nginx directory
-COPY --from=build /app/dist/hyp-web-app/browser /usr/share/nginx/html
+COPY --from=build /app/dist/hyp-nova-ui/browser /usr/share/nginx/html
 COPY /nginx.conf  /etc/nginx/conf.d/default.conf
 
 # Expose port 80
