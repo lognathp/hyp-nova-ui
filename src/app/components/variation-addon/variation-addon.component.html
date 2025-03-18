@@ -1,0 +1,83 @@
+<div>
+    <div class="offcanvas-header addOnbtmSht">
+        <h5 class="offcanvas-title btmHeaderAddonItem nonVeg"> {{menuItem}} </h5>
+        <!-- <h5 class="offcanvas-title btmHeaderAddonItem Veg"> Customize as per your taste</h5> -->
+        <h5 class="offcanvas-title btmHeaderAddon"> Customize as per your taste</h5>
+        <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body addonBody">
+        @if (variations.length > 0){
+            <div class="addonDiv">
+                <p class="text1">Quantity</p>
+                <p class="text2">Select any 1 option</p>
+    
+                <ul class="addonBtm">
+                    @for (item of tvariations; track item; let index = $index; let first = $first){
+                        <li>
+                            <p class="addonVal nonVeg">{{item.name}}</p>
+        
+                            <span>
+                                <label class="custom-radio" > 
+                                    <label> {{item.price}} </label>
+                                    @if (first) { 
+                                    <input type="radio" name="option" (click)="selectVariet(index)" checked>
+
+                                    } @else {
+                                    <input type="radio" name="option" (click)="selectVariet(index)" >
+
+                                    }
+                                    <span></span>
+                            </label>
+                            </span>
+                        </li>
+                    }
+                    
+                    <!-- <li>
+                        <p class="addonVal nonVeg">Full</p>
+                        <span>
+                            <label class="custom-radio">
+                                <label>+ ₹125</label>
+                                <input type="radio" name="option">
+                                <span></span>
+                        </label>
+                        </span>
+    
+                    </li> -->
+                </ul>
+               
+            </div>
+        }
+        
+        @if (tvariations[selectedVarient].addonGroups?.length) {
+            @for(item of tvariations[selectedVarient].addonGroups; track $index;){
+                <!-- @if (emptyObjects(item)) {
+                    
+                } -->
+
+                <div class="addonDiv">
+                    <p class="text1">Add-on</p>
+                    <p class="text2">Select addon of your choice</p>
+                    <ul class="addonBtm">
+                        <li>
+                            <p class="addonVal nonVeg">Full</p>
+                            <span>
+                                <label class="custom-radio">
+                                    <label>+ ₹125</label>
+                                    <input type="radio" name="option">
+                                    <span></span>
+                            </label>
+                            </span>
+        
+                        </li>
+                    </ul>
+                </div> 
+            }
+                
+        }
+
+        <div class="offcanvas-header addOnbtmShtBtn">
+            <button class="btn btn-transparent addonQtyButton "> <span (click)="minus()" >-</span> {{quantity}} <span (click)="plus()">+</span></button>
+            <button class="btn btn-transparent addonAddButton " (click)="addCart()">Add Item ₹ {{totalPrice * quantity}}</button>
+        </div>
+    </div>
+</div>

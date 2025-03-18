@@ -1,0 +1,62 @@
+name: Frontend Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Angular application
+      run: npm run build:staging
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Docker Build and Push
+      run: |
+        docker build --build-arg ENV=staging -t hyp-web-app -f ./Dockerfile .
+        docker tag hyp-web-app lognathp/hyp-web-app:staging
+        docker push lognathp/hyp-web-app:staging
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Deploy to Staging VPS
+      env:
+        VPS_PRIVATE_KEY: ${{ secrets.STAGING_VPS_PRIVATE_KEY }}
+        VPS_HOST: ${{ secrets.STAGING_VPS_HOST }}
+        VPS_USER: ${{ secrets.STAGING_VPS_USER }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.STAGING_VPS_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.STAGING_VPS_USER }}@${{ secrets.STAGING_VPS_HOST }} << 'EOF'
+          docker stop $(docker ps -q --filter ancestor=lognathp/hyp-web-app:staging)
+          docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-web-app:staging)
+          docker rmi lognathp/hyp-web-app:staging
+          docker pull lognathp/hyp-web-app:staging
+          docker run -p 4200:80 -d lognathp/hyp-web-app:staging
+        EOF

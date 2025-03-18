@@ -1,0 +1,80 @@
+<div class="cartBody">
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container p-0 d-flex">
+            <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+                <img src="assets/images/icons/back.png " class="headerIconLeft "  >
+            </button>
+            <div class="d-inline-block">
+                <a class="navbar-brand cartHeader" href="#">Addresses</a>
+            </div>
+            <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+            <img src="assets/images/icons/support.png " class="headerIcon "  >
+        </button>
+        </div>
+    </nav>
+
+    <div class="container my-3 bg-transparent ">
+        <div class="row ">
+            <div class="col-md-12 savedAddresses ">
+                <p>Saved Addresses</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-3  ">
+        <div class="row ">
+            <div class="col-md-12  ">
+                <div class="addressTile">
+                    <p class="home">Home
+                        <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
+                        <button class="btn simpleBtn"><img src="assets/images/icons/edit3.png"></button>
+                    </p>
+                    <span>501, Odyssey apartments, Block 6, 2nd street, Hyderabad, Telangana 502022, India</span>
+                </div>
+                <div class="addressTile">
+                    <p class="work">Work
+                        <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
+                        <button class="btn simpleBtn"><img src="assets/images/icons/edit3.png"></button>
+                    </p>
+                    <span>Cessana Park, Block 4D, IBM, Mindspace Madhapur, Hyderabad, Telangana 504320, India</span>
+                </div>
+                <div class="addressTile">
+                    <p class="other">Other
+                        <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
+                        <button class="btn simpleBtn"><img src="assets/images/icons/edit3.png"></button>
+                    </p>
+                    <span>63, Ameenpur, Madhura Nagar Colony, Beeramguda, Ramachandrpuram, Telangana 522034, India</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container my-3 bg-transparent ">
+        <div class="row ">
+            <div class="col-md-12 savedAddressesBtn ">
+                <button class="btn plainButton"> Add New Address</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="addressDelete" tabindex="-1" aria-labelledby="addressDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="assets/images/icons/close3.png " ></button>
+                    <div class="addressDeleteContainer">
+                        <span class="text1">Are you sure you want to delete this address?</span>
+                        <button class="btn simpleBtn">Yes</button>
+                        <button class="btn simpleBtn">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

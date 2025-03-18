@@ -1,0 +1,683 @@
+<div>
+    <!-- Header -->
+    <div class="topSection">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+            <div class="container p-0 d-block">
+                <div class="d-inline-block">
+
+                    <!-- Command line also important -->
+
+                    <!-- <a class="navbar-brand selectLocation" href="#" data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation">Select Location</a> -->
+                    <a class="navbar-brand selectLocation" href="#" data-bs-toggle="offcanvas"
+                        data-bs-target="#selectDeliveryLocation"><span class="selectLocationAddress"
+                            data-toggle="tooltip" data-placement="bottom" title="{{selectedLocationData}}">
+                            {{selectedLocationData}} </span></a>
+
+                    <br>
+                    @if(availableBranchData?.length > 1 && (restaurentId == null || restaurentId == undefined) ){
+                    <span class="outlet" title="View Branches" data-bs-toggle="offcanvas" data-bs-target="#selectOutlet">
+                        select Outlet >
+                    </span>
+                    } @else if(restaurentId != null || restaurentId != undefined) {
+                        <span class="outlet" (click)="showBranches()" >{{ branchData?.restaurantName }}</span>
+                        <span class="badge storeOpen">Open</span>
+                    }
+                    
+                </div>
+                <button class="navbar-toggler headerButton" type="button" data-bs-target="#navbarNav" id="menuButton"
+                    data-bs-toggle="dropdown">
+                    <img src=" assets/images/icons/menu.png " class="headerIcon ">
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end menuItem" aria-labelledby="menuButton ">
+                    <li><a class="account dropdown-item" href="# ">Account</a></li>
+                    <li><a class="about dropdown-item" href="# ">About</a></li>
+                    <li><a class="gallery dropdown-item" href="# ">Gallery</a></li>
+                    <li><a class="contact dropdown-item" href="# ">Contact</a></li>
+                </ul>
+                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                    data-bs-target="#contactSupport">
+                    <img src="assets/images/icons/support.png " class="headerIcon ">
+                </button>
+            </div>
+        </nav>
+
+
+        <!-- Search Box -->
+
+        <div class="container my-2 bg-transparent ">
+            <div class="row ">
+                <div class="col-md-12 pos-rel ">
+                    <img src="assets/images/icons/search.png " class="searchIcon ">
+                    <input type="text " class="form-control searchText " placeholder="Search for dishes ">
+                </div>
+            </div>
+        </div>
+
+        <!-- Select Button -->
+
+        <div class="container my-3 bg-transparent ">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <button class="btn searchLocationBtn " data-bs-toggle="offcanvas"
+                        data-bs-target="#selectDeliveryLocation"> <span class="btnText ">Select your location
+                        </span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carosel -->
+        <div class="container my-4 bg-transparent ">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div id="offerCarousel " class="carousel slide deals " data-bs-ride="carousel ">
+                        <div class="carousel-inner ">
+                            <!-- Offer Slide -->
+                            <!-- <div class="carousel-item active ">
+                                    <div class="hc bg-transparent text-dark ">
+                                        <h2 class="wwdTitle ">No Hidden Charges</h2>
+                                        <span class="wwdDes ">We take that seriously!</span>
+                                    </div>
+                                </div>
+    
+                                <div class="carousel-item ">
+                                    <div class="off bg-transparent text-dark ">
+                                        <h2 class="wwdTitle ">25% Off on all items</h2>
+                                        <span class="wwdDes ">Don’t miss out!</span>
+                                    </div>
+                                </div>
+    
+                                <div class="carousel-item ">
+                                    <div class="otd bg-transparent text-dark ">
+                                        <h2 class="wwdTitle ">On Time Delivery</h2>
+                                        <span class="wwdDes ">Delivery within 30-40 mins</span>
+                                    </div>
+                                </div>
+                                <div class="carousel-item ">
+                                    <div class="exo bg-transparent text-dark ">
+                                        <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
+                                        <span class="wwdDes ">USE HYPERDEAL</span>
+                                    </div>
+                                </div> -->
+                        </div>
+
+
+                        <!-- Indicators -->
+                        <div class="carousel-indicators ">
+                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="0 "
+                                class="active " aria-label="Slide 1 "></button>
+                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="1 "
+                                aria-label="Slide 2 "></button>
+                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="2 "
+                                aria-label="Slide 3 "></button>
+                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="3 "
+                                aria-label="Slide 4 "></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Category -->
+
+        <!-- <div class="container my-5 bg-transparent ">
+                <div class="row ">
+                    <div class="col-md-12 ">
+                        <div class="card bg-transparent border-0 ">
+                            <div class="card-body p-0 ">
+                                <div class="sliderCategory ">
+                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Starters</span></div>
+                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Pulaos</span></div>
+                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups</span></div>
+                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Rice & Sides</span></div>
+                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Starters2</span></div>
+                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Pulaos2</span></div>
+                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups2</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+    </div>
+    <!-- Top Picks -->
+    @if(!openSelectBranch){
+        <div class="container my-3 ">
+            <div class="row ">
+                <div class="col-md-12 col-12 ">
+                    <div class="card bg-transparent border-0 ">
+                        <div class="card-body p-0 ">
+                            <h5 class="card-title topPickTitle ">Top Picks</h5>
+                            <div class="slider">
+                                <div class="topPick ">
+                                    <img src="assets/images/food/food.jpg " />
+                                    <div class="topPickOffer ">25% OFF</div>
+                                    <button class="btn btn-transparent topPicksAddButton "> + Add</button>
+                                    <div class="topPickContent ">
+                                        <img src="assets/images/icons/non-veg.png " class="topPickFilterIcon ">
+                                        <h5 class="card-title topPickFoodTitle ">Ankapur Special Veg Biryani</h5>
+                                        <p><span class="topPickPrice ">₹ 225</span>
+                                            <span class="topPickPriceStrike ">₹ 300</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="topPick ">
+                                    <img src="assets/images/food/food.jpg " />
+                                    <div class="topPickOffer ">25% OFF</div>
+                                    <button class="btn btn-transparent topPicksAddButton "> + Add</button>
+                                    <div class="topPickContent ">
+                                        <img src="assets/images/icons/non-veg.png " class="topPickFilterIcon ">
+                                        <h5 class="card-title topPickFoodTitle ">Ankapur Special Veg Biryani</h5>
+                                        <p>
+                                            <span class="topPickPrice ">₹ 225</span>
+                                            <span class="topPickPriceStrike ">₹ 300</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="topPick ">
+                                    <img src="assets/images/food/food.jpg " />
+                                    <div class="topPickOffer ">25% OFF</div>
+                                    <button class="btn btn-transparent topPicksAddButton "> + Add</button>
+                                    <div class="topPickContent ">
+                                        <img src="assets/images/icons/non-veg.png " class="topPickFilterIcon ">
+                                        <h5 class="card-title topPickFoodTitle ">Ankapur Special Veg Biryani</h5>
+                                        <p><span class="topPickPrice ">₹ 225</span>
+                                            <span class="topPickPriceStrike ">₹ 300</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Filter -->
+    
+        <div class="container mt-4" id="veg-nonveg-filter">
+            <!-- Filter Buttons -->
+            <div class="text-left mb-3 ">
+                <button class="btn btn-transparent filterBtn vegIcon "> Veg</button>
+                <button class="btn btn-transparent filterBtn nonVegIcon "> Non Veg</button>
+                <button class="btn btn-transparent filterBtn "> Best seller</button>
+            </div>
+        </div>
+        <div class="container mt-4 ">
+    
+            <!-- Food Tile -->
+            @for (category of menuCategoryData; track $index){
+            @if (category.items.length > 0) {
+            <div class="card foodCard" [id]="'section-' + $index">
+                <h5 class="card-title foodCategory ">{{category!.categoryName | titlecase }} ({{category.items.length}})
+                </h5>
+                @for (item of category.items; track $index){
+                <div class="card-body foodTile ">
+                    <div class="row ">
+                        <div class="col-7 col-md-7 food-item veg ">
+                            @if (item.itemAttributeId == '1'){
+                                <img src="assets/images/icons/veg.png " class="filterIcon ">
+                            } 
+                            @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
+                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                            }
+                           
+                            <span class="badge bestSeller ">Bestseller</span>
+                            <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
+                            <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
+                            <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
+                            <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
+                            <p class="card-text foodDes "> {{ item.itemDescription }}
+                            </p>
+                            <!-- <span class="foodDesMore ">more</span> -->
+                        </div>
+                        <div class="col-5 col-md-5 food-item"
+                            [ngClass]="{'foodItemImage': item.itemImageUrl != '' , 'foodItemNoImage' :  item.itemImageUrl == ''}">
+                            <!-- <img src="assets/images/food/food.jpg " class="card-img-top "> -->
+                            @if (item.active === '0') {
+                            <img [src]="item.itemImageUrl" class="card-img-top greyImage ">
+                            <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
+                            <span class="outOfStock ">Out of Stock</span>
+                            } @else {
+                            <img [src]="item.itemImageUrl" class="card-img-top ">
+                            @if(!seletedItemId.includes(item.id) && item.active === '1' &&(item.addon.length == 0 && item.variation.length == 0)){
+                                <button class="btn btn-transparent addButton" (click)="selectItem(item)"> + Add</button>
+                            }
+                            @if (item.addon.length >0 || item.variation.length >0){
+                                <button class="btn btn-transparent addButton " data-bs-toggle="offcanvas" data-bs-target="#addOn" (click)="selectItem(item)"> + Add</button>
+                            }
+                            @if (seletedItemId.includes(item.id) && item.active === '1'){
+                                <button class="btn btn-transparent qtyButton "> 
+                                    <span (click)="sameAddonConfirmation(item, $index,'reduce')">-</span> 
+                                    {{item | displayQuantity}} 
+                                    <span (click)="sameAddonConfirmation(item, $index,'add')">+</span>
+                                </button>
+                            }
+                            
+                                @if (item.addon.length >0 || item.variation.length >0){
+                                <span class="customisable ">Customisable</span>
+                                }
+                            }
+    
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+    
+            }
+            <!-- <div class="card foodCard ">
+                    <h5 class="card-title foodCategory ">Ankapur Specials (4)</h5>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                                <span class="badge bestSeller ">Bestseller</span>
+                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemImage ">
+                                <img src="assets/images/food/food.jpg " class="card-img-top ">
+                                <button class="btn btn-transparent addButton "> + Add</button>
+                                <span class="customisable ">Customisable</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemImage ">
+                                <img src="assets/images/food/food.jpg " class="card-img-top ">
+                                <button class="btn btn-transparent addButton "> + Add</button>
+                                <span class="customisable ">Customisable</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemNoImage ">
+                                <button class="btn btn-transparent addButton "> + Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemNoImage ">
+                                <button class="btn btn-transparent addButton "> + Add</button>
+                                <span class="customisable ">Customisable</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemNoImage ">
+                                <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
+                                <span class="outOfStock ">Out of Stock</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemImage ">
+                                <img src="assets/images/food/food.jpg " class="card-img-top greyImage ">
+                                <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
+                                <span class="outOfStock ">Out of Stock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+    
+            <!-- <div class="card foodCard ">
+                    <h5 class="card-title foodCategory ">Ankapur Specials (4)</h5>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/veg.png " class="filterIcon ">
+                                <span class="badge bestSeller ">Bestseller</span>
+                                <h5 class="card-title foodTitle ">Ankapur Special Veg Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemImage ">
+                                <img src="assets/images/food/food.jpg " class="card-img-top ">
+                                <button class="btn btn-transparent addButton "> + Add</button>
+                                <span class="customisable ">Customisable</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body foodTile ">
+                        <div class="row ">
+                            <div class="col-7 col-md-7 food-item veg ">
+                                <img src="assets/images/icons/veg.png " class="filterIcon ">
+                                <h5 class="card-title foodTitle ">Ankapur Special Veg Biryani</h5>
+                                <span class="price ">₹ 225</span>
+                                <span class="priceStrike ">₹ 300</span>
+                                <span class="offer ">25% OFF</span>
+                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
+                                <span class="foodDesMore ">more</span>
+                            </div>
+                            <div class="col-5 col-md-5 food-item foodItemImage ">
+                                <img src="assets/images/food/food.jpg " class="card-img-top ">
+                                <button class="btn btn-transparent addButton "> + Add</button>
+                                <span class="customisable ">Customisable</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div> -->
+        </div>
+    
+    
+        <!-- License -->
+    
+        <div class="container my-3 ">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div class="card border-0 ">
+                        <div class="card-body fssaiCard ">
+                            <img src="assets/images/fssai.png " class="d-inline-block ">
+                            @if (restaurentId != null || restaurentId != undefined){
+                                <p class="card-text d-inline-block ">License No. {{ branchData?.fssai}}</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    }
+ 
+
+
+    <!-- About -->
+
+    <div class="container my-4 ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card border-0 ">
+                    <div class="card-body p-0 ">
+                        <h5 class="card-title aboutTitle ">About</h5>
+                        <p class="card-text m-0 aboutDes ">Enjoy the Taste of Authentic Telangana Cuisine:</p>
+                        <p class="card-text aboutContent ">Ankapur Village Military Hotel brings the rich culinary
+                            heritage of Telangana to the heart of Hyderabad. Renowned for our signature Ankapur chicken
+                            and other traditional dishes, we offer a unique dining experience that captures
+                            the essence of Telangana cuisine.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery -->
+
+    <div class="container my-4 ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card border-0 ">
+                    <div class="card-body p-0 ">
+                        <h5 class="card-title galleryTitle ">Gallery</h5>
+                        <div class="slider ">
+                            <img src="assets/images/image1.jpg " />
+                            <img src="assets/images/image1.jpg " />
+                            <img src="assets/images/image1.jpg " />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+
+    <div class="container my-4 ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card border-0 ">
+                    <div class="card-body p-0 ">
+                        <h5 class="card-title contactTitle ">Contact</h5>
+                        <p class="card-text m-0 contactHeading ">{{partnerData?.name | titlecase}}</p>
+                        @if (restaurentId != null || restaurentId != undefined) {
+                            <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p>
+
+                            <ul class="m-0 p-0 ">
+                                <li class="contact-info ">
+                                    <span class="map "> {{branchData?.address}} </span>
+                                </li>
+                                <li class="contact-info ">
+                                    <span class="phone ">+91-{{ branchData?.supportContact}}</span>
+                                </li>
+                                <li class="contact-info fw-semibold ">
+                                    <span class="clock ">Open hours</span>
+                                </li>
+                                <li class="contact-info "><span class="pl-30 ">
+                                    Monday – Friday from {{ branchData?.deliveryHours[0].from | timeformat}} to {{ branchData?.deliveryHours[1].to | timeformat }} <br>
+                                    Saturday & Sunday from {{ branchData?.deliveryHours[0].from | timeformat}} to {{ branchData?.deliveryHours[1].to | timeformat }} </span></li>
+                            </ul>
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div class="container my-4 ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card p-0 ">
+                    <div class="card-body p-0 mapCont ">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30468.04554232425!2d78.565699!3d17.339383!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3427bf787ad%3A0xd353a7d2d429feb!2sAnkapur%20Village%20-%20A%20Military%20Hotel%20(Vanasthalipuram)!5e0!3m2!1sen!2sin!4v1739698519949!5m2!1sen!2sin "
+                            width="100% " style="border:0; " allowfullscreen=" " loading="lazy "
+                            referrerpolicy="no-referrer-when-downgrade "></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Powerby -->
+
+    <div class="container my-3 bg-footer-cont ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card border-0 ">
+                    <div class="card-body bg-footer ">
+                        <p class="card-text mb-2 powerby ">Powered By</p>
+                        <img src="assets/images/hyperapps.png " alt="hyperapps " class="d-block hyperImage ">
+                        <p class="card-text float-end powerby ">www.hyperapps.in</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Menu Button -->
+    <!-- Floating Menu -->
+    <div class="floating-menu ">
+        <button class="menuBtn " data-bs-toggle="offcanvas" data-bs-target="#foodMenu">
+            <img src="assets/images/icons/foodMenu.png ">
+            Menu
+        </button>
+    </div>
+
+    <!-- VIEW CART -->
+     @if(foodBasket?.length > 0){
+        <div class="container my-3 bg-footer-cart ">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div class="card border-0 ">
+                        <div class="card-body bg-cart ">
+                            <p class="card-text cartItems" data-bs-toggle="offcanvas" data-bs-target="#loginSheet">₹ {{cartItemPrice | discountPrice: flatDiscountpercentage}} 
+                                <span> 
+                                    {{foodBasket?.length}} Item@if(foodBasket?.length > 2){s} 
+                                </span>
+                                <span class="view-cart-btn" (click)="navigateCart();">View Cart</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     }
+    
+    <!-- VIEW CART -->
+
+    <!-- Food Menu Bottom Sheet -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="foodMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title btmHeader">Menu</h5>
+            <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="foodBtm">
+                @for (category of menuCategoryData; track $index){
+                    <li (click)="scrollToSection($index)">
+                        <p class=""  [ngClass]="{'menuItemsCategory' : selectedCategoryIndex == $index, 'menuItems': selectedCategoryIndex != $index}" >{{category!.categoryName | titlecase }}  {{$index}} <span> {{category.items.length}} </span></p>
+                    </li> 
+                }
+                <!-- <li>
+                    <p class="menuItemsCategory">Ankapur Specials <span>4</span></p>
+                </li>
+                <li>
+                    <p class="menuItems">Egg Clay Pot Pulao<span>1</span></p>
+                </li>
+                <li>
+                    <p class="menuItems">Non-Veg Clay Pot Pulaos<span>7</span></p>
+                </li>
+                <li>
+                    <p class="menuItems">Egg Starter<span>13</span></p>
+                </li>
+                <li>
+                    <p class="menuItems">Veg Starter<span>8</span></p>
+                </li>
+                <li>
+                    <p class="menuItems">Veg Malkipuram Pulaos<span>12</span></p>
+                </li>
+                <li>
+                    <p class="menuItems">Non-Veg Malkipuram Pulaos<span>5</span></p>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- Customer Support Bottom Sheet -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="contactSupport">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title btmHeader">Customer Support</h5>
+            <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            @if (restaurentId != null || restaurentId != undefined){
+                <p class="btmSptCnt ">Restaurant <span>+91-{{ branchData?.supportContact}}</span></p>
+                <p class="btmSptCnt ">Hyperapps <span>+91-{{ contactHyperapps }}</span></p>
+            }
+           
+        </div>
+    </div>
+
+
+    <!-- Select Delivery location Bottom Sheet -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectDeliveryLocation">
+        <app-select-location (selectedLocation)="getSelectedLocation($event)"></app-select-location>
+    </div>
+    
+    <!-- Addon variation bottom sheet -->
+  
+     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="addOn">
+        @if (variationResponse?.length > 0 || addonResponse?.length >0 ) {
+            <app-variation-addon [variations]="variationResponse" [addOnChoice]="addonResponse" [menuItem]="selectedItem?.itemName" (addedItem)="getAddedItem($event)"></app-variation-addon>
+         }
+    </div>
+
+    <!-- Select Outlet Bottom Sheet -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectOutlet">
+        <div class="offcanvas-header">
+            <img src="assets/images/icons/back.png " class="backIcon ">
+            <h5 class="offcanvas-title btmHeaderOut"> Select Outlet</h5>
+            <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <ul class="outletBtm">
+                @for (item of partnerData?.restaurantDetails; track $index){
+                    <li class="mb-1" (click)="selectBranch($index)">
+                        <img src="assets/images/icons/forward.png " class="forwardIcon">
+                        <p class="outletAddr" [ngClass]="{'unavailableStore': !availableBranchData?.includes(item.id)}">{{item.restaurantName}} </p>
+                        <span class="outletDes"> {{item.address}}
+                            <!-- <span>30-40 mins</span> -->
+                        </span>
+                    </li>
+                }
+                <!-- <li>
+                    <img src="assets/images/icons/forward.png " class="forwardIcon">
+                    <p class="outletAddr">AVMH (Madhapur), Hyd</p><span class="outletDes">2 km <span>20-30
+                            mins</span></span>
+                </li>
+                <li>
+                    <img src="assets/images/icons/forward.png " class="forwardIcon">
+                    <p class="outletAddr">Hitech City, Hyd</p><span class="outletDes">3 km <span>30-40
+                            mins</span></span>
+                </li>
+                <li>
+                    <img src="assets/images/icons/forward.png " class="forwardIcon">
+                    <p class="outletAddr">Gandipet, Hyd</p><span class="outletDes">4 km <span>40-50 mins</span></span>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</div>
