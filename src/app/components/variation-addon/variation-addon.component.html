@@ -1,38 +1,37 @@
 <div>
     <div class="offcanvas-header addOnbtmSht">
-        <h5 class="offcanvas-title btmHeaderAddonItem nonVeg"> {{menuItem}} </h5>
+        <h5 class="offcanvas-title btmHeaderAddonItem" [ngClass]="{'veg': menuItem.itemAttributeId == '1' , 
+        'nonVeg' :  menuItem.itemAttributeId == '2' || menuItem.itemAttributeId == '24'}">
+            {{menuItem?.itemName}} </h5>
         <!-- <h5 class="offcanvas-title btmHeaderAddonItem Veg"> Customize as per your taste</h5> -->
         <h5 class="offcanvas-title btmHeaderAddon"> Customize as per your taste</h5>
         <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body addonBody">
-        @if (variations.length > 0){
-            <div class="addonDiv">
-                <p class="text1">Quantity</p>
-                <p class="text2">Select any 1 option</p>
-    
-                <ul class="addonBtm">
-                    @for (item of tvariations; track item; let index = $index; let first = $first){
-                        <li>
-                            <p class="addonVal nonVeg">{{item.name}}</p>
-        
-                            <span>
-                                <label class="custom-radio" > 
-                                    <label> {{item.price}} </label>
-                                    @if (first) { 
-                                    <input type="radio" name="option" (click)="selectVariet(index)" checked>
+        @if (variations.length > 0 && tvariations?.length > 0){
+        <div class="addonDiv">
+            <p class="text1">Varients</p>
+            <p class="text2">Select any 1 option</p>
 
-                                    } @else {
-                                    <input type="radio" name="option" (click)="selectVariet(index)" >
+            <ul class="addonBtm">
+                @for (item of tvariations; track item; let index = $index; let first = $first){
+                <li>
+                    <p class="addonVal">{{item.name}}</p>
+                    <span>
+                        <label class="custom-radio">
+                            <label> {{item.price}} </label>
+                            @if (first) {
+                            <input type="radio" name="option" (click)="selectVariet(index)" checked>
+                            } @else {
+                            <input type="radio" name="option" (click)="selectVariet(index)">
+                            }
+                            <span></span>
+                        </label>
+                    </span>
+                </li>
+                }
 
-                                    }
-                                    <span></span>
-                            </label>
-                            </span>
-                        </li>
-                    }
-                    
-                    <!-- <li>
+                <!-- <li>
                         <p class="addonVal nonVeg">Full</p>
                         <span>
                             <label class="custom-radio">
@@ -43,41 +42,123 @@
                         </span>
     
                     </li> -->
-                </ul>
-               
-            </div>
-        }
-        
-        @if (tvariations[selectedVarient].addonGroups?.length) {
-            @for(item of tvariations[selectedVarient].addonGroups; track $index;){
-                <!-- @if (emptyObjects(item)) {
-                    
-                } -->
+            </ul>
 
-                <div class="addonDiv">
-                    <p class="text1">Add-on</p>
-                    <p class="text2">Select addon of your choice</p>
-                    <ul class="addonBtm">
-                        <li>
-                            <p class="addonVal nonVeg">Full</p>
-                            <span>
-                                <label class="custom-radio">
-                                    <label>+ ₹125</label>
-                                    <input type="radio" name="option">
-                                    <span></span>
+        </div>
+        }
+        @if (variations.length > 0 && !emptyObjects(tvariations[selectedVarient]?.addonGroups)) {
+        @if (tvariations[selectedVarient]?.addonGroups?.length) {
+
+        <div class="addonDiv">
+            <p class="text1">Variant Add-on</p>
+            <p class="text2">Select addon of your choice</p>
+            <form [formGroup]="variationForm">
+                @for (addOngrp of getadOngroup().controls; track addOngrp; let grpindex = $index){
+                <div formArrayName="addOngrp">
+                    <span>{{tvariations[selectedVarient].addonGroups[grpindex].addonGroupName}}</span>
+                    <div [formGroupName]="grpindex">
+                        @for (addonEle of getaddonControl(grpindex); track addonEle; let addonindex = $index) {
+                        <div formArrayName="addons">
+                            <ul class="addonBtm" [formGroupName]="addonindex">
+                                <li>
+                                    <p class="addonVal ">
+                                        {{tvariations[selectedVarient].addonGroups[grpindex].addonItems[addonindex].addonItemName}}
+                                    </p>
+                                    <span>
+                                        <label class="custom-radio">
+                                            <label>+ ₹
+                                                {{tvariations[selectedVarient].addonGroups[grpindex].addonItems[addonindex].addonItemPrice
+                                                | discountPrice: flatDiscountpercentage}}</label>
+                                            <input type="radio"
+                                                [formControlName]="tvariations[selectedVarient].addonGroups[grpindex].addonItems[addonindex].id">
+                                            <span></span>
+                                        </label>
+                                    </span>
+
+                                </li>
+                            </ul>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+            </form>
+
+        </div>
+
+        }
+        }
+
+
+
+        @if (taddOnChoice?.length > 0) {
+        <div class="addonDiv">
+            <p class="text1">Add-on</p>
+            <p class="text2">Select addon of your choice</p>
+            <!-- <form [formGroup]="addonForm">
+                        <div formArrayName="addOngrp">
+                            @for (addonGroup of taddOnChoice; track addonGroup; let gIndex = $index){
+                                <div [formGroupName]="gIndex">
+                                    
+                                    <span>{{ addonGroup?.addonGroupName }}</span>
+                                   
+                                    @for (addonItem of addonGroup?.addonItems; track addonItem; let iIndex = $index) {
+                                        <ul class="addonBtm">
+                                            <li>
+                                                <p class="addonVal nonVeg">{{ addonItem.addonItemName }}</p>
+                                                <span>
+                                                    <label class="custom-radio">
+                                                        <label>+ ₹ {{ addonItem.addonItemPrice }}</label>
+                                                        <input type="checkbox" 
+                                                        formControlName="selectedAddon" 
+                                                        [id]="'radio' + gIndex + '-' + iIndex" 
+                                                        [value]="addonItem.addonItemName">
+                                                        <span></span>
+                                                </label>
+                                                </span>
+                            
+                                            </li>
+                                        </ul>
+                                    }
+                                </div>
+                            }
+                        </div>
+                </form> -->
+
+            <form [formGroup]="addonForm">
+                <ul formArrayName="data">
+                    <li *ngFor="let group of dataArray.controls; let i = index" [formGroupName]="i">
+                      
+                      <p class="text1">{{ group.get('addonGroupName')?.value }}</p>
+                      
+                      <ul class="addonBtm">
+                        <li *ngFor="let item of taddOnChoice[i].addonItems; let first = first;">
+                          <p class="addonVal">{{ item.addonItemName }}</p>
+                          <span>
+                            <label class="custom-radio">
+                              <label>+ ₹{{ item.addonItemPrice }}</label>
+                                <input
+                                [type]="taddOnChoice[i].addonItemSelectionMin === '1' ? 'radio' : 'checkbox'"
+                                formControlName="selectedAddon"
+                                [value]="item.id"
+                                *ngIf="group.get('selectedAddon')" 
+                              />
+                              <span></span>
                             </label>
-                            </span>
-        
+                          </span>
                         </li>
-                    </ul>
-                </div> 
-            }
-                
+                      </ul>
+                    </li>
+                  </ul>
+            </form>
+        </div>
         }
 
         <div class="offcanvas-header addOnbtmShtBtn">
-            <button class="btn btn-transparent addonQtyButton "> <span (click)="minus()" >-</span> {{quantity}} <span (click)="plus()">+</span></button>
-            <button class="btn btn-transparent addonAddButton " (click)="addCart()">Add Item ₹ {{totalPrice * quantity}}</button>
+            <button class="btn btn-transparent addonQtyButton "> <span (click)="minus()" title="Redeuce Count">-</span>
+                {{quantity}} <span title="Add Count" (click)="plus()">+</span></button>
+            <button class="btn btn-transparent addonAddButton " (click)="addCart()">Add Item ₹ {{totalPrice *
+                quantity}}</button>
         </div>
     </div>
 </div>

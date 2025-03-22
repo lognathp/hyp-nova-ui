@@ -4,10 +4,16 @@
   <meta charset="utf-8">
   <title>Hyperapps</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
   <app-root></app-root>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    if (global === undefined) {
+      var global = window;
+    }
+  </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container p-0 d-flex">
-            <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+            <button class="navbar-toggler headerButtonLeft" type="button " (click)="back()"  data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
                 <img src="assets/images/icons/back.png " class="headerIconLeft "  >
             </button>
             <div class="d-inline-block">
@@ -81,9 +81,11 @@
                     <li>
                         <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
                     </li>
-                    <li>
-                        <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge   | number:'1.2-2'}}</span></p>
-                    </li>
+                    @if (!showAddAddressButton){
+                        <li>
+                            <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge   | number:'1.2-2'}}</span></p>
+                        </li>
+                    }
                     <li>
                         <p class="cartVal">CGST<span>₹ {{orderPriceDetails.tax.CGST | number:'1.2-2'}}</span></p>
                     </li>
@@ -104,7 +106,12 @@
     <div class="container my-3 bg-transparent ">
         <div class="row ">
             <div class="col-md-12 ">
-                <button class="btn cartAddressBtn " data-bs-toggle="modal" data-bs-target="#orderPlaced"> <span (click)="selectAddress()" >Add Address to Proceed </span></button>
+                @if (showAddAddressButton){
+                <button class="btn cartAddressBtn"  (click)="selectAddress()"> <span>Add / Select Address</span></button>
+                } @else {
+                <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled" (click)="onPrepareOrderClick()"> <span>Proceed to Payment</span></button>
+                <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
+                }
             </div>
         </div>
     </div>

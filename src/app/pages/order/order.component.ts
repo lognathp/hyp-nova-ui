@@ -328,6 +328,7 @@ export class OrderComponent implements OnInit {
      */
   public getAddedItem(event: any) {
     // this.showAddonVariationDialig = false;
+    this.closeOffcanvas('addOn');
     console.log('event', event, this.selectedItem);
     console.log(this.foodBasket, this.addItemQunatityIndex);
     // this.foodBasket
@@ -528,7 +529,8 @@ export class OrderComponent implements OnInit {
     this.cartItemPrice = 0;
     const tempFoodBasket = JSON.parse(JSON.stringify(this.foodBasket));
     tempFoodBasket.forEach((ele: any) => {
-
+      console.log(ele);
+      
       if (ele.item.quantity == undefined) {
         // Item price will be 0 if there is variation
         if (ele.addonVariation != undefined) {
@@ -538,7 +540,7 @@ export class OrderComponent implements OnInit {
         }
       } else {
         // Item price will be 0 if there is variation
-        if (ele.addonVariation != undefined) {
+        if (ele.addonVariation != undefined && ele.addonVariation?.varients != undefined) {
           this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.addonVariation.varients.price) * parseInt(ele.item.quantity));
         } else {
           this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.item.price) * parseInt(ele.item.quantity));
@@ -637,5 +639,6 @@ export class OrderComponent implements OnInit {
   public navigateCart(): void {
     this.router.navigate(['/cart']);
   }
+
 
 }

@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'displayQuantity',
-  standalone: true
+  standalone: true,
+  pure: false
 })
 export class DisplayQuantityPipe implements PipeTransform {
 
@@ -22,6 +23,8 @@ export class DisplayQuantityPipe implements PipeTransform {
       });
 
     }
+    console.log(quantity);
+    
     return quantity;
   }
 

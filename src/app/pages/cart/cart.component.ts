@@ -6,6 +6,7 @@ import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
+import { SharedService } from '../../core/services/shared.service';
 
 @Component({
   selector: 'app-cart',
@@ -67,7 +68,7 @@ export class CartComponent {
 
     constructor(
       public apiService: ApiService,
-      // public sharedData: SharedService,
+      public sharedData: SharedService,
       private router: Router,
       // private messageService: MessageService,
       // private primengConfig: PrimeNGConfig,
@@ -116,25 +117,25 @@ export class CartComponent {
       // });
       console.log(' this.customDetails', this.customDetails);
       this.loadAddress();
-      // this.sharedData.getSelecetdAddress().subscribe((data: any) => {
-      //     console.log('address', data);
-      //     if (Object.entries(data).length > 0) {
-      //         const tempcustomDetailsformattedAddress = {
-      //             addressOne: data.addressOne,
-      //             addressTwo: data.addressTwo,
-      //             addressType: data.addressType,
-      //             landmark: data.landmark,
-      //             city: data.city,
-      //             state: data.state,
-      //             country: data.country,
-      //             pincode: data.pincode
-      //         }
-      //         this.address = Object.values(tempcustomDetailsformattedAddress).filter(part => part !== null && part !== undefined).join(', ');
-      //         this.getDeliveryQuote(data.id);
-      //     } else {
-      //         this.showAddAddressButton = true;
-      //     }
-      // });
+      this.sharedData.getSelecetdAddress().subscribe((data: any) => {
+          console.log('address', data);
+          if (Object.entries(data).length > 0) {
+              const tempcustomDetailsformattedAddress = {
+                  addressOne: data.addressOne,
+                  addressTwo: data.addressTwo,
+                  addressType: data.addressType,
+                  landmark: data.landmark,
+                  city: data.city,
+                  state: data.state,
+                  country: data.country,
+                  pincode: data.pincode
+              }
+              this.address = Object.values(tempcustomDetailsformattedAddress).filter(part => part !== null && part !== undefined).join(', ');
+              this.getDeliveryQuote(data.id);
+          } else {
+              this.showAddAddressButton = true;
+          }
+      });
 
 
   }
@@ -481,7 +482,7 @@ export class CartComponent {
               this.orderSaveResponse = reponse.data;
               this.connectingGateway = false;
               this.showPayment = true;
-              // this.router.navigateByUrl('/payment');
+              this.router.navigateByUrl('/payment', this.orderSaveResponse);
           },
           error: (error: any) => { console.log(error) }
       })
@@ -687,5 +688,12 @@ export class CartComponent {
   }
   selectAddress(){
     this.router.navigate(['/address']);
+  }
+
+  /**
+   * Back to order apge
+   */
+  back():void{
+    this.router.navigate(['/order']);
   }
 }

@@ -244,7 +244,7 @@
                             @if(!seletedItemId.includes(item.id) && item.active === '1' &&(item.addon.length == 0 && item.variation.length == 0)){
                                 <button class="btn btn-transparent addButton" (click)="selectItem(item)"> + Add</button>
                             }
-                            @if (item.addon.length >0 || item.variation.length >0){
+                            @if ((item.addon.length >0 || item.variation.length >0) && (!seletedItemId.includes(item.id)) ){
                                 <button class="btn btn-transparent addButton " data-bs-toggle="offcanvas" data-bs-target="#addOn" (click)="selectItem(item)"> + Add</button>
                             }
                             @if (seletedItemId.includes(item.id) && item.active === '1'){
@@ -253,6 +253,7 @@
                                     {{item | displayQuantity}} 
                                     <span (click)="sameAddonConfirmation(item, $index,'add')">+</span>
                                 </button>
+                                
                             }
                             
                                 @if (item.addon.length >0 || item.variation.length >0){
@@ -640,7 +641,7 @@
   
      <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="addOn">
         @if (variationResponse?.length > 0 || addonResponse?.length >0 ) {
-            <app-variation-addon [variations]="variationResponse" [addOnChoice]="addonResponse" [menuItem]="selectedItem?.itemName" (addedItem)="getAddedItem($event)"></app-variation-addon>
+            <app-variation-addon [variations]="variationResponse" [addOnChoice]="addonResponse" [menuItem]="selectedItem" (addedItem)="getAddedItem($event)"></app-variation-addon>
          }
     </div>
 

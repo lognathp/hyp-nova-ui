@@ -1,17 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-variation-addon',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, DiscountPricePipe],
   templateUrl: './variation-addon.component.html',
   styleUrl: './variation-addon.component.scss'
 })
 export class VariationAddonComponent  implements OnInit {
 
-  @Input() menuItem: string = '';
+  
+  flatDiscountpercentage: number = environment.flatDiscountpercentage;
+
+  @Input() menuItem: any;
   @Input() variations: any = {};
   @Input() addOnChoice: any = {};
   @Output() addedItem = new EventEmitter<any>();
@@ -44,7 +49,7 @@ export class VariationAddonComponent  implements OnInit {
     // this.tvariations = this.variations.flatMap((ele: any) => ele.concat());
     this.taddOnChoice = this.addOnChoice.flatMap((ele: any) => ele.concat());
     // this.addFormControl();
-
+    console.log(this.addOnChoice, this.taddOnChoice);
     this.createForm();
     this.valueUpdate();
     this.totalPrice = parseFloat(this.tvariations[this.selectedVarient]?.price);
@@ -57,7 +62,7 @@ export class VariationAddonComponent  implements OnInit {
    * Create form
    */
   public createForm() {
-   
+   this.clearAllForms();
     if (this.variations.length > 0) {
       console.log(this.tvariations[this.selectedVarient]);
 
@@ -74,11 +79,13 @@ export class VariationAddonComponent  implements OnInit {
     }
 
     if (this.taddOnChoice.length > 0) {
-      this.taddOnChoice[0].addonItems.forEach((element: any, index: number) => {
-        this.getadOnchoicegroup().controls.push(this.newaddongroup());
-        (<FormGroup>this.getadOnchoicegroup().controls[index]).addControl(element.id, new FormControl(false))
-      });
+      // this.taddOnChoice[0].addonItems.forEach((element: any, index: number) => {
+      //   this.getadOnchoicegroup().controls.push(this.newaddongroup());
+      //   (<FormGroup>this.getadOnchoicegroup().controls[index]).addControl(element.id, new FormControl(false))
+      // });
 
+
+      this.createAddonForm();
 
     }
 
@@ -109,9 +116,62 @@ export class VariationAddonComponent  implements OnInit {
     (<FormGroup>(<FormArray>(<FormGroup>this.getadOngroup().controls[grpindex]).controls['addons']).controls[addonindex]).addControl(ctrl, new FormControl(false));
   }
 
-  getadOnchoicegroup(): FormArray {
-    return this.addonForm.get('addOngrp') as FormArray;
+  // getadOnchoicegroup(): FormArray {
+  //   return this.addonForm.get('addOngrp') as FormArray;
+  // }
+
+  // getaddonchoiceControl(grpindex: number) :any{
+  //   console.log(((<FormGroup>this.getadOnchoicegroup().controls[grpindex]).controls));
+    
+  //   return ((<FormGroup>this.getadOnchoicegroup().controls[grpindex]).controls);
+  // }
+
+  /**
+   * 
+   * 
+   */
+  createAddonForm(): void {
+    this.addonForm = this.formBuilder.group({
+      data: this.formBuilder.array(this.taddOnChoice.map((group:any) => this.createAddonGroup(group)))
+    });
   }
+  // createAddonGroup(group: any): FormGroup {
+  //   return this.formBuilder.group({
+  //     addonGroupName: [group.addonGroupName],
+  //     addonGroupItems: this.formBuilder.array(
+  //       group.addonItems.map((item:any, index:number) => this.createAddonItem(item, index))
+  //     )
+  //   });
+  // }
+  createAddonGroup(group: any): FormGroup {
+    return this.formBuilder.group({
+      addonGroupName: [group.addonGroupName],
+      // selectedAddon: [group.addonItems[0]?.id]  
+      selectedAddon: [group.addonItemSelectionMin === '1' ? group.addonItems[0].id : '']
+    });
+  }
+
+  createAddonItem(item: any, i:number): FormGroup {
+    let selected = [false];
+    i == 0 ? selected = [true] :selected = [false] 
+    return this.formBuilder.group({
+      id: [item.id],
+      addonItemName: [item.addonItemName],
+      selected:selected
+      // Checkbox Control
+    });
+  }
+
+  get dataArray(): FormArray {
+    return this.addonForm.get('data') as FormArray;
+  }
+
+  getAddonGroupItems(index: number): FormArray {
+    return this.dataArray.at(index).get('addonGroupItems') as FormArray;
+  }
+  // Addons- Form Creation Ends
+
+
 
   selectVariet(index: number) {
     this.selectedVarient = index;
@@ -121,7 +181,7 @@ export class VariationAddonComponent  implements OnInit {
     this.clearAllForms();
     this.createForm();
     this.valueUpdate();
-    console.log(this.variationForm.controls);
+    console.log(this.variationForm.controls, this.tvariations[this.selectedVarient]);
 
   }
 
@@ -177,11 +237,13 @@ export class VariationAddonComponent  implements OnInit {
       addOnNames: selecetdAddonList,
       quantity: this.quantity
     }
-    // console.log(addonVariation);
+    console.log(addonVariation);
 
     this.addedItem.emit({ action: "add", addonVariation });
     this.variations = [];
     this.addOnChoice = [];
+    this.tvariations= {};
+    this.taddOnChoice = {};
     this.clearAllForms();
   }
 
@@ -194,9 +256,33 @@ export class VariationAddonComponent  implements OnInit {
     });
   }
 
-  // get emptyObjects(array:any):any {
-  //   console.log(emptyObjects);
+  /**
+   * To check array of objects empty or not
+   * @param array array of objects
+   * @returns boolean true/false
+   */
+  emptyObjects(array:any):any {
     
-  //   // return this.array.filter(obj => Object.keys(obj).length === 0);
+    return array?.filter((obj:any) => {
+     Object.keys(obj).length === 0;
+    });
+  }
+
+  // onAddonChange(value: any): void {
+  //   console.log('Addon Changed:', value, this.addonForm.getRawValue());
   // }
+
+
+
+  get addOngrp(): FormArray {
+    return this.addonForm.get('addOngrp') as FormArray;
+  }
+
+  getAddonItems(groupIndex: number): FormArray {
+    return this.addOngrp.at(groupIndex).get('addonItems') as FormArray;
+  }
+
+  submitForm(): void {
+    console.log(this.addonForm.value);
+  }
 }

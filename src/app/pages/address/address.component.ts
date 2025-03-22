@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { SharedService } from '../../core/services/shared.service';
 
 @Component({
   selector: 'app-address',
@@ -12,13 +13,46 @@ import { FormBuilder } from '@angular/forms';
 })
 export class AddressComponent implements OnInit, AfterViewInit{
 
+ 
+
+  addressForm!: FormGroup;
+  submitted = false;
+
+  currentPage: string = "address";
+  addNew: boolean = false;
+  addrSearch: boolean = false;
+  editAddr: boolean = false;
   customerDetails: any = {};
   selectedLocation: any = {};
-  address: any;
+  address: any = [];
+  pickedAddressindex!: number;
+
+  searchTerm: string = '';
+  searchPlaceId: string = '';
+  searchResults: { placeId: string, text: string }[] = [];
+  showResults: boolean = false;
+
+  unServiceableValue: boolean = false;
+  activeTab: number = 1;
+  locationEnabled: boolean = true;
+  restaurentId: number | undefined;
+  // restaurentId: number = Number(Config.rest_id);
+  partnerId: string = '';
+  restaurentActive: boolean = true;
+  errorMessage!: string;
+
+
+  // @Output() closeDelivery = new EventEmitter<any>();
+  // @Input() showHeader: boolean = true;
+
+  checkDeleteAddress: boolean = false;
+  deleteAddressIndex!: string;
+  blockEditPincode: boolean = true;
+
 
   constructor(
     public apiService: ApiService,
-    // public sharedDervice: SharedService,
+    public sharedService: SharedService,
     private router: Router,
     private formBuilder: FormBuilder,
     ) {}
@@ -33,6 +67,13 @@ export class AddressComponent implements OnInit, AfterViewInit{
     this.selectedLocation = localStorage.getItem('selectedLocation');
     this.customerDetails = JSON.parse(custDetail);
     console.log(this.customerDetails);
+    if(this.customerDetails != undefined){
+      this.getAddresssDetails();
+    }
+    }
+
+    ngDoCheck(){
+      
     }
 
     getAddresssDetails() {
@@ -48,5 +89,14 @@ export class AddressComponent implements OnInit, AfterViewInit{
         },
         error: (error) => { console.log(error) }
       })
+    }
+
+    selectedAddress(index: number) {
+      this.pickedAddressindex = index;
+    }
+
+    proceedOrder() {
+      this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
+      this.router.navigateByUrl('/cart');
     }
 }

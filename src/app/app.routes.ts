@@ -31,6 +31,14 @@ export const routes: Routes = [
         canActivate:[authGuard]
     },
     {
+        path:'payment/:orderData',
+        loadComponent: () => import("./pages/payment/payment.component").then((m) => m.PaymentComponent),
+        canActivate:[authGuard]
+    },{
+        path:'order-tracking',
+        loadComponent: () => import("./pages/order-tracking/order-tracking.component").then((m)=>m.OrderTrackingComponent)
+    },
+    {
         path:"**", redirectTo:'home', pathMatch:'full'
         // path:"**", redirectTo:'order', pathMatch:'full'
     }
