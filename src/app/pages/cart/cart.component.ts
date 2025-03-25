@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { debounceTime, Subject } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
 import { SharedService } from '../../core/services/shared.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +16,7 @@ import { SharedService } from '../../core/services/shared.service';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
-export class CartComponent {
+export class CartComponent implements OnInit, AfterViewInit {
 
   currentPage: string = "cart";
     foodBasket: any = {};
@@ -117,27 +118,49 @@ export class CartComponent {
       // });
       console.log(' this.customDetails', this.customDetails);
       this.loadAddress();
-      this.sharedData.getSelecetdAddress().subscribe((data: any) => {
-          console.log('address', data);
-          if (Object.entries(data).length > 0) {
-              const tempcustomDetailsformattedAddress = {
-                  addressOne: data.addressOne,
-                  addressTwo: data.addressTwo,
-                  addressType: data.addressType,
-                  landmark: data.landmark,
-                  city: data.city,
-                  state: data.state,
-                  country: data.country,
-                  pincode: data.pincode
-              }
-              this.address = Object.values(tempcustomDetailsformattedAddress).filter(part => part !== null && part !== undefined).join(', ');
-              this.getDeliveryQuote(data.id);
-          } else {
-              this.showAddAddressButton = true;
-          }
-      });
+    //   this.sharedData.getSelecetdAddress().subscribe((data: any) => {
+    //       console.log('address', data);
+    //       if (Object.entries(data).length > 0) {
+    //           const tempcustomDetailsformattedAddress = {
+    //               addressOne: data.addressOne,
+    //               addressTwo: data.addressTwo,
+    //               addressType: data.addressType,
+    //               landmark: data.landmark,
+    //               city: data.city,
+    //               state: data.state,
+    //               country: data.country,
+    //               pincode: data.pincode
+    //           }
+    //           this.address = Object.values(tempcustomDetailsformattedAddress).filter(part => part !== null && part !== undefined).join(', ');
+    //           this.getDeliveryQuote(data.id);
+    //       } else {
+    //           this.showAddAddressButton = true;
+    //       }
+    //   });
 
 
+  }
+  ngAfterViewInit(): void {
+    // throw new Error('Method not implemented.');
+    this.sharedData.getSelecetdAddress().subscribe((data: any) => {
+        console.log('address', data);
+        if (Object.entries(data).length > 0) {
+            const tempcustomDetailsformattedAddress = {
+                addressOne: data.addressOne,
+                addressTwo: data.addressTwo,
+                addressType: data.addressType,
+                landmark: data.landmark,
+                city: data.city,
+                state: data.state,
+                country: data.country,
+                pincode: data.pincode
+            }
+            this.address = Object.values(tempcustomDetailsformattedAddress).filter(part => part !== null && part !== undefined).join(', ');
+            this.getDeliveryQuote(data.id);
+        } else {
+            this.showAddAddressButton = true;
+        }
+    });
   }
 
   checkWorkingHours() {
@@ -364,7 +387,7 @@ export class CartComponent {
 
   getDeliveryQuote(addressId: string) {
       this.quoteLoading = true;
-      this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).subscribe({
+      this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(take(1)).subscribe({
           next: (reponse: any) => {
               console.log("delivery/quote", reponse);
               this.quoteLoading = false;

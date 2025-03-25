@@ -1,0 +1,99 @@
+<div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container p-0 d-flex">
+            <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+                <img src="assets/images/icons/back.png " class="headerIconLeft "  >
+            </button>
+            <div class="d-inline-block">
+                <a class="navbar-brand cartHeader" href="#" data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation">Add Address Details</a>
+            </div>
+            <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+            <img src="assets/images/icons/support.png " class="headerIcon "  >
+        </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row addressDetailPageContainer">
+            <div class="col-md-12 p-0 mapAddress">
+                <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30468.04554232425!2d78.565699!3d17.339383!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3427bf787ad%3A0xd353a7d2d429feb!2sAnkapur%20Village%20-%20A%20Military%20Hotel%20(Vanasthalipuram)!5e0!3m2!1sen!2sin!4v1739698519949!5m2!1sen!2sin "
+                    width="100% " allowfullscreen=" " loading="lazy " referrerpolicy="no-referrer-when-downgrade "></iframe> -->
+                    <app-location-picker></app-location-picker>
+            </div>
+            <div class="col-md-12 addressPage">
+                <img src="assets/images/icons/edit2.png" class="editIcon">
+                <p>Madhapur Metro Station</p>
+                <span>63, Madhapur Metro Station, Beeramguda, Ramachandrpuram, Telangana 502022, India</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container my-2 bg-transparent ">
+        <p class="addressTitle">Add Address</p>
+
+        <div class="row addressForm">
+            <div class="col-md-12 pos-rel ">
+                <label>Flat No. / Floor*</label>
+                <input type="text " class="form-control">
+            </div>
+            <div class="col-md-12 pos-rel ">
+                <label>Building / Block No.</label>
+                <input type="text " class="form-control">
+            </div>
+            <div class="col-md-12 pos-rel ">
+                <label>Landmark & Area Name (Optional)</label>
+                <input type="text " class="form-control">
+            </div>
+            <!-- <div class="col-md-12 pos-rel ">
+                <label>Flat No. / Floor*</label>
+                <input type="text " class="form-control">
+            </div>
+            <div class="col-md-12 pos-rel ">
+                <label>Building / Block No. (Optional)</label>
+                <input type="text " class="form-control">
+            </div>
+            <div class="col-md-12 pos-rel ">
+                <label>Landmark & Area Name (Optional)</label>
+                <input type="text " class="form-control">
+            </div>
+            <div class="col-md-12 pos-rel ">
+                <label>Building / Block No. (Optional)</label>
+                <input type="text " class="form-control">
+            </div>
+            <div class="col-md-12 pos-rel ">
+                <label>Landmark & Area Name (Optional)</label>
+                <input type="text " class="form-control">
+            </div> -->
+        </div>
+    </div>
+
+    <div class="container my-3 bg-transparent ">
+        <p class="addressTitle">Add Address Label</p>
+        <div class="col-md-12 pos-rel ">
+            <div class="like-button">
+                <input type="radio" id="a25" name="check-substitution-2" />
+                <label class="btn btn-default" for="a25">Home</label>
+            </div>
+            <div class="like-button">
+                <input type="radio" id="a50" name="check-substitution-2" />
+                <label class="btn btn-default" for="a50">Work</label>
+            </div>
+            <div class="like-button">
+                <input type="radio" id="a75" name="check-substitution-2" />
+                <label class="btn btn-default" for="a75">Other</label>
+            </div>
+        </div>
+
+        <input type="text " class="form-control ownLabel" placeholder="Enter your own label">
+
+
+        <!-- <button class="btn AddressSaveBtn btnDisabled">Save Address </button> -->
+
+        <button class="btn AddressSaveBtn btnActive">Save Address </button>
+
+
+    </div>
+
+</div>

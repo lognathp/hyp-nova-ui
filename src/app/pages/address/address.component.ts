@@ -3,11 +3,12 @@ import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedService } from '../../core/services/shared.service';
+import { AddressFormComponent } from "../../components/address-form/address-form.component";
 
 @Component({
   selector: 'app-address',
   standalone: true,
-  imports: [],
+  imports: [AddressFormComponent],
   templateUrl: './address.component.html',
   styleUrl: './address.component.scss'
 })
@@ -98,5 +99,10 @@ export class AddressComponent implements OnInit, AfterViewInit{
     proceedOrder() {
       this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
       this.router.navigateByUrl('/cart');
+    }
+    newAddress():void{
+      // this.router.navigateByUrl('address/add-address');
+      this.addNew = true;
+
     }
 }

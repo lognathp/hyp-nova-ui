@@ -2,10 +2,12 @@ import { Component, isDevMode } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ApiService } from './core/services/api.service';
 
+import { GoogleMapsModule } from '@angular/google-maps';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet,GoogleMapsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

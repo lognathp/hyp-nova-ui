@@ -28,7 +28,13 @@ export const routes: Routes = [
     },{
         path:'address',
         loadComponent: () => import("./pages/address/address.component").then((m) => m.AddressComponent),
-        canActivate:[authGuard]
+        canActivate:[authGuard],
+        // children:[
+        //    {
+        //     path:'add-address',
+        //     loadComponent:() => import("./components/address-form/address-form.component").then((m) => m.AddressFormComponent)
+        //    }
+        // ]
     },
     {
         path:'payment/:orderData',
