@@ -11,6 +11,9 @@ import { TimeformatPipe } from "../../core/pipes/timeformat.pipe";
 import { DisplayQuantityPipe } from "../../core/pipes/display-quantity.pipe";
 import { VariationAddonComponent } from "../../components/variation-addon/variation-addon.component";
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { SearchFilterPipe } from "../../core/pipes/search-filter.pipe";
+import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -25,8 +28,11 @@ declare var bootstrap: any; // Bootstrap is using from assets
     DiscountPricePipe,
     TimeformatPipe,
     DisplayQuantityPipe,
-    VariationAddonComponent
-  ],
+    VariationAddonComponent,
+    FormsModule,
+    SearchFilterPipe,
+    VegNonvegFilterPipe
+],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
@@ -61,6 +67,8 @@ export class OrderComponent implements OnInit {
   availableBranchData: any;
   vendorData: any;
   openSelectBranch: boolean = false;
+searchKeyword: string = "";
+  itemFilterType: string = "";
 
   constructor(
     public apiService: ApiService,
@@ -138,16 +146,6 @@ export class OrderComponent implements OnInit {
 
   }
   ngDoCheck() {
-    // const offcanvasElement = document.getElementById('selectDeliveryLocation');
-    // const offcanvasElement2 = document.getElementById('foodMenu');
-    // if (offcanvasElement) {
-    //   this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
-    // }
-    // if (typeof bootstrap !== 'undefined') {
-    //   console.log('✅ Bootstrap is loaded');
-    // } else {
-    //   console.error('❌ Bootstrap is NOT loaded');
-    // }
 
     const localstrfoodItem: any = localStorage.getItem("foodBasket");
     if (localstrfoodItem != null) {
@@ -534,7 +532,14 @@ export class OrderComponent implements OnInit {
       if (ele.item.quantity == undefined) {
         // Item price will be 0 if there is variation
         if (ele.addonVariation != undefined) {
-          this.cartItemPrice = this.cartItemPrice + parseFloat(ele.addonVariation.varients.price);
+          console.log(ele.addonVariation?.addons);
+          
+          this.cartItemPrice = this.cartItemPrice + parseFloat(ele.addonVariation?.varients.price);
+          // if(ele.addonVariation?.addons?.data.length > 0){
+          //  let addonPrice =  this.getSelectedAddonPrices(ele.addonVariation?.addonDetails, ele.addonVariation?.addons);
+          //  console.log('addonPrice',addonPrice);
+           
+          // }
         } else {
           this.cartItemPrice = this.cartItemPrice + parseFloat(ele.item.price);
         }
@@ -542,9 +547,17 @@ export class OrderComponent implements OnInit {
         // Item price will be 0 if there is variation
         if (ele.addonVariation != undefined && ele.addonVariation?.varients != undefined) {
           this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.addonVariation.varients.price) * parseInt(ele.item.quantity));
+          
         } else {
           this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.item.price) * parseInt(ele.item.quantity));
         }
+
+        if(ele.addonVariation?.addons != undefined ){
+          let addonPrice:any =  this.getSelectedAddonPrices(ele.addonVariation?.addonDetails, ele.addonVariation?.addons.data);
+          console.log('addonPrice',addonPrice);
+          this.cartItemPrice = this.cartItemPrice + (parseFloat(addonPrice) * parseInt(ele.item.quantity));
+          
+         }
 
       }
     });
@@ -618,6 +631,10 @@ export class OrderComponent implements OnInit {
       if (offcanvasInstance) {
         offcanvasInstance.hide(); // Hide the offcanvas dynamically
       }
+      const backdrop = document.querySelector('.offcanvas-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
     }
   }
 
@@ -640,5 +657,38 @@ export class OrderComponent implements OnInit {
     this.router.navigate(['/cart']);
   }
 
-
+  public getSelectedAddonPrices(selectedData: any, addonGroups: any[]) {
+    console.log(selectedData,addonGroups);
+    let price = 0;
+    selectedData.map((group:any,index:number) => {
+      group.addonItems.forEach((item:any) =>{
+        if(addonGroups[index].selectedAddon.includes(item.id)){
+          console.log(item.addonItemPrice,'dugufusdfhsj');
+          price = item.addonItemPrice;
+          
+        }
+      });
+    });
+    return price;
+    // return selectedData.map((group:any) => {
+    //   const matchingGroup = addonGroups.find(addonGroup => addonGroup.id === group.addonGroupId);
+      
+    //   if (matchingGroup) {
+    //     return group.selectedAddon.map((selectedId:any) => {
+    //       const matchingAddon = matchingGroup.addonItems.find((item:any) => item.id === selectedId);
+    //       return matchingAddon ? { id: selectedId, price: matchingAddon.addonItemPrice } : null;
+    //     }).filter(Boolean);
+    //   }
+      
+    //   return [];
+    // }).flat();
+  }
+  /**
+   * Veg Non-veg Filter
+   */
+  public vegNonvegFilter(type:string){
+    this.itemFilterType == type ? this.itemFilterType = "" : this.itemFilterType = type ;
+    console.log(this.itemFilterType);
+    
+  }
 }

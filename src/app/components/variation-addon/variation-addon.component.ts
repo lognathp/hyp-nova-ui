@@ -146,9 +146,17 @@ export class VariationAddonComponent  implements OnInit {
   createAddonGroup(group: any): FormGroup {
     return this.formBuilder.group({
       addonGroupName: [group.addonGroupName],
+      addonGroupId:[group.id],
       // selectedAddon: [group.addonItems[0]?.id]  
-      selectedAddon: [group.addonItemSelectionMin === '1' ? group.addonItems[0].id : '']
+      // selectedAddon: [group.addonItemSelectionMin === '1' ? group.addonItems[0].id : '']
+      selectedAddon: group.addonItemSelectionMin === "1" 
+      ? new FormControl('') // Single selection (radio)
+      : new FormArray([])   // Multiple selection (checkbox)
     });
+  }
+
+  get dataFormArray() {
+    return this.addonForm.get('data') as FormArray;
   }
 
   createAddonItem(item: any, i:number): FormGroup {
@@ -185,6 +193,18 @@ export class VariationAddonComponent  implements OnInit {
 
   }
 
+  toggleCheckbox(event: any, groupIndex: number, itemId: string) {
+    const selectedAddonArray = this.dataFormArray.at(groupIndex).get('selectedAddon') as FormArray;
+    // console.log(this.taddOnChoice[groupIndex]);
+    
+    if (event.target.checked) {
+      selectedAddonArray.push(new FormControl(itemId));
+    } else {
+      const index = selectedAddonArray.controls.findIndex(x => x.value === itemId);
+      selectedAddonArray.removeAt(index);
+    }
+  }
+
   valueUpdate() {
     this.totalPrice = parseFloat(this.tvariations[this.selectedVarient]?.price);
     this.variationForm.valueChanges.subscribe((value: any) => {
@@ -195,6 +215,10 @@ export class VariationAddonComponent  implements OnInit {
       //    this.totalPrice = this.totalPrice + parseFloat(ele.addonItemPrice) ;
       //   }
       // })
+    });
+    this.addonForm.valueChanges.subscribe(value => {
+      console.log('Form value changed:', value, this.addonForm);
+     
     });
 
     // console.log(this.tvariations[this.selectedVarient].addonGroups[0].addonItems);
@@ -210,9 +234,10 @@ export class VariationAddonComponent  implements OnInit {
     let selecetdAddonList: any = [];
 
     let selectedVarientValue = this.variationForm.getRawValue();
-    let selectedAddonValue = this.addonForm.getRawValue();
+    // let selectedAddonValue = this.addonForm.getRawValue();
+    let selectedAddonValue = this.addonForm.value;
     // console.log(selectedVarientValue, this.tvariations);
-    // console.log(selectedAddonValue, this.taddOnChoice);
+    console.log(selectedAddonValue);
 
     selectedVarientValue!.addOngrp.forEach((element: any, index: number) => {
       element.addons.forEach((adonEle: any, innerIndex: number) => {
@@ -222,22 +247,22 @@ export class VariationAddonComponent  implements OnInit {
 
     });
 
-    selectedAddonValue!.addOngrp.forEach((ele: any, index: number) => {
-      if (Object.values(ele)[0])
-        selecetdAddonList.push(this.taddOnChoice[0].addonItems[index].addonItemName);
+    // selectedAddonValue!.addOngrp.forEach((ele: any, index: number) => {
+    //   if (Object.values(ele)[0])
+    //     selecetdAddonList.push(this.taddOnChoice[0].addonItems[index].addonItemName);
 
-    })
+    // })
 
     const addonVariation = {
       varients: this.tvariations[this.selectedVarient],
       variationaddOns: this.variationForm.getRawValue(),
       VatiationAddOnName: selecetdVerAddonList,
-      addons: this.addonForm.getRawValue(),
+      addons: this.addonForm.value,
       addonDetails: this.taddOnChoice,
       addOnNames: selecetdAddonList,
       quantity: this.quantity
     }
-    console.log(addonVariation);
+    console.log('addonVariation',addonVariation);
 
     this.addedItem.emit({ action: "add", addonVariation });
     this.variations = [];
@@ -282,7 +307,7 @@ export class VariationAddonComponent  implements OnInit {
     return this.addOngrp.at(groupIndex).get('addonItems') as FormArray;
   }
 
-  submitForm(): void {
-    console.log(this.addonForm.value);
-  }
+  // submitForm(): void {
+  //   console.log(this.addonForm.value);
+  // }
 }

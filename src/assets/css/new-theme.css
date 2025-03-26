@@ -805,6 +805,10 @@ float: right;
 .filterBtn {
     border: 1px solid #C4C4C4;
     font-size: 12px;
+    margin-right: 5px;
+    &:hover{
+        border: 1px solid #181818 !important;
+    }
 }
 
 .aboutTitle {
