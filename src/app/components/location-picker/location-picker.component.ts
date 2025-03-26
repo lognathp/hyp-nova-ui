@@ -1,7 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { GoogleMapLoaderService } from '../../core/services/google-map-loader.service'
 
+declare const google: any;
 @Component({
   selector: 'app-location-picker',
   standalone: true,
@@ -9,56 +11,76 @@ import { GoogleMapsModule } from '@angular/google-maps';
   templateUrl: './location-picker.component.html',
   styleUrl: './location-picker.component.scss'
 })
-export class LocationPickerComponent {
- 
-  apiKey = 'AIzaSyDJtFMqXk-R-SBEoP2U9I0ISIWSImLjM_U'; // API Key
-  center: google.maps.LatLngLiteral = { lat: 17.448583499999998, lng: 78.39080349999999 }; // Default Location
-  zoom = 10;
-  markerPosition: google.maps.LatLngLiteral | any;
-  selectedLocation: any;
+export class LocationPickerComponent implements OnInit, AfterViewInit {
 
-  mapOptions: google.maps.MapOptions = {
-    center: { lat: 17.448583499999998, lng: 78.39080349999999 },
-    zoom: 15,
-  };
-  address: any;
+  @Output() selectedLocation = new EventEmitter<any>();
 
-  constructor() {}
 
-  onMapClick(event: google.maps.MapMouseEvent) {
-    if (event.latLng) {
-      this.markerPosition = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
-      };
-      this.getAddress(this.markerPosition.lat, this.markerPosition.lng);
+  map!: google.maps.Map;
+  centerPosition!: { lat: number; lng: number };
+  address: string = '';
+
+
+
+  constructor(private googleMapsLoader: GoogleMapLoaderService) { }
+
+  ngOnInit(){
+    const selectedLocation:any = localStorage.getItem('selectedLocation');
+    const tempLocationSelected = JSON.parse(selectedLocation);
+    
+    this.centerPosition = {
+      lat: tempLocationSelected.location.latitude, 
+      lng: tempLocationSelected.location.longitude
     }
+    
   }
 
-  async getAddress(lat: number, lng: number) {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${this.apiKey}`
-    );
-    const data = await response.json();
-    if (data.results.length > 0) {
-      this.address = data.results[0].formatted_address;
-    } else {
-      this.address = 'Address not found';
-    }
+  ngAfterViewInit() {
+    // this.initMap();
+    this.googleMapsLoader.loadGoogleMaps().then(() => {
+      this.initMap();
+    }).catch(error => {
+      console.error('Google Maps loading error:', error);
+    });
   }
 
-  detectUserLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        this.markerPosition = this.center;
-        this.getAddress(this.center.lat, this.center.lng);
-      });
-    } else {
-      alert('Geolocation is not supported by this browser.');
-    }
+  initMap() {
+
+    // this.centerPosition = { lat: 12.9716, lng: 77.5946 };
+    // this.centerPosition = { lat: 17.387140, lng: 78.491684 };
+    const mapOptions = {
+      center: this.centerPosition,
+      zoom: 15,
+      disableDefaultUI: false,
+    };
+
+    this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    this.map.addListener('idle', () => {
+      const center: any = this.map.getCenter();
+      this.centerPosition = { lat: center.lat(), lng: center.lng() };
+    });
   }
+
+  getPinLocation(): void {
+    console.log('Current Pin Location:', this.centerPosition);
+    this.getAddressFromLatLng(this.centerPosition.lat, this.centerPosition.lng);
+  }
+  getAddressFromLatLng(lat: number, lng: number): void {
+    const geocoder = new google.maps.Geocoder();
+    const latlng = { lat, lng };
+
+    geocoder.geocode({ location: latlng }, (results: any, status: any) => {
+      if (status === 'OK' && results[0]) {
+        this.address = results[0].formatted_address;
+        // alert(`Current Address:\n${this.address}`);
+        console.log('Address:', this.address);
+        this.selectedLocation.emit({formattedAddress : this.address, location: this.centerPosition });
+      } else {
+        // alert('Address not found');
+        console.error('Geocoder failed:', status);
+      }
+    });
+  }
+
 }

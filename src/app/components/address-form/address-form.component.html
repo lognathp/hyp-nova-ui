@@ -16,65 +16,47 @@
 
     <div class="container">
         <div class="row addressDetailPageContainer">
-            <div class="col-md-12 p-0 mapAddress">
+            <div class="col-md-12 p-0 mapAddress mb-3">
                 <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30468.04554232425!2d78.565699!3d17.339383!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3427bf787ad%3A0xd353a7d2d429feb!2sAnkapur%20Village%20-%20A%20Military%20Hotel%20(Vanasthalipuram)!5e0!3m2!1sen!2sin!4v1739698519949!5m2!1sen!2sin "
                     width="100% " allowfullscreen=" " loading="lazy " referrerpolicy="no-referrer-when-downgrade "></iframe> -->
-                    <app-location-picker></app-location-picker>
+                    <app-location-picker (selectedLocation)="getSelectedLocation($event)"></app-location-picker>
             </div>
             <div class="col-md-12 addressPage">
                 <img src="assets/images/icons/edit2.png" class="editIcon">
-                <p>Madhapur Metro Station</p>
-                <span>63, Madhapur Metro Station, Beeramguda, Ramachandrpuram, Telangana 502022, India</span>
+                <!-- <p>Madhapur Metro Station</p> -->
+                <span>{{ selectedLocation?.formattedAddress }}</span>
             </div>
         </div>
     </div>
 
 
-    <div class="container my-2 bg-transparent ">
+    <div class="container bg-transparent ">
         <p class="addressTitle">Add Address</p>
-
-        <div class="row addressForm">
-            <div class="col-md-12 pos-rel ">
-                <label>Flat No. / Floor*</label>
-                <input type="text " class="form-control">
+        <form action="" [formGroup]="addressForm">
+            <div class="row addressForm">
+                <div class="col-md-12 pos-rel ">
+                    <label>Flat No. / Floor*</label>
+                    <input type="text " class="form-control" formControlName="flatNo">
+                </div>
+                <div class="col-md-12 pos-rel ">
+                    <label>Building / Block No.</label>
+                    <input type="text " class="form-control" formControlName="addressOne" >
+                </div>
+                <div class="col-md-12 pos-rel ">
+                    <label>Landmark & Area Name (Optional)</label>
+                    <input type="text " class="form-control" formControlName="landmark" >
+                </div>
             </div>
-            <div class="col-md-12 pos-rel ">
-                <label>Building / Block No.</label>
-                <input type="text " class="form-control">
-            </div>
-            <div class="col-md-12 pos-rel ">
-                <label>Landmark & Area Name (Optional)</label>
-                <input type="text " class="form-control">
-            </div>
-            <!-- <div class="col-md-12 pos-rel ">
-                <label>Flat No. / Floor*</label>
-                <input type="text " class="form-control">
-            </div>
-            <div class="col-md-12 pos-rel ">
-                <label>Building / Block No. (Optional)</label>
-                <input type="text " class="form-control">
-            </div>
-            <div class="col-md-12 pos-rel ">
-                <label>Landmark & Area Name (Optional)</label>
-                <input type="text " class="form-control">
-            </div>
-            <div class="col-md-12 pos-rel ">
-                <label>Building / Block No. (Optional)</label>
-                <input type="text " class="form-control">
-            </div>
-            <div class="col-md-12 pos-rel ">
-                <label>Landmark & Area Name (Optional)</label>
-                <input type="text " class="form-control">
-            </div> -->
-        </div>
+        </form>
+        
     </div>
 
     <div class="container my-3 bg-transparent ">
         <p class="addressTitle">Add Address Label</p>
         <div class="col-md-12 pos-rel ">
             <div class="like-button">
-                <input type="radio" id="a25" name="check-substitution-2" />
-                <label class="btn btn-default" for="a25">Home</label>
+                <input type="radio" id="a25" name="check-substitution-2" checked />
+                <label class="btn btn-default" for="a25" >Home</label>
             </div>
             <div class="like-button">
                 <input type="radio" id="a50" name="check-substitution-2" />
@@ -91,7 +73,7 @@
 
         <!-- <button class="btn AddressSaveBtn btnDisabled">Save Address </button> -->
 
-        <button class="btn AddressSaveBtn btnActive">Save Address </button>
+        <button class="btn AddressSaveBtn btnActive" (click)="addAddress()">Save Address </button>
 
 
     </div>

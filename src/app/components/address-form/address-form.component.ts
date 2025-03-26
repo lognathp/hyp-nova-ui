@@ -8,7 +8,7 @@ import { LocationPickerComponent } from "../location-picker/location-picker.comp
 @Component({
   selector: 'app-address-form',
   standalone: true,
-  imports: [LocationPickerComponent],
+  imports: [LocationPickerComponent,ReactiveFormsModule],
   templateUrl: './address-form.component.html',
   styleUrl: './address-form.component.scss'
 })
@@ -16,7 +16,10 @@ export class AddressFormComponent {
 
   addressForm!: FormGroup;
   submitted = false;
+  markedLocation: any;
+  selectedLocation!: any;
 
+  customerDetails: any = {};
 
   constructor(
     public apiService: ApiService,
@@ -41,21 +44,26 @@ export class AddressFormComponent {
 
     this.addressForm = this.formBuilder.group({
       id: new FormControl(),
-      addressType: new FormControl('Home', [Validators.required]),
+      // addressType: new FormControl('Home', [Validators.required]),
       flatNo: new FormControl('', [Validators.required]),
-      addressOne: new FormControl('', [Validators.required]),
-      addressTwo: new FormControl('', [Validators.required]),
+      addressOne: new FormControl('', []),
+      // addressTwo: new FormControl('', [Validators.required]),
       landmark: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required]),
-      state: new FormControl('', [Validators.required]),
-      country: new FormControl('', [Validators.required]),
-      pincode: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{6}$')]),
+      // city: new FormControl('', [Validators.required]),
+      // state: new FormControl('', [Validators.required]),
+      // country: new FormControl('', [Validators.required]),
+      // pincode: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{6}$')]),
       customerId: new FormControl(),
       location: new FormControl(),
     });
-    let custDetail: any = localStorage.getItem('customerDetails');
 
-    // this.selectedLocation = localStorage.getItem('selectedLocation');
+
+    const tempLocationSelected:any = localStorage.getItem('selectedLocation');
+    this.selectedLocation = JSON.parse(tempLocationSelected);
+
+    let custDetail: any = localStorage.getItem('customerDetails');
+    this.customerDetails = JSON.parse(custDetail);
+
     // this.customerDetails = JSON.parse(custDetail);
     // console.log(this.customerDetails);
 
@@ -68,6 +76,30 @@ export class AddressFormComponent {
 
 
 
+  }
+
+  getSelectedLocation(event:any):void{
+    console.log(event);
+    this.selectedLocation = event;
+    // this.markedLocation = event;
+  }
+
+  addAddress() {
+    this.submitted = true;
+    // this.blockEditPincode = true;
+    if (this.addressForm.invalid) return;
+    if (this.addressForm.valid) {
+      this.addressForm.patchValue({ customerId: this.customerDetails.id });
+      this.addressForm.value.addressOne = this.addressForm.value.flatNo + ', ' + this.addressForm.value.addressOne;
+      this.addressForm.value.formattedAddress = this.addressForm.value.flatNo + ', ' + this.addressForm.value.formattedAddress;
+      this.apiService.postMethod(`/address`, this.addressForm.value).subscribe({
+        next: (reponse) => {
+          // this.address = reponse.data[0].addresses;
+          
+        },
+        error: (error) => { console.log(error) }
+      });
+    }
   }
 
 }

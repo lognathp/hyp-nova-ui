@@ -1,13 +1,5 @@
-<google-map
-  [height]="'400px'"
-  [width]="'100%'"
-  [center]="center"
-  [zoom]="zoom"
-  (mapClick)="onMapClick($event)"
->
-  <map-marker *ngIf="markerPosition" [position]="markerPosition"></map-marker>
-</google-map>
-
-<!-- <p *ngIf="address">📍 Selected Location: {{ address }}</p> -->
-
-<button (click)="detectUserLocation()">📍 Detect My Location</button>
+<div id="map-container">
+    <div id="map"></div>
+    <div id="pin"></div> <!-- Fixed pin in the center -->
+</div>
+<button class="btn AddressSaveBtn btnActive" (click)="getPinLocation()">Get Pin Location</button>

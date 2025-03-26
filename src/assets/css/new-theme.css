@@ -2321,7 +2321,7 @@ input[type="radio"] {
 }
 
 .addressDetailPageContainer .mapAddress {
-    height: 100px;
+    height: auto;
 }
 
 .addressDetailPageContainer .mapAddress iframe {
