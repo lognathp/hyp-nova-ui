@@ -37,12 +37,17 @@ export const routes: Routes = [
         // ]
     },
     {
-        path:'payment/:orderData',
+        path:'payment',
         loadComponent: () => import("./pages/payment/payment.component").then((m) => m.PaymentComponent),
         canActivate:[authGuard]
     },{
         path:'order-tracking',
-        loadComponent: () => import("./pages/order-tracking/order-tracking.component").then((m)=>m.OrderTrackingComponent)
+        loadComponent: () => import("./pages/order-tracking/order-tracking.component").then((m)=>m.OrderTrackingComponent),
+        canActivate:[authGuard]
+    },{
+        path:'account',
+        loadComponent:() => import("./pages/user-account/user-account.component").then(m => m.UserAccountComponent),
+        canActivate:[authGuard]
     },
     {
         path:"**", redirectTo:'home', pathMatch:'full'

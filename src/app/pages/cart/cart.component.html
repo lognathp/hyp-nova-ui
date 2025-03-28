@@ -108,7 +108,7 @@
             <div class="col-md-12 ">
                 @if (showAddAddressButton){
                 <button class="btn cartAddressBtn"  (click)="selectAddress()"> <span>Add / Select Address</span></button>
-                } @else {
+                } @else if(!quoteLoading) {
                 <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled" (click)="onPrepareOrderClick()"> <span>Proceed to Payment</span></button>
                 <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
                 }

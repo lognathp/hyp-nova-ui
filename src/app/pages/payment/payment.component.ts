@@ -18,17 +18,20 @@ export class PaymentComponent {
 
   orderSaveResponse:any;
 
-  // @Input() orderSaveResponse: any;
+// orderSaveResponse: any;
   constructor(
     private paymentService: PaymentService, 
     private router: Router, 
     private ngZone:NgZone, 
     public apiService: ApiService,
     private route: ActivatedRoute
-  ) { }
+  ) { 
+    const navigation = this.router.getCurrentNavigation();
+    this.orderSaveResponse = navigation?.extras.state?.['orderData'];
+  }
   customerDetails: any = {};
   ngOnInit() {
-    this.orderSaveResponse = this.route.snapshot.paramMap.get('orderData');
+    // this.orderSaveResponse = this.route.snapshot.paramMap.get('orderData');
     console.log(this.orderSaveResponse);
     // console.log(this.router.url);
     // call api to create order_id

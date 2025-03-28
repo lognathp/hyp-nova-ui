@@ -10,7 +10,7 @@ import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
 import { TimeformatPipe } from "../../core/pipes/timeformat.pipe";
 import { DisplayQuantityPipe } from "../../core/pipes/display-quantity.pipe";
 import { VariationAddonComponent } from "../../components/variation-addon/variation-addon.component";
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from "../../core/pipes/search-filter.pipe";
 import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
@@ -31,7 +31,9 @@ declare var bootstrap: any; // Bootstrap is using from assets
     VariationAddonComponent,
     FormsModule,
     SearchFilterPipe,
-    VegNonvegFilterPipe
+    VegNonvegFilterPipe,
+    RouterLink,
+    RouterModule
 ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'

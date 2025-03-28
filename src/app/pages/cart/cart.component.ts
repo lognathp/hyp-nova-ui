@@ -142,7 +142,7 @@ export class CartComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     // throw new Error('Method not implemented.');
-    this.sharedData.getSelecetdAddress().subscribe((data: any) => {
+    this.sharedData.getSelecetdAddress().pipe(take(1)).subscribe((data: any) => {
         console.log('address', data);
         if (Object.entries(data).length > 0) {
             const tempcustomDetailsformattedAddress = {
@@ -156,6 +156,9 @@ export class CartComponent implements OnInit, AfterViewInit {
                 pincode: data.pincode
             }
             this.address = Object.values(tempcustomDetailsformattedAddress).filter(part => part !== null && part !== undefined).join(', ');
+            // if(!this.quoteLoading){
+            //     this.getDeliveryQuote(data.id);
+            // }
             this.getDeliveryQuote(data.id);
         } else {
             this.showAddAddressButton = true;
@@ -387,36 +390,42 @@ export class CartComponent implements OnInit, AfterViewInit {
 
   getDeliveryQuote(addressId: string) {
       this.quoteLoading = true;
-      this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(take(1)).subscribe({
-          next: (reponse: any) => {
-              console.log("delivery/quote", reponse);
-              this.quoteLoading = false;
-              this.quoteData = reponse;
-              // this.orderPriceDetails['deliveryCharge'] = 25;
-              // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
-
-              this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price - (this.quoteData.data[0].quote.price * (this.deliveryDiscount / 100));;
-              // this.orderPriceDetails['dcTaxAmount'] = 10;
-
-              this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
-
-              this.deliveryDetails['addressId'] = addressId;
-              this.deliveryDetails['service'] = this.quoteData.data[0].service;
-              // this.deliveryDetails['service'] ='wefast';
-              this.deliveryDetails['pickupNow'] = this.quoteData.data[0].pickup_now;
-              // this.deliveryDetails['pickupNow'] = true;
-              // this.deliveryDetails['networkId'] = 18;
-              this.deliveryDetails['networkId'] = this.quoteData.data[0].network_id;
-              console.log(this.orderPriceDetails, this.quoteData);
-          },
-          error: (error: { error: string; }) => {
-              console.log('getQuote ' + error.error);
-              this.quoteLoading = false;
-              this.showAddAddressButton = true;
-              // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
-          }
-
-      });
+      let times= 1;
+      console.log(times);
+      times ++;
+      if(this.quoteLoading){
+        this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
+            next: (reponse: any) => {
+                console.log("delivery/quote", reponse);
+                this.quoteLoading = false;
+                this.quoteData = reponse;
+                // this.orderPriceDetails['deliveryCharge'] = 25;
+                // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
+  
+                this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price - (this.quoteData.data[0].quote.price * (this.deliveryDiscount / 100));;
+                // this.orderPriceDetails['dcTaxAmount'] = 10;
+  
+                this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
+  
+                this.deliveryDetails['addressId'] = addressId;
+                this.deliveryDetails['service'] = this.quoteData.data[0].service;
+                // this.deliveryDetails['service'] ='wefast';
+                this.deliveryDetails['pickupNow'] = this.quoteData.data[0].pickup_now;
+                // this.deliveryDetails['pickupNow'] = true;
+                // this.deliveryDetails['networkId'] = 18;
+                this.deliveryDetails['networkId'] = this.quoteData.data[0].network_id;
+                console.log(this.orderPriceDetails, this.quoteData, this.deliveryDetails);
+            },
+            error: (error: { error: string; }) => {
+                console.log('getQuote ' + error.error);
+                this.quoteLoading = false;
+                this.showAddAddressButton = true;
+                // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
+            }
+  
+        });
+      }
+     
   }
 
   removeItem(index: number): void {
@@ -505,7 +514,7 @@ export class CartComponent implements OnInit, AfterViewInit {
               this.orderSaveResponse = reponse.data;
               this.connectingGateway = false;
               this.showPayment = true;
-              this.router.navigateByUrl('/payment', this.orderSaveResponse);
+              this.router.navigateByUrl('/payment', { state: { orderData: this.orderSaveResponse } });
           },
           error: (error: any) => { console.log(error) }
       })

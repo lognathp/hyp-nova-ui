@@ -1,7 +1,7 @@
 <div>
-    <div class="topSection loginSheet">
+    <div class="topSection">
         @if (!otpSent) {
-            <div class="" >
+            <div class="" id="loginSheet">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title btmHeaderLogin">Login</h5>
                     <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
@@ -31,7 +31,7 @@
         }
         
         @if (otpSent) {
-            <div>
+            <div class="" id="loginSheet">
                 <div class="offcanvas-header">
                     <img src="assets/images/icons/back2.png " class="backIcon">
                     <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
