@@ -19,10 +19,10 @@
             <div class="col-md-12 p-0 mapAddress mb-3">
                 <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30468.04554232425!2d78.565699!3d17.339383!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3427bf787ad%3A0xd353a7d2d429feb!2sAnkapur%20Village%20-%20A%20Military%20Hotel%20(Vanasthalipuram)!5e0!3m2!1sen!2sin!4v1739698519949!5m2!1sen!2sin "
                     width="100% " allowfullscreen=" " loading="lazy " referrerpolicy="no-referrer-when-downgrade "></iframe> -->
-                    <app-location-picker (selectedLocation)="getSelectedLocation($event)"></app-location-picker>
+                    <app-location-picker  (selectedLocation)="getSelectedLocation($event)"></app-location-picker>
             </div>
             <div class="col-md-12 addressPage">
-                <img src="assets/images/icons/edit2.png" class="editIcon">
+                <img src="assets/images/icons/edit2.png" (click)="editLocation()" class="editIcon">
                 <!-- <p>Madhapur Metro Station</p> -->
                 <span>{{ selectedLocation?.formattedAddress }}</span>
             </div>
@@ -32,43 +32,40 @@
 
     <div class="container bg-transparent ">
         <p class="addressTitle">Add Address</p>
-        <form action="" [formGroup]="addressForm">
-            <div class="row addressForm">
-                <div class="col-md-12 pos-rel ">
-                    <label>Flat No. / Floor*</label>
-                    <input type="text " class="form-control" formControlName="flatNo">
-                </div>
-                <div class="col-md-12 pos-rel ">
-                    <label>Building / Block No.</label>
-                    <input type="text " class="form-control" formControlName="addressOne" >
-                </div>
-                <div class="col-md-12 pos-rel ">
-                    <label>Landmark & Area Name (Optional)</label>
-                    <input type="text " class="form-control" formControlName="landmark" >
-                </div>
+        <div class="row addressForm">
+            <div class="col-md-12 pos-rel ">
+                <label>Flat No. / Floor*</label>
+                <input type="text " class="form-control" [ngClass]="{ 'errorBorder': submitted && flatNo == '' }" [(ngModel)]="flatNo">
             </div>
-        </form>
-        
+            <div class="col-md-12 pos-rel ">
+                <label>Building / Block No.*</label>
+                <input type="text " class="form-control" [ngClass]="{ 'errorBorder': submitted && addressOne == '' }" [(ngModel)]="addressOne" >
+            </div>
+            <div class="col-md-12 pos-rel ">
+                <label>Landmark & Area Name (Optional)</label>
+                <input type="text " class="form-control" [(ngModel)]="landmark" >
+            </div>
+        </div>
     </div>
 
     <div class="container my-3 bg-transparent ">
         <p class="addressTitle">Add Address Label</p>
         <div class="col-md-12 pos-rel ">
             <div class="like-button">
-                <input type="radio" id="a25" name="check-substitution-2" checked />
+                <input type="radio" id="a25" name="check-substitution-2" (click)="addressType = 'Home'" [checked]="addressType == 'Home'" />
                 <label class="btn btn-default" for="a25" >Home</label>
             </div>
             <div class="like-button">
-                <input type="radio" id="a50" name="check-substitution-2" />
+                <input type="radio" id="a50" name="check-substitution-2" (click)="addressType = 'Work'" [checked]="addressType == 'Work'" />
                 <label class="btn btn-default" for="a50">Work</label>
             </div>
             <div class="like-button">
-                <input type="radio" id="a75" name="check-substitution-2" />
+                <input type="radio" id="a75" name="check-substitution-2" (click)="addressType = 'Other'" [checked]="addressType == 'Other'"/>
                 <label class="btn btn-default" for="a75">Other</label>
             </div>
         </div>
 
-        <input type="text " class="form-control ownLabel" placeholder="Enter your own label">
+        <!-- <input type="text " class="form-control ownLabel" placeholder="Enter your own label"> -->
 
 
         <!-- <button class="btn AddressSaveBtn btnDisabled">Save Address </button> -->

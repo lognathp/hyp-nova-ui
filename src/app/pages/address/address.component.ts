@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -12,9 +13,9 @@ import { AddressFormComponent } from "../../components/address-form/address-form
   templateUrl: './address.component.html',
   styleUrl: './address.component.scss'
 })
-export class AddressComponent implements OnInit, AfterViewInit{
+export class AddressComponent implements OnInit, AfterViewInit {
 
- 
+
 
   addressForm!: FormGroup;
   submitted = false;
@@ -56,53 +57,67 @@ export class AddressComponent implements OnInit, AfterViewInit{
     public sharedService: SharedService,
     private router: Router,
     private formBuilder: FormBuilder,
-    ) {}
+    private location: Location
+  ) { }
 
   ngAfterViewInit(): void {
     // throw new Error('Method not implemented.');
   }
 
-    ngOnInit():void{
-      let custDetail: any = localStorage.getItem('customerDetails');
+  /**
+   * Back Button
+   */
+  goBack():void {
+    this.location.back(); // Moves to the previous route
+  }
+
+  ngOnInit(): void {
+    let custDetail: any = localStorage.getItem('customerDetails');
 
     this.selectedLocation = localStorage.getItem('selectedLocation');
     this.customerDetails = JSON.parse(custDetail);
     console.log(this.customerDetails);
-    if(this.customerDetails != undefined){
+    if (this.customerDetails != undefined) {
       this.getAddresssDetails();
     }
-    }
+  }
 
-    ngDoCheck(){
-      
-    }
+  ngDoCheck() {
 
-    getAddresssDetails() {
-      console.log('method call getAddresssDetails');
-      
-      this.apiService.getMethod(`/address?customerId_eq=${this.customerDetails.id}`).subscribe({
-        next: (reponse) => {
-          console.log(reponse);
-  
-          if (reponse.data.length > 0) {
-            this.address = reponse.data;
-          }
-        },
-        error: (error) => { console.log(error) }
-      })
-    }
+  }
 
-    selectedAddress(index: number) {
-      this.pickedAddressindex = index;
-    }
+  getAddresssDetails() {
+    console.log('method call getAddresssDetails');
 
-    proceedOrder() {
-      this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
-      this.router.navigateByUrl('/cart');
-    }
-    newAddress():void{
-      // this.router.navigateByUrl('address/add-address');
-      this.addNew = true;
+    this.apiService.getMethod(`/address?customerId_eq=${this.customerDetails.id}`).subscribe({
+      next: (reponse) => {
+        console.log(reponse);
 
+        if (reponse.data.length > 0) {
+          this.address = reponse.data;
+        }
+      },
+      error: (error) => { console.log(error) }
+    })
+  }
+
+  selectedAddress(index: number) {
+    this.pickedAddressindex = index;
+  }
+
+  proceedOrder() {
+    this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
+    this.router.navigateByUrl('/cart');
+  }
+
+  getSavedAddress(event: any) {
+    if (event) {
+      this.addNew = false;
     }
+  }
+  newAddress(): void {
+    // this.router.navigateByUrl('address/add-address');
+    this.addNew = true;
+
+  }
 }

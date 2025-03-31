@@ -2,42 +2,53 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container p-0 d-flex">
-            <button class="navbar-toggler headerButtonLeft" type="button " (click)="back()"  data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-                <img src="assets/images/icons/back.png " class="headerIconLeft "  >
+            <button class="navbar-toggler headerButtonLeft" type="button " (click)="back()" data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/back.png " class="headerIconLeft ">
             </button>
             <div class="d-inline-block">
-                <a class="navbar-brand cartHeader" href="#" data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation">Your Cart</a>
+                <a class="navbar-brand cartHeader" href="#" data-bs-toggle="offcanvas"
+                    data-bs-target="#selectDeliveryLocation">Your Cart</a>
             </div>
-            <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-            <img src="assets/images/icons/support.png " class="headerIcon "  >
-        </button>
+            <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/support.png " class="headerIcon ">
+            </button>
         </div>
     </nav>
 
 
     <div class="container  cartOffer">
-        <p>You saved ₹150 on this order</p>
+        <p>You saved ₹{{orderPriceDetails.discount | number:'1.2-2'}} on this order</p>
     </div>
 
     <div class="container  bg-transparent">
         <div class="card foodCard ">
             @for (basketitem of foodBasket; track $index) {
-                <div class="card-body foodTile cartFoodTile">
-                    <div class="row ">
-                        <div class="col-8 col-md-8 food-item veg ">
-                            <h5 class="card-title cartFoodTitle " [ngClass]="{'veg': basketitem.item.itemAttributeId == '1' , 'nonVeg' :  basketitem.item.itemAttributeId == '2' || basketitem.item.itemAttributeId == '24'}"> {{basketitem.item.itemName}} </h5>
-                            <span [ngClass]="{'addon' : basketitem.addonVariation}"> {{basketitem.addonVariation?.varients?.name}} </span>
-    
-                        </div>
-                        <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
-                            <button class="btn btn-transparent cartQtyButton "> <span>-</span> {{basketitem.item.quantity}} <span>+</span></button>
-                            <span class="priceStrike ">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
-                            <span class="price ">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }} </span>
-                        </div>
+            <div class="card-body foodTile cartFoodTile">
+                <div class="row ">
+                    <div class="col-8 col-md-8 food-item veg ">
+                        <h5 class="card-title cartFoodTitle "
+                            [ngClass]="{'veg': basketitem.item.itemAttributeId == '1' , 'nonVeg' :  basketitem.item.itemAttributeId == '2' || basketitem.item.itemAttributeId == '24'}">
+                            {{basketitem.item.itemName}} </h5>
+                        <span [ngClass]="{'addon' : basketitem.addonVariation}">
+                            {{basketitem.addonVariation?.varients?.name}} </span>
+
+                    </div>
+                    <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
+                        <button class="btn btn-transparent cartQtyButton ">
+                            <span (click)="sameAddonConfirmation(basketitem.item, $index,'reduce')">-</span>
+                            {{basketitem.item.quantity}}
+                            <span (click)="sameAddonConfirmation(basketitem.item, $index,'add')">+</span>
+                        </button>
+                        <span class="priceStrike ">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
+                        <span class="price ">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
+                        </span>
                     </div>
                 </div>
+            </div>
             }
-            
+
             <!-- <div class="card-body foodTile cartFoodTile">
                 <div class="row ">
                     <div class="col-8 col-md-8 food-item veg ">
@@ -59,7 +70,8 @@
     <div class="container cartDeal">
         <div class="row ">
             <div class="col-9 ">
-                <p>Save ₹30 with HYPERDEAL <span data-bs-toggle="offcanvas" data-bs-target="#couponSheet">View all coupons</span></p>
+                <p>Save ₹30 with HYPERDEAL <span data-bs-toggle="offcanvas" data-bs-target="#couponSheet">View all
+                        coupons</span></p>
 
             </div>
             <div class="col-3 ">
@@ -76,15 +88,18 @@
                 <ul class="cartCheckout">
 
                     <li>
-                        <p class="cartVal">Item Total<span>₹ {{orderPriceDetails.itemSubtotal + orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
+                        <p class="cartVal">Item Total<span>₹ {{orderPriceDetails.itemSubtotal +
+                                orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
                     </li>
                     <li>
-                        <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
+                        <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum |
+                                number:'1.2-2'}}</span></p>
                     </li>
                     @if (!showAddAddressButton){
-                        <li>
-                            <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge   | number:'1.2-2'}}</span></p>
-                        </li>
+                    <li>
+                        <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge |
+                                number:'1.2-2'}}</span></p>
+                    </li>
                     }
                     <li>
                         <p class="cartVal">CGST<span>₹ {{orderPriceDetails.tax.CGST | number:'1.2-2'}}</span></p>
@@ -107,9 +122,10 @@
         <div class="row ">
             <div class="col-md-12 ">
                 @if (showAddAddressButton){
-                <button class="btn cartAddressBtn"  (click)="selectAddress()"> <span>Add / Select Address</span></button>
+                <button class="btn cartAddressBtn" (click)="selectAddress()"> <span>Add / Select Address</span></button>
                 } @else if(!quoteLoading) {
-                <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled" (click)="onPrepareOrderClick()"> <span>Proceed to Payment</span></button>
+                <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled"
+                    (click)="onPrepareOrderClick()"> <span>Proceed to Payment</span></button>
                 <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
                 }
             </div>
@@ -121,7 +137,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="assets/images/icons/close3.png " ></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img
+                            src="assets/images/icons/close3.png "></button>
                     <div class="orderPlacedContainer d-flex justify-content-center">
                         <img src="assets/images/icons/party.png ">
                         <p class="text1">You saved ₹30</p>

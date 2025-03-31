@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, AfterViewInit, Output, EventEmitter, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { GoogleMapLoaderService } from '../../core/services/google-map-loader.service'
@@ -11,14 +11,15 @@ declare const google: any;
   templateUrl: './location-picker.component.html',
   styleUrl: './location-picker.component.scss'
 })
-export class LocationPickerComponent implements OnInit, AfterViewInit {
+export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges  {
 
   @Output() selectedLocation = new EventEmitter<any>();
-
+  @Input() editLocation! : boolean ;
 
   map!: google.maps.Map;
   centerPosition!: { lat: number; lng: number };
   address: string = '';
+  conformLocation: boolean = false;
 
 
 
@@ -33,6 +34,12 @@ export class LocationPickerComponent implements OnInit, AfterViewInit {
       lng: tempLocationSelected.location.longitude
     }
     
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log(this.conformLocation, this.editLocation);
+    // if(this.editLocation){
+    //   this.conformLocation = false;
+    // }
   }
 
   ngAfterViewInit() {
@@ -69,13 +76,44 @@ export class LocationPickerComponent implements OnInit, AfterViewInit {
   getAddressFromLatLng(lat: number, lng: number): void {
     const geocoder = new google.maps.Geocoder();
     const latlng = { lat, lng };
+    let city = '';
+    let state = '';
+    let pincode = '';
+    let country =''
 
     geocoder.geocode({ location: latlng }, (results: any, status: any) => {
       if (status === 'OK' && results[0]) {
         this.address = results[0].formatted_address;
-        // alert(`Current Address:\n${this.address}`);
+        console.log(results[0]);
+        for (const component of results[0].address_components) {
+          if (component.types.includes('locality')) {
+            city = component.long_name;
+          } 
+           if (component.types.includes('administrative_area_level_1')) {
+            state = component.long_name;
+          } 
+          if (component.types.includes('country')) {
+            country = component.long_name;
+          }
+           if (component.types.includes('postal_code')) {
+            pincode = component.long_name;
+          }
+          
+        }
+        // alert(`Current Address:\n${this.address}`);    this.centerPosition
         console.log('Address:', this.address);
-        this.selectedLocation.emit({formattedAddress : this.address, location: this.centerPosition });
+        this.selectedLocation.emit(
+          {
+            formattedAddress : this.address,
+            location: {latitude:this.centerPosition.lat, longitude:this.centerPosition.lng},
+            city:city,
+            state:state,
+            pincode:pincode,
+            country:country
+
+           });
+        this.conformLocation = true;
+        this.editLocation = false;
       } else {
         // alert('Address not found');
         console.error('Geocoder failed:', status);
