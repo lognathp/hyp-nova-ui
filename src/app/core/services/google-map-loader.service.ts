@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class GoogleMapLoaderService {
 
-  myapiKey = 'AIzaSyDJtFMqXk-R-SBEoP2U9I0ISIWSImLjM_U'; // API Key
+  // myapiKey = 'AIzaSyDJtFMqXk-R-SBEoP2U9I0ISIWSImLjM_U'; // API Key
+  myapiKey = 'AIzaSyDBKXWYEUwFAMbratiQrRAndG4WyXLL6mY'; // API Key
   private apiKey: string = this.myapiKey; 
   private scriptLoaded = false;
 
