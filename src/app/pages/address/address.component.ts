@@ -111,6 +111,7 @@ export class AddressComponent implements OnInit, AfterViewInit {
   }
 
   getSavedAddress(event: any) {
+    // console.log(event);
     if (event) {
       this.addNew = false;
     }

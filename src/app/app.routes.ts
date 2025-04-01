@@ -45,9 +45,23 @@ export const routes: Routes = [
         loadComponent: () => import("./pages/order-tracking/order-tracking.component").then((m)=>m.OrderTrackingComponent),
         canActivate:[authGuard]
     },{
-        path:'account',
+        path:'my-account',
         loadComponent:() => import("./pages/user-account/user-account.component").then(m => m.UserAccountComponent),
-        canActivate:[authGuard]
+        canActivate:[authGuard],
+        // children:[
+        //     {
+        //         path:"", redirectTo:"orders", pathMatch:'full'
+        //     },
+        //     {
+        //         path:'orders',
+        //         loadComponent:() => import("./pages/order-history/order-history.component").then(m => m.OrderHistoryComponent)
+        //     }
+        // ]
+    },
+    {
+        path:'my-orders',
+        loadComponent:() => import("./pages/order-history/order-history.component").then(m => m.OrderHistoryComponent),
+        canActivate:[authGuard],
     },
     {
         path:"**", redirectTo:'home', pathMatch:'full'

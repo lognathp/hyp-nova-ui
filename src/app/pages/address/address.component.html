@@ -3,8 +3,8 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container p-0 d-flex">
-                <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-                    <img src="assets/images/icons/back.png " (click)="goBack();" class="headerIconLeft "  >
+                <button class="navbar-toggler headerButtonLeft " type="button" data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+                    <img src="assets/images/icons/back.png" (click)="goBack();" class="headerIconLeft "  >
                 </button>
                 <div class="d-inline-block">
                     <a class="navbar-brand cartHeader" href="#">Addresses</a>
@@ -32,8 +32,9 @@
                                 <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
                                 <button class="btn simpleBtn"><img src="assets/images/icons/edit3.png"></button>
                             </p>
-                            <span> {{item.addressOne}}, {{item.addressTwo}}, {{item.landmark}},
-                                <br> {{item.city}}, {{item.state}}, {{item.country}} - {{item.pincode}}.</span>
+                            <!-- <span> {{item.addressOne}}, {{item.addressTwo}}, {{item.landmark}},
+                                <br> {{item.city}}, {{item.state}}, {{item.country}} - {{item.pincode}}.</span> -->
+                                <span>{{item.addressTwo}}</span>
                         </div>
                     }
                     
@@ -51,26 +52,26 @@
                         </p>
                         <span>63, Ameenpur, Madhura Nagar Colony, Beeramguda, Ramachandrpuram, Telangana 522034, India</span>
                     </div> -->
-    
+                    <div class="container my-3 bg-transparent ">
+                        <div class="row ">
+                            <div class="col-md-12  ">
+                                <!-- <button class="btn cartAddressBtn" (click)="newAddress()" > Add New Address</button> -->
+                                 @if (pickedAddressindex != null) {
+                                    <button class="btn cartAddressBtn "  (click)="proceedOrder()">Proceed </button>
+                                 } 
+                                 @else {
+                                    <button class="btn plainButton" (click)="newAddress()" > Add New Address</button>
+                                 }
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     
     
-        <div class="container my-3 bg-transparent ">
-            <div class="row ">
-                <div class="col-md-12 savedAddressesBtn ">
-                    <!-- <button class="btn plainButton" (click)="newAddress()" > Add New Address</button> -->
-                     @if (pickedAddressindex != null) {
-                        <button class="btn cartAddressBtn "  (click)="proceedOrder()">Proceed </button>
-                     } 
-                     @else {
-                        <button class="btn plainButton" (click)="newAddress()" > Add New Address</button>
-                     }
-                    
-                </div>
-            </div>
-        </div>
+       
     
     
         <div class="modal fade" id="addressDelete" tabindex="-1" aria-labelledby="addressDeleteLabel" aria-hidden="true">

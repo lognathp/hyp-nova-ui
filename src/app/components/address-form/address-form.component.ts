@@ -42,10 +42,14 @@ export class AddressFormComponent {
     // private messageService: MessageService,
     // private primengConfig: PrimeNGConfig,
     // private foodMenuComponent: FoodMenuComponent
-  ) {
+  ) {}
 
+  /**
+   * Back Button
+   */
+  goBack():void {
+    this.addressSaved.emit('back')
   }
-
   ngOnInit() {
     // let restId: any = localStorage.getItem("selectedRestId")
     // this.restaurentId = parseInt(restId);
