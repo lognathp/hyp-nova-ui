@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -9,7 +9,7 @@ import { AddressFormComponent } from "../../components/address-form/address-form
 @Component({
   selector: 'app-address',
   standalone: true,
-  imports: [AddressFormComponent],
+  imports: [AddressFormComponent,CommonModule],
   templateUrl: './address.component.html',
   styleUrl: './address.component.scss'
 })
@@ -50,6 +50,7 @@ export class AddressComponent implements OnInit, AfterViewInit {
   checkDeleteAddress: boolean = false;
   deleteAddressIndex!: string;
   blockEditPincode: boolean = true;
+  addressToEdit: any;
 
 
   constructor(
@@ -120,5 +121,15 @@ export class AddressComponent implements OnInit, AfterViewInit {
     // this.router.navigateByUrl('address/add-address');
     this.addNew = true;
 
+  }
+
+  /**
+   * Edit Address
+   * @param selectedAddress 
+   */
+  editAddress(selectedAddress:any){
+    console.log(selectedAddress);
+    this.addressToEdit = JSON.parse(JSON.stringify(selectedAddress));
+    this.addNew = true;
   }
 }

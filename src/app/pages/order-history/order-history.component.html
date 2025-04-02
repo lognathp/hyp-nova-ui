@@ -1,42 +1,56 @@
 <div class="cartBody">
     @if (!viewSummary) {
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container p-0 d-flex">
-                <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-                    <img src="assets/images/icons/back.png " class="headerIconLeft "  >
-                </button>
-                <div class="d-inline-block">
-                    <a class="navbar-brand cartHeader" href="#">Your Orders</a>
-                </div>
-                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-                <img src="assets/images/icons/support.png " class="headerIcon "  >
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container p-0 d-flex">
+            <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/back.png" (click)="goBack()" class="headerIconLeft ">
             </button>
+            <div class="d-inline-block">
+                <a class="navbar-brand cartHeader" href="">Your Orders</a>
             </div>
-        </nav>
-    
-        <div class="container my-3 bg-transparent ">
-            <div class="row ">
-                <div class="col-md-12 orderContainer">
-                    <div class="block1">
-                        <span class="orderDelivered"> Order Delivered</span>
-                        <span class="orderDetail">| Order:  # 15625</span>
-                        <button class="simpleBtn float-end" type="button" data-bs-toggle="modal" data-bs-target="#addressDelete"> 
-                            <img src="assets/images/icons/delete.png "   >
-                        </button>
-                    </div>
-                    <div class="block2">
-                        <p class="nonVegIcon">Ankapur Special Chicken Biryani <span>x 1</span><span class="addon">Half</span></p>
-                        <p class="vegIcon">Veg Biryani <span>x 1</span><span class="addon">Full</span></p>
-                    </div>
-                    <div class="block3">
-                        <span class="orderTD">Order placed on 8 Feb 2025, 6:10 PM</span>
-                        <span class="orderRate">₹ 460</span>
-                        <span class="orderVD" (click)="viewOrderSummary()">View Details</span>
-                        <button class="btn solidButton">Reorder</button>
-    
-                    </div>
+            <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/support.png " class="headerIcon ">
+            </button>
+        </div>
+    </nav>
+
+    <div class="container my-3 bg-transparent ">
+        <div class="row ">
+            @for (order of orderHistory; track $index){
+            <div class="col-md-12 orderContainer">
+                <div class="block1">
+                    <!-- <span class="orderDelivered"> Order Delivered</span>   Nood to check the status showing format -->
+                    <span class="orderDelivered"> {{ order.status }}</span>
+                    <span class="orderDetail">| Order: # {{order.id}}</span>
+                    <!-- <button class="simpleBtn float-end" type="button" data-bs-toggle="modal"
+                        data-bs-target="#addressDelete">
+                        <img src="assets/images/icons/delete.png ">
+                    </button> -->
                 </div>
-                <div class="col-md-12 orderContainer">
+                <div class="block2">
+                    @for (item of order.orderItems; track $index) {
+                        <!-- [ngClass]="{'vegIcon': item?.itemAttributeId == '1' , 'nonVegIcon' :  item?.itemAttributeId == '2' || item?.itemAttributeId == '24'}" -->
+                    <p class="vegIcon">
+                        {{item.name}} <span>x {{item.quantity}} </span><span class="addon"> {{item?.variationName}}
+                        </span>
+                    </p>
+                    }
+                    <!-- <p class="vegIcon">Veg Biryani <span>x 1</span><span class="addon">Full</span></p> -->
+                </div>
+                <div class="block3">
+                    <span class="orderTD">Order placed on {{ order.orderTime | date:'d MMM y, h:mm a':'IST'}}</span>
+                    <span class="orderRate">₹ {{ order.totalAmount }}</span>
+                    <span class="orderVD" (click)="viewOrderSummary(order)">View Details</span>
+                   
+                    <!-- <button class="btn solidButton">Reorder</button> -->
+
+                </div>
+            </div>
+            }
+
+            <!-- <div class="col-md-12 orderContainer">
                     <div class="block1">
                         <span class="orderCancelled"> Order Cancelled</span>
                         <span class="orderDetail">| Order:  # 15625</span>
@@ -54,12 +68,12 @@
                         <button class="btn solidButton">Reorder</button>
     
                     </div>
-                </div>
-            </div>
+                </div> -->
         </div>
-    
-    
-        <div class="modal fade" id="addressDelete" tabindex="-1" aria-labelledby="addressDeleteLabel" aria-hidden="true">
+    </div>
+
+
+    <!-- <div class="modal fade" id="addressDelete" tabindex="-1" aria-labelledby="addressDeleteLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -76,103 +90,120 @@
                     </div>
                 </div>
             </div>
-        </div>
-    
+        </div> -->
+
     }
     @else if (viewSummary) {
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container p-0 d-flex">
-                <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-                    <img src="assets/images/icons/back.png " class="headerIconLeft "  >
-                </button>
-                <div class="d-inline-block">
-                    <a class="navbar-brand cartHeader" href="#">Account</a>
-                </div>
-                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-                <img src="assets/images/icons/support.png " class="headerIcon "  >
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container p-0 d-flex">
+            <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/back.png" (click)="viewOrderHistory()" class="headerIconLeft ">
             </button>
+            <div class="d-inline-block">
+                <a class="navbar-brand cartHeader" href="">Order Summary</a>
             </div>
-        </nav>
-    
-        <div class="container my-3 bg-transparent ">
-            <p class="osTitle">Order Details</p>
-            <div class="row ordeSummaryDetails ">
-                <div class="col-5">
-                    <label>Order ID</label><span># 15625</span>
-                    <label>Order Status</label><span class="orderDelivered">Delivered</span>
-                </div>
-                <div class="col-7">
-                    <label>Order Placed</label> <span>8 Feb 2025, 6:10 PM</span>
-                    <label>Payment</label> <span>Paid via UPI</span>
-                </div>
-    
-                <label>Delivery Address</label>
-                <span>501, Odyssey apartments, Block 6, 2nd street, Hyderabad, Telangana 502022, India</span>
-            </div>
+            <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/support.png " class="headerIcon ">
+            </button>
         </div>
-    
-    
-        <div class="container  bg-transparent orderSummary">
-            <p class="osTitle">Your Order</p>
-            <div class="card foodCard ">
+    </nav>
+
+    <div class="container my-3 bg-transparent ">
+        <p class="osTitle">Order Details</p>
+        <div class="row ordeSummaryDetails ">
+            <div class="col-5">
+                <label>Order ID</label><span># {{selectedOrderSummary.id}} </span>
+                <label>Order Status</label><span class="orderDelivered"> {{selectedOrderSummary.status}} </span>
+            </div>
+            <div class="col-7">
+                <label>Order Placed</label> <span> {{selectedOrderSummary.orderTime | date:'d MMM y, h:mm a':'IST'}} </span>
+                <label>Payment</label> <span>Paid via  {{selectedOrderSummary.paymentType}} </span>
+            </div>
+
+            <label>Delivery Address</label>
+            <span>{{selectedOrderSummary.deliveryDetails?.address?.addressOne}},
+                 {{selectedOrderSummary.deliveryDetails?.address?.addressTwo}},
+                  <!-- {{selectedOrderSummary.deliveryDetails?.address?.landmark}}, -->
+                  {{selectedOrderSummary.deliveryDetails?.address?.city}},
+                  {{selectedOrderSummary.deliveryDetails?.address?.state}}, 
+                  {{selectedOrderSummary.deliveryDetails?.address?.country}} - 
+                  {{selectedOrderSummary.deliveryDetails?.address?.pincode}}
+                </span>
+        </div>
+    </div>
+
+
+    <div class="container  bg-transparent orderSummary">
+        <p class="osTitle">Your Order</p>
+        <div class="card foodCard ">
+            @for (item of selectedOrderSummary?.orderItems; track $index) {
                 <div class="card-body foodTile cartFoodTile">
                     <div class="row ">
                         <div class="col-12 col-md-12 food-item veg ">
-                            <h5 class="card-title cartFoodTitle nonVeg">Ankapur Special Chicken Biryani</h5>
-                            <span class="addon">Half</span>
-                            <span class="price ">₹ 225</span>
-                            <span class="priceStrike ">₹ 300</span>
-                            <span class="qty ">1 X ₹225</span>
+                            <h5 class="card-title cartFoodTitle nonVeg">{{item.name}}</h5>
+                            <span class="addon">{{item?.variationName}}</span>
+                            <span class="price ">₹ {{item.quantity * item?.price}}</span>
+                            <!-- <span class="priceStrike ">₹ 300</span> -->
+                            <span class="qty ">{{item.quantity}} X ₹{{item?.price}}</span>
                         </div>
                     </div>
                 </div>
-                <div class="card-body foodTile cartFoodTile">
-                    <div class="row ">
-                        <div class="col-12 col-md-12 food-item veg ">
-                            <h5 class="card-title cartFoodTitle veg">Veg Biryani</h5>
-                            <span class="addon">Full</span>
-                            <span class="price ">₹ 225</span>
-                            <span class="priceStrike ">₹ 300</span>
-                            <span class="qty ">1 X ₹225</span>
-                        </div>
+            }
+            
+            <!-- <div class="card-body foodTile cartFoodTile">
+                <div class="row ">
+                    <div class="col-12 col-md-12 food-item veg ">
+                        <h5 class="card-title cartFoodTitle veg">Veg Biryani</h5>
+                        <span class="addon">Full</span>
+                        <span class="price ">₹ 225</span>
+                        <span class="priceStrike ">₹ 300</span>
+                        <span class="qty ">1 X ₹225</span>
                     </div>
                 </div>
-                <div class="col-md-12 ">
-                    <ul class="cartCheckout">
+            </div> -->
+            <div class="col-md-12 ">
+                <ul class="cartCheckout">
+                    <li>
+                        <p class="cartVal">Item Total<span>₹ {{selectedOrderSummary.totalAmount + selectedOrderSummary.discountAmount}}</span></p>
+                    </li>
+                    @if (selectedOrderSummary?.addonPrice) {
                         <li>
-                            <p class="cartVal">Item Total<span>₹ 600</span></p>
+                            <p class="cartVal">Add-On Price<span>₹ {{selectedOrderSummary?.addonPrice}}</span></p>
                         </li>
-                        <li>
-                            <p class="cartVal">Add-On Price<span>₹ 0</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal">Delivery Fee<span>₹ 30</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal">CGST<span>₹ 5</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal">SGST<span>₹ 5</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal disc">Coupon applied (HYPERDEAL)<span>-₹ 150</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal disc">Discounted Value<span>-₹ 150</span></p>
-                        </li>
-                        <li>
-                            <p class="cartValCategory">Grand Total<span>₹ 490</span></p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-    
-            <div class="offcanvas-header">
-                <button class="btn btn-transparent plainButton"> Download Invoice </button>
-                <button class="btn  solidButton">Reorder</button>
+                    }
+                    <li>
+                        <p class="cartVal">Delivery Fee<span>₹ {{selectedOrderSummary.deliveryCharge}}</span></p>
+                    </li>
+                    <li>
+                        <p class="cartVal">TAX Value<span>₹ {{selectedOrderSummary.taxAmount}} </span></p>
+                    </li>
+                    <!-- <li>
+                        <p class="cartVal">CGST<span>₹ 5</span></p>
+                    </li>
+                    <li>
+                        <p class="cartVal">SGST<span>₹ 5</span></p>
+                    </li> -->
+                    <!-- <li>
+                        <p class="cartVal disc">Coupon applied (HYPERDEAL)<span>-₹ 150</span></p>
+                    </li> -->
+                    <li>
+                        <p class="cartVal disc">Discounted Value<span>-₹ {{selectedOrderSummary.discountAmount}} </span></p>
+                    </li>
+                    <li>
+                        <p class="cartValCategory">Grand Total<span>₹  {{selectedOrderSummary.grandTotalAmount}} </span></p>
+                    </li>
+                </ul>
             </div>
         </div>
-    
+
+        <div class="offcanvas-header">
+            <button class="btn btn-transparent plainButton"> Download Invoice </button>
+            <button class="btn  solidButton">Reorder</button>
+        </div>
+    </div>
+
     }
-   
+
 </div>

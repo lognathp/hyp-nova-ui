@@ -14,12 +14,13 @@ declare const google: any;
 export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges  {
 
   @Output() selectedLocation = new EventEmitter<any>();
-  @Input() editLocation! : boolean ;
+  @Input() editLocationData : any ;
 
   map!: google.maps.Map;
   centerPosition!: { lat: number; lng: number };
   address: string = '';
   conformLocation: boolean = false;
+  editLocation: boolean =false;
 
 
 
@@ -28,11 +29,18 @@ export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges 
   ngOnInit(){
     const selectedLocation:any = localStorage.getItem('selectedLocation');
     const tempLocationSelected = JSON.parse(selectedLocation);
-    
-    this.centerPosition = {
-      lat: tempLocationSelected.location.latitude, 
-      lng: tempLocationSelected.location.longitude
+    if(this.editLocationData != undefined){
+      this.centerPosition = {
+        lat: this.editLocationData.latitude, 
+        lng: this.editLocationData.longitude
+      }
+    } else{
+      this.centerPosition = {
+        lat: tempLocationSelected.location.latitude, 
+        lng: tempLocationSelected.location.longitude
+      }
     }
+    
     
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -111,7 +119,6 @@ export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges 
             state:state,
             pincode:pincode,
             country:country
-
            });
         this.conformLocation = true;
         this.editLocation = false;

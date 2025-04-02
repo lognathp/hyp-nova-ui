@@ -7,7 +7,7 @@
                     <img src="assets/images/icons/back.png" (click)="goBack();" class="headerIconLeft "  >
                 </button>
                 <div class="d-inline-block">
-                    <a class="navbar-brand cartHeader" href="#">Addresses</a>
+                    <a class="navbar-brand cartHeader" href="">Addresses</a>
                 </div>
                 <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
                 <img src="assets/images/icons/support.png " class="headerIcon "  >
@@ -28,9 +28,10 @@
                 <div class="col-md-12  ">
                     @for (item of address; let index =$index ;track item){
                         <div class="addressTile" title="Select Address" (click)="selectedAddress(index)">
-                            <p class="home">{{item.addressType}}
+                            <p class="" [ngClass]="{'home': item?.addressType == 'Home' , 'work' :  item?.addressType == 'Work', 'other' :  item?.addressType == 'Other' }" >
+                                {{item.addressType}}
                                 <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
-                                <button class="btn simpleBtn"><img src="assets/images/icons/edit3.png"></button>
+                                <button class="btn simpleBtn" (click)="editAddress(item)" ><img src="assets/images/icons/edit3.png"></button>
                             </p>
                             <!-- <span> {{item.addressOne}}, {{item.addressTwo}}, {{item.landmark}},
                                 <br> {{item.city}}, {{item.state}}, {{item.country}} - {{item.pincode}}.</span> -->
@@ -93,5 +94,5 @@
 }
 
 @if (addNew) {
-    <app-address-form (addressSaved)="getSavedAddress($event)"></app-address-form>
+    <app-address-form [addressToEdit]="addressToEdit" (addressSaved)="getSavedAddress($event)"></app-address-form>
 }

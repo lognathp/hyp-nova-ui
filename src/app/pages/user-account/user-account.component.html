@@ -5,7 +5,7 @@
                 <img src="assets/images/icons/back.png " (click)="goBack();" class="headerIconLeft "  >
             </button>
             <div class="d-inline-block">
-                <a class="navbar-brand cartHeader" href="#">Account</a>
+                <a class="navbar-brand cartHeader" href="">Account</a>
             </div>
             <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
             <img src="assets/images/icons/support.png " class="headerIcon "  >
@@ -19,7 +19,7 @@
                 <img src="assets/images/icons/user.png " class="userIcon ">
                 <p class="accTitle"> {{customerDetails?.name | titlecase}} </p>
                 <p class="accDes">+91-{{customerDetails.mobile}} </p>
-                <button class="btn btnLight">Edit</button>
+                <!-- <button class="btn btnLight">Edit</button> -->
             </div>
         </div>
     </div>
@@ -28,8 +28,8 @@
         <div class="row ">
             <div class="col-md-12 accountList ">
                 <ul>
-                    <li (click)="ordersPage()">Your Orders</li>
-                    <li (click)="addressPage()">Address Book</li>
+                    <li class="cursor-pointer" title="View Order History" (click)="ordersPage()">Your Orders</li>
+                    <li class="cursor-pointer" title="Saved Address" (click)="addressPage()">Address Book</li>
                 </ul>
             </div>
         </div>
