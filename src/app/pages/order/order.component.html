@@ -72,10 +72,10 @@
         <div class="container my-4 bg-transparent ">
             <div class="row ">
                 <div class="col-md-12 ">
-                    <div id="offerCarousel " class="carousel slide deals " data-bs-ride="carousel ">
+                    <div id="offerCarousel" class="carousel slide deals" data-bs-ride="carousel" data-bs-interval="2000">
                         <div class="carousel-inner ">
                             <!-- Offer Slide -->
-                            <!-- <div class="carousel-item active ">
+                            <div class="carousel-item active ">
                                     <div class="hc bg-transparent text-dark ">
                                         <h2 class="wwdTitle ">No Hidden Charges</h2>
                                         <span class="wwdDes ">We take that seriously!</span>
@@ -100,19 +100,19 @@
                                         <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
                                         <span class="wwdDes ">USE HYPERDEAL</span>
                                     </div>
-                                </div> -->
+                                </div>
                         </div>
 
 
                         <!-- Indicators -->
                         <div class="carousel-indicators ">
-                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="0 "
+                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="0"
                                 class="active " aria-label="Slide 1 "></button>
-                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="1 "
+                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="1"
                                 aria-label="Slide 2 "></button>
-                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="2 "
+                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="2"
                                 aria-label="Slide 3 "></button>
-                            <button type="button " data-bs-target="#offerCarousel " data-bs-slide-to="3 "
+                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="3"
                                 aria-label="Slide 4 "></button>
                         </div>
                     </div>
@@ -123,12 +123,12 @@
 
         <!-- Category -->
 
-        <!-- <div class="container my-5 bg-transparent ">
+        <div class="container my-5 bg-transparent ">
                 <div class="row ">
                     <div class="col-md-12 ">
                         <div class="card bg-transparent border-0 ">
                             <div class="card-body p-0 ">
-                                <div class="sliderCategory ">
+                                <div class="sliderCategory d-flex overflow-auto">
                                     <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Starters</span></div>
                                     <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Pulaos</span></div>
                                     <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups</span></div>
@@ -141,61 +141,79 @@
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
     </div>
     <!-- Top Picks -->
     @if(!openSelectBranch){
-        <!-- <div class="container my-3 ">
-            <div class="row ">
-                <div class="col-md-12 col-12 ">
-                    <div class="card bg-transparent border-0 ">
-                        <div class="card-body p-0 ">
-                            <h5 class="card-title topPickTitle ">Top Picks</h5>
+        <div class="container my-3">
+            <div class="row">
+                <div class="col-md-12 col-12">
+                    <div class="card bg-transparent border-0">
+                        <div class="card-body p-0">
+                            <h5 class="card-title topPickTitle">Top Picks</h5>
                             <div class="slider">
-                                <div class="topPick ">
-                                    <img src="assets/images/food/food.jpg " />
-                                    <div class="topPickOffer ">25% OFF</div>
-                                    <button class="btn btn-transparent topPicksAddButton "> + Add</button>
-                                    <div class="topPickContent ">
-                                        <img src="assets/images/icons/non-veg.png " class="topPickFilterIcon ">
-                                        <h5 class="card-title topPickFoodTitle ">Ankapur Special Veg Biryani</h5>
-                                        <p><span class="topPickPrice ">₹ 225</span>
-                                            <span class="topPickPriceStrike ">₹ 300</span>
-                                        </p>
+                                <div class="topPick">
+                                    <div class="topPickImageContainer">
+                                        <img src="assets/images/food/food.jpg" class="topPickImage" />
+                                        <div class="topPickOffer">25% OFF</div>
+                                        <button class="btn topPicksAddButton">+ Add</button>
                                     </div>
-                                </div>
-                                <div class="topPick ">
-                                    <img src="assets/images/food/food.jpg " />
-                                    <div class="topPickOffer ">25% OFF</div>
-                                    <button class="btn btn-transparent topPicksAddButton "> + Add</button>
-                                    <div class="topPickContent ">
-                                        <img src="assets/images/icons/non-veg.png " class="topPickFilterIcon ">
-                                        <h5 class="card-title topPickFoodTitle ">Ankapur Special Veg Biryani</h5>
+                                    <div class="topPickContent">
+                                        <div class="topPickTitleContainer">
+                                            <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
+                                            <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
+                                        </div>
                                         <p>
-                                            <span class="topPickPrice ">₹ 225</span>
-                                            <span class="topPickPriceStrike ">₹ 300</span>
+                                            <span class="topPickPrice">₹ 225</span>
+                                            <span class="topPickPriceStrike">₹ 300</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="topPick ">
-                                    <img src="assets/images/food/food.jpg " />
-                                    <div class="topPickOffer ">25% OFF</div>
-                                    <button class="btn btn-transparent topPicksAddButton "> + Add</button>
-                                    <div class="topPickContent ">
-                                        <img src="assets/images/icons/non-veg.png " class="topPickFilterIcon ">
-                                        <h5 class="card-title topPickFoodTitle ">Ankapur Special Veg Biryani</h5>
-                                        <p><span class="topPickPrice ">₹ 225</span>
-                                            <span class="topPickPriceStrike ">₹ 300</span>
+        
+                                <div class="topPick">
+                                    <div class="topPickImageContainer">
+                                        <img src="assets/images/food/food.jpg" class="topPickImage" />
+                                        <div class="topPickOffer">25% OFF</div>
+                                        <button class="btn topPicksAddButton">+ Add</button>
+                                    </div>
+                                    <div class="topPickContent">
+                                        <div class="topPickTitleContainer">
+                                            <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
+                                            <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
+                                        </div>
+                                        <p>
+                                            <span class="topPickPrice">₹ 225</span>
+                                            <span class="topPickPriceStrike">₹ 300</span>
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+        
+                                <div class="topPick">
+                                    <div class="topPickImageContainer">
+                                        <img src="assets/images/food/food.jpg" class="topPickImage" />
+                                        <div class="topPickOffer">25% OFF</div>
+                                        <button class="btn topPicksAddButton">+ Add</button>
+                                    </div>
+                                    <div class="topPickContent">
+                                        <div class="topPickTitleContainer">
+                                            <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
+                                            <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
+                                        </div>
+                                        <p>
+                                            <span class="topPickPrice">₹ 225</span>
+                                            <span class="topPickPriceStrike">₹ 300</span>
+                                        </p>
+                                    </div>
+                                </div>
+        
+                            </div> 
                         </div>
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
+        
     
         <!-- Filter -->
     

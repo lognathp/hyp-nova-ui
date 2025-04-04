@@ -357,6 +357,7 @@
     padding: 10px;
     border-radius: 12px;
     height: 60px;
+    width: 225px;
 }
 
 .carousel-inner>.active {
@@ -485,6 +486,9 @@
 }
 
 .topPick {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     text-align: center;
     margin-right: 10px;
