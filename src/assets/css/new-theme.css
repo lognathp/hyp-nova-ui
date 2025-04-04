@@ -2551,39 +2551,6 @@ input[type="radio"] {
     display: block;
 }
 
-#offerCarousel1 {
-    width: 90%;
-}
-
-#offerCarousel1 .carousel-item:first-child {
-    min-height: 150px;
-    border: 1.5px solid #FDD4D4;
-    background-color: #FFF4F4;
-}
-
-#offerCarousel1 .carousel-item:nth-child(2) {
-    min-height: 150px;
-    border: 1.5px solid #CBB5FB;
-    background-color: #F8F0FF;
-}
-
-#offerCarousel1 .carousel-item:nth-child(3) {
-    min-height: 150px;
-    border: 1.5px solid #C2E7A5;
-    background-color: #F9FFF0;
-}
-
-#offerCarousel1 .carousel-item:nth-child(4) {
-    min-height: 150px;
-    border: 1.5px solid #B5E8FB;
-    background-color: #F0FBFF;
-}
-
-#offerCarousel1 .carousel-item:nth-child(5) {
-    min-height: 150px;
-    border: 1.5px solid #FBDFB5;
-    background-color: #FFFAF0;
-}
 
 .map1:before {
     content: "";
@@ -2636,25 +2603,6 @@ input[type="radio"] {
     font-weight: 400;
 }
 
-#offerCarousel1 .carousel-item:first-child .textColor {
-    color: #B04F4F;
-}
-
-#offerCarousel1 .carousel-item:nth-child(2) .textColor {
-    color: #633ECE;
-}
-
-#offerCarousel1 .carousel-item:nth-child(3) .textColor {
-    color: #0A8F08;
-}
-
-#offerCarousel1 .carousel-item:nth-child(4) .textColor {
-    color: #086B8F;
-}
-
-#offerCarousel1 .carousel-item:nth-child(5) .textColor {
-    color: #8F5908;
-}
 
 .crDes {
     font-size: 13px;
