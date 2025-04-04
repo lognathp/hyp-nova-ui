@@ -19,8 +19,11 @@
                         select Outlet >
                     </span>
                     } @else if(restaurentId != null || restaurentId != undefined) {
-                        <span class="outlet" (click)="showBranches()" >{{ branchData?.restaurantName }}</span>
-                        <span class="badge storeOpen">Open</span>
+                        <div class="restauran-brancht-info">
+                            <span class="outlet" (click)="showBranches()" >{{ branchData?.restaurantName }}</span>
+                            <span class="badge storeOpen">Open</span>
+                        </div>
+                       
                     }
                     
                 </div>
@@ -470,7 +473,9 @@
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
                         <h5 class="card-title galleryTitle ">Gallery</h5>
-                        <div class="slider ">
+                        <div class="gallery-slider ">
+                            <img src="assets/images/image1.jpg " />
+                            <img src="assets/images/image1.jpg " />
                             <img src="assets/images/image1.jpg " />
                             <img src="assets/images/image1.jpg " />
                             <img src="assets/images/image1.jpg " />
@@ -487,7 +492,7 @@
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
-                    <div class="card-body p-0 ">
+                    <div class="card-body p-1 ">
                         <h5 class="card-title contactTitle ">Contact</h5>
                         <p class="card-text m-0 contactHeading ">{{partnerData?.name | titlecase}}</p>
                         @if (restaurentId != null || restaurentId != undefined) {
@@ -548,7 +553,7 @@
     </div>
     <!-- Menu Button -->
     <!-- Floating Menu -->
-    <div class="floating-menu ">
+    <div class="floating-menu" [ngClass]="{'cart-active': foodBasket.length > 0}">
         <button class="menuBtn " data-bs-toggle="offcanvas" data-bs-target="#foodMenu">
             <img src="assets/images/icons/foodMenu.png ">
             Menu
