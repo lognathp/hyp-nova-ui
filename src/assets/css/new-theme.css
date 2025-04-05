@@ -122,6 +122,10 @@
     z-index: 1000;
 }
 
+.floating-menu.cart-active {
+    bottom: 70px; 
+}
+
 .menuBtn {
     width: 60px;
     height: 60px;
@@ -353,6 +357,7 @@
     padding: 10px;
     border-radius: 12px;
     height: 60px;
+    width: 225px;
 }
 
 .carousel-inner>.active {
@@ -481,6 +486,9 @@
 }
 
 .topPick {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     text-align: center;
     margin-right: 10px;
@@ -1161,12 +1169,12 @@ float: right;
     margin-left: 5px;
 }
 
-.backIcon {
+/* .backIcon {
     width: 10px !important;
     height: auto;
     position: absolute;
     left: 20px;
-}
+} */
 
 .forwardIcon {
     float: right;
@@ -1535,23 +1543,43 @@ input[type="radio"] {
 }
 
 #loginSheet {
-    height: 90%;
-    background: linear-gradient(0deg, #FFCFA3, #D20500 80%) no-repeat;
+    height: 100vh;
+    background: linear-gradient(0deg, #FFDDAA, #FF6B00 80%) no-repeat;
+    padding-top: 32px;
+    padding: 16px;
+    margin-top: 90px;
+   
 }
 
 .btmHeaderLogin {
     font-size: 32px;
     font-weight: 700;
     color: #ffffff;
+    padding-left: 12px;
 }
 
 .loginText {
-    font-size: 14px;
-    font-weight: 500;
-    color: #7C7C7C;
+    font-size: 16px;
+    font-weight: 600;
+    padding-left: 12px;
     margin-bottom: 20px;
     height: 50px;
     border-radius: 12px;
+    border: none;
+ 
+}
+
+.loginText::placeholder {
+    font-size: 14px;
+    font-weight: 500;
+    color: #7C7C7C;
+}
+
+.loginText:focus, 
+.form-control:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 .loginBtn {
@@ -1571,41 +1599,20 @@ input[type="radio"] {
 }
 
 #loginOTPSheet .backIcon {
-    position: unset;
+    
     width: 32px!important;
     height: 32px!important;
+    padding: 24px !important;
 }
 
-.otp-container {
-    gap: 10px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-}
 
-.otp-input {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    font-size: 22px;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    /* Makes it round */
-    outline: none;
-    transition: 0.3s ease-in-out;
-    font-weight: 600;
-}
-
-.otp-input:focus {
-    border-color: #2E7D32;
-    box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
-}
 
 .btmHeaderLoginDes {
     font-size: 14px;
     font-weight: 500;
     color: #fff;
+    padding: 12px;
+    gap: 20px;
 }
 
 #loginOTPSheet .btmHeaderLoginDes .backIcon {
@@ -2547,39 +2554,6 @@ input[type="radio"] {
     display: block;
 }
 
-#offerCarousel1 {
-    width: 90%;
-}
-
-#offerCarousel1 .carousel-item:first-child {
-    min-height: 150px;
-    border: 1.5px solid #FDD4D4;
-    background-color: #FFF4F4;
-}
-
-#offerCarousel1 .carousel-item:nth-child(2) {
-    min-height: 150px;
-    border: 1.5px solid #CBB5FB;
-    background-color: #F8F0FF;
-}
-
-#offerCarousel1 .carousel-item:nth-child(3) {
-    min-height: 150px;
-    border: 1.5px solid #C2E7A5;
-    background-color: #F9FFF0;
-}
-
-#offerCarousel1 .carousel-item:nth-child(4) {
-    min-height: 150px;
-    border: 1.5px solid #B5E8FB;
-    background-color: #F0FBFF;
-}
-
-#offerCarousel1 .carousel-item:nth-child(5) {
-    min-height: 150px;
-    border: 1.5px solid #FBDFB5;
-    background-color: #FFFAF0;
-}
 
 .map1:before {
     content: "";
@@ -2632,25 +2606,6 @@ input[type="radio"] {
     font-weight: 400;
 }
 
-#offerCarousel1 .carousel-item:first-child .textColor {
-    color: #B04F4F;
-}
-
-#offerCarousel1 .carousel-item:nth-child(2) .textColor {
-    color: #633ECE;
-}
-
-#offerCarousel1 .carousel-item:nth-child(3) .textColor {
-    color: #0A8F08;
-}
-
-#offerCarousel1 .carousel-item:nth-child(4) .textColor {
-    color: #086B8F;
-}
-
-#offerCarousel1 .carousel-item:nth-child(5) .textColor {
-    color: #8F5908;
-}
 
 .crDes {
     font-size: 13px;

@@ -1,77 +1,84 @@
 <div>
-    <div class="topSection">
+    <div class="blur-background">
         @if (!otpSent) {
-            <div class="" id="loginSheet">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title btmHeaderLogin">Login</h5>
-                    <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <form [formGroup]="loginForm">
-                        <div class="">
-                            <div class="col-md-12 pos-rel ">
-                                <input type="text " class="form-control loginText " placeholder="Your Name" formControlName="name">
-                            </div>
-                            <div class="col-md-12 pos-rel ">
-                                <input type="text " class="form-control loginText " placeholder="+91  Whatsapp Number" formControlName="mobile">
-                                @if(submitted && loginFormError['mobile'].errors){
-                                    @if(submitted && loginFormError['mobile'].errors['required']){
-                                    <div style="padding-left: 30px;color: #d50c0d;">Mobile No. is required</div>
-                                    } @if(submitted && loginFormError['mobile'].errors['pattern']){
-                                    <div style="padding-left: 30px;color: #d50c0d;">Invalid Mobile No.</div>
-                                    } }
-                            </div>
-                            <div class="col-md-12 pos-rel ">
-                                <button class="btn loginBtn" (click)="submitLoginForm()">Continue </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+        <div class="login-container" id="loginSheet">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title btmHeaderLogin">Login</h5>
+                <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
             </div>
-        }
-        
-        @if (otpSent) {
-            <div class="" id="loginSheet">
-                <div class="offcanvas-header">
-                    <img src="assets/images/icons/back2.png " class="backIcon">
-                    <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <div class="row ">
+            <div class="offcanvas-body">
+                <form [formGroup]="loginForm">
+                    <div class="login-form">
                         <div class="col-md-12 pos-rel ">
-                            <h5 class="offcanvas-title btmHeaderLogin">OTP Verification</h5>
-        
-                            <span class="btmHeaderLoginDes">OTP has been sent to +91 {{loginForm?.value?.mobile}} <img src="assets/images/icons/edit.png " class="backIcon"></span>
+                            <input type="text " class="form-control loginText " placeholder="Your Name"
+                                formControlName="name">
                         </div>
                         <div class="col-md-12 pos-rel ">
-                            <form [formGroup]="otpForm">
-                                <div class="otp-container">
-                                    <input
-                                    *ngFor="let control of otpControls; let i = index"
-                                    id="otp-{{i}}"
-                                    type="text"
-                                    class="otp-input"
-                                    maxlength="1"
-                                    [formControl]="control"
-                                    (input)="moveFocus($event, i)"
-                                    (paste)="handlePaste($event)"
-                                  />
-                                    <!-- <input type="text" maxlength="1" class="otp-input" />
+                            <input type="text " class="form-control loginText " placeholder="+91  Whatsapp Number"
+                                formControlName="mobile">
+                            @if(submitted && loginFormError['mobile'].errors){
+                            @if(submitted && loginFormError['mobile'].errors['required']){
+                            <div style="padding-left: 30px;color: #d50c0d;">Mobile No. is required</div>
+                            } @if(submitted && loginFormError['mobile'].errors['pattern']){
+                            <div style="padding-left: 30px;color: #d50c0d;">Invalid Mobile No.</div>
+                            } }
+                        </div>
+                        <div class="col-md-12 pos-rel ">
+                            <!-- <button class="btn loginBtn" (click)="submitLoginForm()">Continue </button> -->
+                            <button class="btn loginBtn" [ngClass]="{'active-btn': loginForm.valid}"
+                                [disabled]="!loginForm.valid" (click)="submitLoginForm()">
+                                Continue
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        }
+
+        @if (otpSent) {
+        <div class="login-container" id="loginSheet">
+            <div class="offcanvas-header-after-otp-sent">
+                <img src="assets/images/icons/back2.png " class="backIcon">
+                <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="row ">
+                    <div class="col-md-12 pos-rel ">
+                        <h5 class="offcanvas-title btmHeaderLogin">OTP Verification</h5>
+
+                        <span class="btmHeaderLoginDes">OTP has been sent to +91 9875645675 <img
+                                src="assets/images/icons/edit.png " class="editIcon"></span>
+
+                    </div>
+                    <div class="col-md-12 pos-rel ">
+                        <form [formGroup]="otpForm">
+                            <div class="otp-container">
+                                
+                                <input id="otp" type="text" class="otpInput" [formControl]="otpControls"
+                                (paste)="handlePaste($event)" maxlength="6"
+                                    placeholder="Enter OTP" />
+                                <!-- <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" /> -->
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-12 pos-rel ">
-                            <!-- <button class="btn loginBtn " data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation" >Done </button> -->
-                            <button class="btn loginBtn" (click)="submitOtpForm()" >Done </button>
-                        </div>
+                            </div>
+                        </form>
                     </div>
+                    
+                    <div class="col-md-12 pos-rel ">
+                        <!-- <button class="btn loginBtn " data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation" >Done </button> -->
+                        <!-- <button class="btn loginBtn" (click)="submitOtpForm()">Done </button> -->
+                        <button class="btn loginBtn" [ngClass]="{'active-btn': otpForm.valid}"
+                            [disabled]="!otpForm.valid" (click)="submitOtpForm()"> Done</button>
+
+                    </div>
+
                 </div>
             </div>
+        </div>
         }
     </div>
 </div>
