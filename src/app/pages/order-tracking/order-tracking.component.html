@@ -2,9 +2,9 @@
     
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container p-0 d-flex">
-            <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+            <!-- <button class="navbar-toggler headerButtonLeft " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
                 <img src="assets/images/icons/back.png " class="headerIconLeft "  >
-            </button>
+            </button> -->
             <div class="d-inline-block">
                 <a class="navbar-brand cartHeader" href="" data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation">Order Status</a>
             </div>
@@ -58,12 +58,30 @@
             </div>
         </div>
         <div class="container my-3 bg-transparent p-0">
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <button class="btn solidButton"> Track Order</button>
-                    <!-- <button class="btn solidButton"> Done</button> -->
+            @if (orderStatus?.deliveryTrackingLink != null ){
+                <div class="row ">
+                    <div class="col-md-12 ">
+                        <button class="btn solidButton"  (click)="navigateMap()"> Track Order</button>
+                        <!-- <button class="btn solidButton"> Done</button> -->
+                    </div>
                 </div>
-            </div>
+            }
+           
         </div>
     </div>
 </div>
+
+    <!-- Customer Support Bottom Sheet -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="contactSupport">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title btmHeader">Customer Support</h5>
+            <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            @if (restaurentId != null || restaurentId != undefined){
+            <p class="btmSptCnt ">Restaurant <span>+91-{{ branchData?.supportContact}}</span></p>
+            <p class="btmSptCnt ">Hyperapps <span>+91-{{ contactHyperapps }}</span></p>
+            }
+
+        </div>
+    </div>

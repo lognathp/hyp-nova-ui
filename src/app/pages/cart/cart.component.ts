@@ -8,11 +8,13 @@ import { environment } from '../../../environments/environment';
 import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
 import { SharedService } from '../../core/services/shared.service';
 import { take } from 'rxjs/operators';
+import { QuoteLoaderComponent } from "../../components/loaders/quote-loader/quote-loader.component";
+import { SomethingWentWrongComponent } from "../../components/errors/something-went-wrong/something-went-wrong.component";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, DiscountPricePipe],
+  imports: [CommonModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
@@ -57,7 +59,9 @@ export class CartComponent implements OnInit, AfterViewInit {
     quoteLoading: boolean = false;
     connectingGateway: boolean = false;
 
-    flatDiscountpercentage = environment.flatDiscountpercentage;;
+    flatDiscountpercentage = environment.flatDiscountpercentage;
+    unKnownError: boolean = false;
+;
     deliveryDiscount = 30;
     isMakePaymentEnabled: boolean = false;
 
@@ -419,6 +423,7 @@ export class CartComponent implements OnInit, AfterViewInit {
             error: (error: { error: string; }) => {
                 console.log('getQuote ' + error.error);
                 this.quoteLoading = false;
+                this.unKnownError = true;
                 this.showAddAddressButton = true;
                 // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
             }

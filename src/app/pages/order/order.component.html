@@ -15,27 +15,30 @@
 
                     <br>
                     @if(availableBranchData?.length > 1 && (restaurentId == null || restaurentId == undefined) ){
-                    <span class="outlet" title="View Branches" data-bs-toggle="offcanvas" data-bs-target="#selectOutlet">
+                    <span class="outlet" title="Click to View Branches" data-bs-toggle="offcanvas"
+                        data-bs-target="#selectOutlet">
                         select Outlet >
                     </span>
                     } @else if(restaurentId != null || restaurentId != undefined) {
-                        <div class="restauran-brancht-info">
-                            <span class="outlet" (click)="showBranches()" >{{ branchData?.restaurantName }}</span>
-                            <span class="badge storeOpen">Open</span>
-                        </div>
-                       
+                    <div class="restauran-brancht-info">
+                        <span class="outlet" data-bs-toggle="offcanvas"
+                        data-bs-target="#selectOutlet" (click)="checkChangeBranch = true;"  title="Click to View Branches">{{
+                            branchData?.restaurantName }}</span>
+                        <span class="badge storeOpen">Open</span>
+                    </div>
+                    <!-- (click)="showBranches()" -->
                     }
-                    
+
                 </div>
                 <button class="navbar-toggler headerButton" type="button" data-bs-target="#navbarNav" id="menuButton"
                     data-bs-toggle="dropdown">
                     <img src=" assets/images/icons/menu.png " class="headerIcon ">
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end menuItem" aria-labelledby="menuButton ">
-                <li><a class="account dropdown-item" [routerLink]="['/my-account']" >Account</a></li>
-                    <li><a class="about dropdown-item" >About</a></li>
-                    <li><a class="gallery dropdown-item" >Gallery</a></li>
-                    <li><a class="contact dropdown-item" >Contact</a></li>
+                    <li><a class="account dropdown-item" [routerLink]="['/my-account']">Account</a></li>
+                    <li><a class="about dropdown-item">About</a></li>
+                    <li><a class="gallery dropdown-item">Gallery</a></li>
+                    <!-- <li><a class="contact dropdown-item" >Contact</a></li> -->
                 </ul>
                 <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
                     data-bs-target="#contactSupport">
@@ -51,7 +54,8 @@
             <div class="row ">
                 <div class="col-md-12 pos-rel ">
                     <img src="assets/images/icons/search.png " class="searchIcon ">
-                    <input type="text " class="form-control searchText" [(ngModel)]="searchKeyword" placeholder="Search for dishes ">
+                    <input type="text " class="form-control searchText" [(ngModel)]="searchKeyword"
+                        placeholder="Search for dishes ">
                 </div>
             </div>
         </div>
@@ -72,42 +76,43 @@
         <div class="container my-4 bg-transparent ">
             <div class="row ">
                 <div class="col-md-12 ">
-                    <div id="offerCarousel" class="carousel slide deals" data-bs-ride="carousel" data-bs-interval="2000">
+                    <div id="offerCarousel" class="carousel slide deals" data-bs-ride="carousel"
+                        data-bs-interval="2000">
                         <div class="carousel-inner ">
                             <!-- Offer Slide -->
                             <div class="carousel-item active ">
-                                    <div class="hc bg-transparent text-dark ">
-                                        <h2 class="wwdTitle ">No Hidden Charges</h2>
-                                        <span class="wwdDes ">We take that seriously!</span>
-                                    </div>
+                                <div class="hc bg-transparent text-dark ">
+                                    <h2 class="wwdTitle ">No Hidden Charges</h2>
+                                    <span class="wwdDes ">We take that seriously!</span>
                                 </div>
-    
-                                <div class="carousel-item ">
-                                    <div class="off bg-transparent text-dark ">
-                                        <h2 class="wwdTitle ">25% Off on all items</h2>
-                                        <span class="wwdDes ">Don’t miss out!</span>
-                                    </div>
+                            </div>
+
+                            <div class="carousel-item ">
+                                <div class="off bg-transparent text-dark ">
+                                    <h2 class="wwdTitle ">25% Off on all items</h2>
+                                    <span class="wwdDes ">Don’t miss out!</span>
                                 </div>
-    
-                                <div class="carousel-item ">
-                                    <div class="otd bg-transparent text-dark ">
-                                        <h2 class="wwdTitle ">On Time Delivery</h2>
-                                        <span class="wwdDes ">Delivery within 30-40 mins</span>
-                                    </div>
+                            </div>
+
+                            <div class="carousel-item ">
+                                <div class="otd bg-transparent text-dark ">
+                                    <h2 class="wwdTitle ">On Time Delivery</h2>
+                                    <span class="wwdDes ">Delivery within 30-40 mins</span>
                                 </div>
-                                <div class="carousel-item ">
-                                    <div class="exo bg-transparent text-dark ">
-                                        <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
-                                        <span class="wwdDes ">USE HYPERDEAL</span>
-                                    </div>
+                            </div>
+                            <div class="carousel-item ">
+                                <div class="exo bg-transparent text-dark ">
+                                    <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
+                                    <span class="wwdDes ">USE HYPERDEAL</span>
                                 </div>
+                            </div>
                         </div>
 
 
                         <!-- Indicators -->
                         <div class="carousel-indicators ">
-                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="0"
-                                class="active " aria-label="Slide 1 "></button>
+                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="0" class="active "
+                                aria-label="Slide 1 "></button>
                             <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="1"
                                 aria-label="Slide 2 "></button>
                             <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="2"
@@ -124,173 +129,185 @@
         <!-- Category -->
 
         <div class="container my-5 bg-transparent ">
-                <div class="row ">
-                    <div class="col-md-12 ">
-                        <div class="card bg-transparent border-0 ">
-                            <div class="card-body p-0 ">
-                                <div class="sliderCategory d-flex overflow-auto">
-                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Starters</span></div>
-                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Pulaos</span></div>
-                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups</span></div>
-                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Rice & Sides</span></div>
-                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Starters2</span></div>
-                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Pulaos2</span></div>
-                                    <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups2</span></div>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div class="card bg-transparent border-0 ">
+                        <div class="card-body p-0 ">
+                            <div class="sliderCategory d-flex overflow-auto">
+                                <div><img src="assets/images/food/food.jpg " /><span
+                                        class="categoryText ">Starters</span></div>
+                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Pulaos</span>
+                                </div>
+                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups</span>
+                                </div>
+                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Rice &
+                                        Sides</span></div>
+                                <div><img src="assets/images/food/food.jpg " /><span
+                                        class="categoryText ">Starters2</span></div>
+                                <div><img src="assets/images/food/food.jpg " /><span
+                                        class="categoryText ">Pulaos2</span></div>
+                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups2</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
     </div>
     <!-- Top Picks -->
     @if(!openSelectBranch){
-        <div class="container my-3 bg-transparent">
-            <div class="row  bg-transparent ">
-                <div class="col-md-12 col-12">
-                    <div class="card bg-transparent border-0">
-                        <div class="card-body p-0  bg-transparent ">
-                            <h5 class="card-title topPickTitle">Top Picks</h5>
-                            <div class="slider">
-                                <div class="topPick">
-                                    <div class="topPickImageContainer">
-                                        <img src="assets/images/food/food.jpg" class="topPickImage" />
-                                        <div class="topPickOffer">25% OFF</div>
-                                        <button class="btn topPicksAddButton">+ Add</button>
-                                    </div>
-                                    <div class="topPickContent">
-                                        <div class="topPickTitleContainer">
-                                            <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
-                                            <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
-                                        </div>
-                                        <p>
-                                            <span class="topPickPrice">₹ 225</span>
-                                            <span class="topPickPriceStrike">₹ 300</span>
-                                        </p>
-                                    </div>
+    <div class="container my-3 bg-transparent">
+        <div class="row  bg-transparent ">
+            <div class="col-md-12 col-12">
+                <div class="card bg-transparent border-0">
+                    <div class="card-body p-0  bg-transparent ">
+                        <h5 class="card-title topPickTitle">Top Picks</h5>
+                        <div class="slider">
+                            <div class="topPick">
+                                <div class="topPickImageContainer">
+                                    <img src="assets/images/food/food.jpg" class="topPickImage" />
+                                    <div class="topPickOffer">25% OFF</div>
+                                    <button class="btn topPicksAddButton">+ Add</button>
                                 </div>
-        
-                                <div class="topPick">
-                                    <div class="topPickImageContainer">
-                                        <img src="assets/images/food/food.jpg" class="topPickImage" />
-                                        <div class="topPickOffer">25% OFF</div>
-                                        <button class="btn topPicksAddButton">+ Add</button>
+                                <div class="topPickContent">
+                                    <div class="topPickTitleContainer">
+                                        <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
+                                        <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
                                     </div>
-                                    <div class="topPickContent">
-                                        <div class="topPickTitleContainer">
-                                            <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
-                                            <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
-                                        </div>
-                                        <p>
-                                            <span class="topPickPrice">₹ 225</span>
-                                            <span class="topPickPriceStrike">₹ 300</span>
-                                        </p>
-                                    </div>
+                                    <p>
+                                        <span class="topPickPrice">₹ 225</span>
+                                        <span class="topPickPriceStrike">₹ 300</span>
+                                    </p>
                                 </div>
-        
-                                <div class="topPick">
-                                    <div class="topPickImageContainer">
-                                        <img src="assets/images/food/food.jpg" class="topPickImage" />
-                                        <div class="topPickOffer">25% OFF</div>
-                                        <button class="btn topPicksAddButton">+ Add</button>
-                                    </div>
-                                    <div class="topPickContent">
-                                        <div class="topPickTitleContainer">
-                                            <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
-                                            <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
-                                        </div>
-                                        <p>
-                                            <span class="topPickPrice">₹ 225</span>
-                                            <span class="topPickPriceStrike">₹ 300</span>
-                                        </p>
-                                    </div>
+                            </div>
+
+                            <div class="topPick">
+                                <div class="topPickImageContainer">
+                                    <img src="assets/images/food/food.jpg" class="topPickImage" />
+                                    <div class="topPickOffer">25% OFF</div>
+                                    <button class="btn topPicksAddButton">+ Add</button>
                                 </div>
-        
-                            </div> 
+                                <div class="topPickContent">
+                                    <div class="topPickTitleContainer">
+                                        <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
+                                        <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
+                                    </div>
+                                    <p>
+                                        <span class="topPickPrice">₹ 225</span>
+                                        <span class="topPickPriceStrike">₹ 300</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="topPick">
+                                <div class="topPickImageContainer">
+                                    <img src="assets/images/food/food.jpg" class="topPickImage" />
+                                    <div class="topPickOffer">25% OFF</div>
+                                    <button class="btn topPicksAddButton">+ Add</button>
+                                </div>
+                                <div class="topPickContent">
+                                    <div class="topPickTitleContainer">
+                                        <img src="assets/images/icons/non-veg.png" class="topPickFilterIcon">
+                                        <h5 class="topPickFoodTitle">Clay Pot Mutton</h5>
+                                    </div>
+                                    <p>
+                                        <span class="topPickPrice">₹ 225</span>
+                                        <span class="topPickPriceStrike">₹ 300</span>
+                                    </p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-    
-        <!-- Filter -->
-    
-        <div class="container mt-4" id="veg-nonveg-filter">
-            <!-- Filter Buttons -->
-            <div class="text-left mb-3 ">
-                <button class="btn btn-transparent filterBtn vegIcon" [ngClass]="{'active':itemFilterType == '1'}" (click)="vegNonvegFilter('1')"> Veg</button>
-                <button class="btn btn-transparent filterBtn nonVegIcon" [ngClass]="{'active':itemFilterType == '2'}" (click)="vegNonvegFilter('2')"> Non Veg</button>
-                <button class="btn btn-transparent filterBtn" [ngClass]="{'active':itemFilterType == '99'}" (click)="vegNonvegFilter('99')"> Best seller</button>
-            </div>
+    </div>
+
+
+    <!-- Filter -->
+
+    <div class="container mt-4" id="veg-nonveg-filter">
+        <!-- Filter Buttons -->
+        <div class="text-left mb-3 ">
+            <button class="btn btn-transparent filterBtn vegIcon" [ngClass]="{'active':itemFilterType == '1'}"
+                (click)="vegNonvegFilter('1')"> Veg</button>
+            <button class="btn btn-transparent filterBtn nonVegIcon" [ngClass]="{'active':itemFilterType == '2'}"
+                (click)="vegNonvegFilter('2')"> Non Veg</button>
+            <button class="btn btn-transparent filterBtn" [ngClass]="{'active':itemFilterType == '99'}"
+                (click)="vegNonvegFilter('99')"> Best seller</button>
         </div>
-        <div class="container mt-4 ">
-    
-            <!-- Food Tile -->
-            @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
-            @if (category.items.length > 0) {
-            <div class="card foodCard" [id]="'section-' + $index">
-                <h5 class="card-title foodCategory ">{{category!.categoryName | titlecase }} ({{category.items.length}})
-                </h5>
-                @for (item of category.items; track $index){
-                <div class="card-body foodTile ">
-                    <div class="row ">
-                        <div class="col-7 col-md-7 food-item veg ">
-                            @if (item.itemAttributeId == '1'){
-                                <img src="assets/images/icons/veg.png " class="filterIcon ">
-                            } 
-                            @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
-                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                            }
-                           
-                            <span class="badge bestSeller ">Bestseller</span>
-                            <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
-                            <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                            <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
-                            <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
-                            <p class="card-text foodDes "> {{ item.itemDescription }}
-                            </p>
-                            <!-- <span class="foodDesMore ">more</span> -->
-                        </div>
-                        <div class="col-5 col-md-5 food-item"
-                            [ngClass]="{'foodItemImage': item.itemImageUrl != '' , 'foodItemNoImage' :  item.itemImageUrl == ''}">
-                            <!-- <img src="assets/images/food/food.jpg " class="card-img-top "> -->
-                            @if (item.active === '0') {
-                            <img [src]="item.itemImageUrl" class="card-img-top greyImage ">
-                            <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
-                            <span class="outOfStock ">Out of Stock</span>
-                            } @else {
-                            <img [src]="item.itemImageUrl" class="card-img-top ">
-                            @if(!seletedItemId.includes(item.id) && item.active === '1' &&(item.addon.length == 0 && item.variation.length == 0)){
-                                <button class="btn btn-transparent addButton" (click)="selectItem(item)"> + Add</button>
-                            }
-                            @if ((item.addon.length >0 || item.variation.length >0) && (!seletedItemId.includes(item.id)) ){
-                                <button class="btn btn-transparent addButton " data-bs-toggle="offcanvas" data-bs-target="#addOn" (click)="selectItem(item)"> + Add</button>
-                            }
-                            @if (seletedItemId.includes(item.id) && item.active === '1'){
-                                <button class="btn btn-transparent qtyButton "> 
-                                    <span (click)="sameAddonConfirmation(item, $index,'reduce')">-</span> 
-                                    {{item | displayQuantity}} 
-                                    <span (click)="sameAddonConfirmation(item, $index,'add')">+</span>
-                                </button>
-                                
-                            }
-                            
-                                @if (item.addon.length >0 || item.variation.length >0){
-                                <span class="customisable ">Customisable</span>
-                                }
-                            }
-    
-                        </div>
+    </div>
+    <div class="container mt-4 ">
+
+        <!-- Food Tile -->
+        @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
+        @if (category.items.length > 0) {
+        <div class="card foodCard" [id]="'section-' + $index">
+            <h5 class="card-title foodCategory ">{{category!.categoryName | titlecase }} ({{category.items.length}})
+            </h5>
+            @for (item of category.items; track $index){
+            <div class="card-body foodTile ">
+                <div class="row ">
+                    <div class="col-7 col-md-7 food-item veg ">
+                        @if (item.itemAttributeId == '1'){
+                        <img src="assets/images/icons/veg.png " class="filterIcon ">
+                        }
+                        @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
+                        <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                        }
+
+                        <span class="badge bestSeller ">Bestseller</span>
+                        <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
+                        <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
+                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
+                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
+                        <p class="card-text foodDes "> {{ item.itemDescription }}
+                        </p>
+                        <!-- <span class="foodDesMore ">more</span> -->
+                    </div>
+                    <div class="col-5 col-md-5 food-item"
+                        [ngClass]="{'foodItemImage': item.itemImageUrl != '' , 'foodItemNoImage' :  item.itemImageUrl == ''}">
+                        <!-- <img src="assets/images/food/food.jpg " class="card-img-top "> -->
+                        @if (item.active === '0') {
+                        <img [src]="item.itemImageUrl" class="card-img-top greyImage ">
+                        <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
+                        <span class="outOfStock ">Out of Stock</span>
+                        } @else {
+                        <img [src]="item.itemImageUrl" class="card-img-top ">
+                        @if(!seletedItemId.includes(item.id) && item.active === '1' &&(item.addon.length == 0 &&
+                        item.variation.length == 0)){
+                        <button class="btn btn-transparent addButton" (click)="selectItem(item)"> + Add</button>
+                        }
+                        @if ((item.addon.length >0 || item.variation.length >0) && (!seletedItemId.includes(item.id)) ){
+                        <button class="btn btn-transparent addButton " data-bs-toggle="offcanvas"
+                            data-bs-target="#addOn" (click)="selectItem(item)"> + Add</button>
+                        }
+                        @if (seletedItemId.includes(item.id) && item.active === '1'){
+                        <button class="btn btn-transparent qtyButton ">
+                            <span (click)="sameAddonConfirmation(item, $index,'reduce')">-</span>
+                            {{item | displayQuantity}}
+                            <span (click)="sameAddonConfirmation(item, $index,'add')">+</span>
+                        </button>
+
+                        }
+
+                        @if (item.addon.length >0 || item.variation.length >0){
+                        <span class="customisable ">Customisable</span>
+                        }
+                        }
+
                     </div>
                 </div>
-                }
             </div>
             }
-    
-            }
-            <!-- <div class="card foodCard ">
+        </div>
+        }
+
+        }
+        <!-- <div class="card foodCard ">
                     <h5 class="card-title foodCategory ">Ankapur Specials (4)</h5>
                     <div class="card-body foodTile ">
                         <div class="row ">
@@ -398,8 +415,8 @@
                         </div>
                     </div>
                 </div> -->
-    
-            <!-- <div class="card foodCard ">
+
+        <!-- <div class="card foodCard ">
                     <h5 class="card-title foodCategory ">Ankapur Specials (4)</h5>
                     <div class="card-body foodTile ">
                         <div class="row ">
@@ -440,28 +457,28 @@
                     </div>
         
                 </div> -->
-        </div>
-    
-    
-        <!-- License -->
-    
-        <div class="container my-3 ">
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <div class="card border-0 ">
-                        <div class="card-body fssaiCard ">
-                            <img src="assets/images/fssai.png " class="d-inline-block ">
-                            @if (restaurentId != null || restaurentId != undefined){
-                                <p class="card-text d-inline-block ">License No. {{ branchData?.fssai}}</p>
-                            }
-                        </div>
+    </div>
+
+
+    <!-- License -->
+
+    <div class="container my-3 ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card border-0 ">
+                    <div class="card-body fssaiCard ">
+                        <img src="assets/images/fssai.png " class="d-inline-block ">
+                        @if (restaurentId != null || restaurentId != undefined){
+                        <p class="card-text d-inline-block ">License No. {{ branchData?.fssai}}</p>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-    
+    </div>
+
     }
- 
+
 
 
     <!-- About -->
@@ -514,24 +531,26 @@
                         <h5 class="card-title contactTitle ">Contact</h5>
                         <p class="card-text m-0 contactHeading ">{{partnerData?.name | titlecase}}</p>
                         @if (restaurentId != null || restaurentId != undefined) {
-                            <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p>
+                        <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p>
 
-                            <ul class="m-0 p-0 ">
-                                <li class="contact-info ">
-                                    <span class="map "> {{branchData?.address}} </span>
-                                </li>
-                                <li class="contact-info ">
-                                    <span class="phone ">+91-{{ branchData?.supportContact}}</span>
-                                </li>
-                                <li class="contact-info fw-semibold ">
-                                    <span class="clock ">Open hours</span>
-                                </li>
-                                <li class="contact-info "><span class="pl-30 ">
-                                    Monday – Friday from {{ branchData?.deliveryHours[0].from | timeformat}} to {{ branchData?.deliveryHours[1].to | timeformat }} <br>
-                                    Saturday & Sunday from {{ branchData?.deliveryHours[0].from | timeformat}} to {{ branchData?.deliveryHours[1].to | timeformat }} </span></li>
-                            </ul>
+                        <ul class="m-0 p-0 ">
+                            <li class="contact-info ">
+                                <span class="map "> {{branchData?.address}} </span>
+                            </li>
+                            <li class="contact-info ">
+                                <span class="phone ">+91-{{ branchData?.supportContact}}</span>
+                            </li>
+                            <li class="contact-info fw-semibold ">
+                                <span class="clock ">Open hours</span>
+                            </li>
+                            <li class="contact-info "><span class="pl-30 ">
+                                    Monday – Friday from {{ branchData?.deliveryHours[0].from | timeformat}} to {{
+                                    branchData?.deliveryHours[1].to | timeformat }} <br>
+                                    Saturday & Sunday from {{ branchData?.deliveryHours[0].from | timeformat}} to {{
+                                    branchData?.deliveryHours[1].to | timeformat }} </span></li>
+                        </ul>
                         }
-                        
+
                     </div>
                 </div>
             </div>
@@ -579,25 +598,26 @@
     </div>
 
     <!-- VIEW CART -->
-     @if(foodBasket?.length > 0){
-        <div class="container my-3 bg-footer-cart ">
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <div class="card border-0 ">
-                        <div class="card-body bg-cart ">
-                            <p class="card-text cartItems" data-bs-toggle="offcanvas" data-bs-target="#loginSheet">₹ {{cartItemPrice | discountPrice: flatDiscountpercentage}} 
-                                <span> 
-                                    {{foodBasket?.length}} Item@if(foodBasket?.length > 2){s} 
-                                </span>
-                                <span class="view-cart-btn" (click)="navigateCart();">View Cart</span>
-                            </p>
-                        </div>
+    @if(foodBasket?.length > 0){
+    <div class="container my-3 bg-footer-cart ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="card border-0 ">
+                    <div class="card-body bg-cart ">
+                        <p class="card-text cartItems" data-bs-toggle="offcanvas" data-bs-target="#loginSheet">₹
+                            {{cartItemPrice | discountPrice: flatDiscountpercentage}}
+                            <span>
+                                {{foodBasket?.length}} Item@if(foodBasket?.length > 2){s}
+                            </span>
+                            <span class="view-cart-btn" (click)="navigateCart();">View Cart</span>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-     }
-    
+    </div>
+    }
+
     <!-- VIEW CART -->
 
     <!-- Food Menu Bottom Sheet -->
@@ -609,31 +629,12 @@
         <div class="offcanvas-body p-0">
             <ul class="foodBtm">
                 @for (category of menuCategoryData; track $index){
-                    <li (click)="scrollToSection($index)">
-                        <p class=""  [ngClass]="{'menuItemsCategory' : selectedCategoryIndex == $index, 'menuItems': selectedCategoryIndex != $index}" >{{category!.categoryName | titlecase }}  {{$index}} <span> {{category.items.length}} </span></p>
-                    </li> 
+                <li (click)="scrollToSection($index)">
+                    <p class=""
+                        [ngClass]="{'menuItemsCategory' : selectedCategoryIndex == $index, 'menuItems': selectedCategoryIndex != $index}">
+                        {{category!.categoryName | titlecase }} {{$index}} <span> {{category.items.length}} </span></p>
+                </li>
                 }
-                <!-- <li>
-                    <p class="menuItemsCategory">Ankapur Specials <span>4</span></p>
-                </li>
-                <li>
-                    <p class="menuItems">Egg Clay Pot Pulao<span>1</span></p>
-                </li>
-                <li>
-                    <p class="menuItems">Non-Veg Clay Pot Pulaos<span>7</span></p>
-                </li>
-                <li>
-                    <p class="menuItems">Egg Starter<span>13</span></p>
-                </li>
-                <li>
-                    <p class="menuItems">Veg Starter<span>8</span></p>
-                </li>
-                <li>
-                    <p class="menuItems">Veg Malkipuram Pulaos<span>12</span></p>
-                </li>
-                <li>
-                    <p class="menuItems">Non-Veg Malkipuram Pulaos<span>5</span></p>
-                </li> -->
             </ul>
         </div>
     </div>
@@ -647,10 +648,10 @@
         </div>
         <div class="offcanvas-body">
             @if (restaurentId != null || restaurentId != undefined){
-                <p class="btmSptCnt ">Restaurant <span>+91-{{ branchData?.supportContact}}</span></p>
-                <p class="btmSptCnt ">Hyperapps <span>+91-{{ contactHyperapps }}</span></p>
+            <p class="btmSptCnt ">Restaurant <span>+91-{{ branchData?.supportContact}}</span></p>
+            <p class="btmSptCnt ">Hyperapps <span>+91-{{ contactHyperapps }}</span></p>
             }
-           
+
         </div>
     </div>
 
@@ -659,19 +660,26 @@
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectDeliveryLocation">
         <app-select-location (selectedLocation)="getSelectedLocation($event)"></app-select-location>
     </div>
-    
+
     <!-- Addon variation bottom sheet -->
-  
-     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="addOn">
+
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="addOn">
         @if (variationResponse?.length > 0 || addonResponse?.length >0 ) {
-            <app-variation-addon [variations]="variationResponse" [addOnChoice]="addonResponse" [menuItem]="selectedItem" (addedItem)="getAddedItem($event)"></app-variation-addon>
-         }
+        <app-variation-addon [variations]="variationResponse" [addOnChoice]="addonResponse" [menuItem]="selectedItem"
+            (addedItem)="getAddedItem($event)"></app-variation-addon>
+        }
     </div>
 
     <!-- Select Outlet Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectOutlet">
+        @if (checkChangeBranch) {
+        <div>
+            <app-branch-change (branchChangeAction)="getBranchSelAction($event)"></app-branch-change>
+        </div>
+        }
+        @if (!checkChangeBranch){
         <div class="offcanvas-header">
-            <img src="assets/images/icons/back.png " class="backIcon ">
+            <!-- <img src="assets/images/icons/back.png " class="backIcon "> -->
             <h5 class="offcanvas-title btmHeaderOut"> Select Outlet</h5>
             <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
         </div>
@@ -679,29 +687,17 @@
 
             <ul class="outletBtm">
                 @for (item of partnerData?.restaurantDetails; track $index){
-                    <li class="mb-1" (click)="selectBranch($index)">
-                        <img src="assets/images/icons/forward.png " class="forwardIcon">
-                        <p class="outletAddr" [ngClass]="{'unavailableStore': !availableBranchData?.includes(item.id)}">{{item.restaurantName}} </p>
-                        <span class="outletDes"> {{item.address}}
-                            <!-- <span>30-40 mins</span> -->
-                        </span>
-                    </li>
+                <li class="mb-1" (click)="selectBranch($index)">
+                    <img src="assets/images/icons/forward.png " class="forwardIcon">
+                    <p class="outletAddr" [ngClass]="{'unavailableStore': !availableBranchData?.includes(item.id)}">
+                        {{item.restaurantName}} </p>
+                    <span class="outletDes"> {{item.address}}
+                        <!-- <span>30-40 mins</span> -->
+                    </span>
+                </li>
                 }
-                <!-- <li>
-                    <img src="assets/images/icons/forward.png " class="forwardIcon">
-                    <p class="outletAddr">AVMH (Madhapur), Hyd</p><span class="outletDes">2 km <span>20-30
-                            mins</span></span>
-                </li>
-                <li>
-                    <img src="assets/images/icons/forward.png " class="forwardIcon">
-                    <p class="outletAddr">Hitech City, Hyd</p><span class="outletDes">3 km <span>30-40
-                            mins</span></span>
-                </li>
-                <li>
-                    <img src="assets/images/icons/forward.png " class="forwardIcon">
-                    <p class="outletAddr">Gandipet, Hyd</p><span class="outletDes">4 km <span>40-50 mins</span></span>
-                </li> -->
             </ul>
         </div>
+        }
     </div>
 </div>

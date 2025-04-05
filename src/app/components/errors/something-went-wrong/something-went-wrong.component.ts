@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {  Location } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -9,5 +10,11 @@ import { RouterModule } from '@angular/router';
   styleUrl: './something-went-wrong.component.scss'
 })
 export class SomethingWentWrongComponent {
+  constructor(
+    private location: Location
+  ) { }
 
+  goBack(): void {
+    this.location.back(); // Moves to the previous route
+  }
 }

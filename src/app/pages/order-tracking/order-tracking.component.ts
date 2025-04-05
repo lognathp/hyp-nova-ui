@@ -4,6 +4,7 @@ import { ApiService } from '../../core/services/api.service';
 import { WebSocketService } from '../../core/services/websocket.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-order-tracking',
@@ -13,10 +14,15 @@ import { DatePipe } from '@angular/common';
   styleUrl: './order-tracking.component.scss'
 })
 export class OrderTrackingComponent implements OnInit {
+  contactHyperapps: string = environment.contactHyperapps;
+
   currentOrder: any;
   orderStatus: any;
   private wsSubscription!: Subscription;
   addressDetails!: string;
+  restaurentId: number | undefined;
+  vendorData: any;
+  branchData: any;
   constructor(
     public sharedData: SharedService,
     public apiService: ApiService,
@@ -27,6 +33,22 @@ export class OrderTrackingComponent implements OnInit {
 
     const localCurrentOrder: any = localStorage.getItem("currentOrder");
     this.currentOrder = JSON.parse(localCurrentOrder)
+
+    let restId: any = localStorage.getItem("selectedRestId")
+    this.restaurentId = parseInt(restId);
+    if (!isNaN(this.restaurentId)) {
+      const vendorDetail: any = localStorage.getItem('vendorData');
+      this.vendorData = JSON.parse(vendorDetail)
+      // console.log(vdata);
+      if (this.vendorData.restaurantDetails != undefined) {
+        this.vendorData.restaurantDetails.forEach((brdata: any) => {
+          if (brdata.id == this.restaurentId) {
+            this.branchData = brdata;
+          }
+        });
+      }
+
+    }
 
     console.log(this.currentOrder);
     localStorage.removeItem("foodBasket");
@@ -84,7 +106,7 @@ export class OrderTrackingComponent implements OnInit {
     return targetStateIndex <= currentStateIndex;
   }
 
-  getAddress(addressId:any): void {
+  getAddress(addressId: any): void {
     this.apiService.getMethod(`/address/${addressId}`).subscribe({
       next: (response) => {
         // this.addressDetails = response.data[0];
@@ -127,9 +149,9 @@ export class OrderTrackingComponent implements OnInit {
     })
   }
 
-  // navigateMap(){
-  //  console.log('trackingurl',this.orderStatus.deliveryTrackingLink);
+  navigateMap() {
+    console.log('trackingurl', this.orderStatus.deliveryTrackingLink);
 
-  //   window.open(this.orderStatus.deliveryTrackingLink, "_blank");
-  // }
+    window.open(this.orderStatus.deliveryTrackingLink, "_blank");
+  }
 }

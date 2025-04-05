@@ -3501,6 +3501,118 @@ input {
 #locationNotServiceable .solidButton {
     width: 70%;
 }
+
+.outletChangeContainer {
+    display: block;
+    padding: 15px;
+}
+
+#outletChange {
+    top: 32%;
+    height: 350px;
+    border-radius: 12px;
+}
+
+#outletChange .modal-content {
+    width: 85%;
+    margin: auto;
+}
+
+#outletChange .modal-body {
+    padding: 10px;
+}
+
+#outletChange .btn-close {
+    position: absolute;
+    right: 10px;
+}
+
+#outletChange .btn-close img {
+    width: 10px;
+    height: 10px;
+}
+
+.outletChangeContainer>.text1 {
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0px;
+    margin-top: 10px;
+    display: block;
+}
+
+.outletChangeContainer>.text2 {
+    font-weight: 400;
+    font-size: 12px;
+    margin: 0px;
+    margin-top: 10px;
+    display: block;
+}
+
+.outletChangeContainer .simpleBtn {
+    margin-left: 15px;
+    width: 30px;
+    float: right;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.outletChangeContainer .title {
+    color: #D20500;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px !important;
+}
+
+.outletChangeContainer .title2 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px !important;
+}
+
+.modalClose .btn-close {
+    position: absolute;
+    right: 10px;
+}
+
+.modalClose .btn-close img {
+    width: 10px;
+    height: 10px;
+}
+
+.modal-content {
+    height: 98vh;
+}
+
+.modalClose .text1 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modalClose .text2 {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.modalClose .plainButton {
+    width: 30%;
+    margin: 0px auto;
+}
+
+.br-0 {
+    border-radius: 0px;
+}
+
+.h-auto {
+    height: auto;
+}
+
+.w-50 {
+    width: 50%!important;
+}
+
+.w-25 {
+    width: 25%!important;
+}
 .cursor-pointer{
     cursor: pointer;
 }

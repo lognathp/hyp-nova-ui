@@ -14,6 +14,7 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from "../../core/pipes/search-filter.pipe";
 import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
+import { BranchChangeComponent } from "../../components/alert-box/branch-change/branch-change.component";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -33,7 +34,8 @@ declare var bootstrap: any; // Bootstrap is using from assets
     SearchFilterPipe,
     VegNonvegFilterPipe,
     RouterLink,
-    RouterModule
+    RouterModule,
+    BranchChangeComponent
 ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
@@ -71,6 +73,7 @@ export class OrderComponent implements OnInit {
   openSelectBranch: boolean = false;
 searchKeyword: string = "";
   itemFilterType: string = "";
+  checkChangeBranch: boolean = false;
 
   constructor(
     public apiService: ApiService,
@@ -168,8 +171,11 @@ searchKeyword: string = "";
       // if (index == 99) {
       //   this.ShowBranch();
       // } else {
+      console.log(this.restaurentId , this.partnerData.restaurantDetails[index].id);
+      if(this.restaurentId  != parseInt(this.partnerData.restaurantDetails[index].id) ) {
+        localStorage.removeItem("foodBasket")
+      }
       localStorage.setItem('selectedRestId', this.partnerData.restaurantDetails[index].id);
-
       this.ngOnInit();
       this.cdr.detectChanges();
       // this.branchId.emit(this.vendorData.restaurantDetails[index].id);
@@ -307,6 +313,8 @@ searchKeyword: string = "";
     console.log(item);
     this.addItemQunatityIndex = -1;
     this.selectedItemWithAddon = {};
+    this.addonResponse = [];
+    this.variationResponse = [];
     if (item.quantity == undefined) {
       item['quantity'] = 1;
     }
@@ -633,15 +641,21 @@ searchKeyword: string = "";
       if (offcanvasInstance) {
         offcanvasInstance.hide(); // Hide the offcanvas dynamically
       }
-      const backdrop = document.querySelector('.offcanvas-backdrop');
-      if (backdrop) {
-        backdrop.remove();
+      // const backdrop = document.querySelector('.offcanvas-backdrop');
+      const backdrops = document.querySelectorAll('.offcanvas-backdrop');
+      console.log(backdrops,'backdrops');
+      
+      if ( backdrops) {
+        // backdrop.remove();
+        backdrops.forEach((backdrop:any) => backdrop.remove());  
       }
+      
     }
   }
 
   public showBranches(): void {
     this.openOffcanvas('selectOutlet');
+    this.checkChangeBranch = false;
   }
 
   public openOffcanvas(offcanvasId: string) {
@@ -693,4 +707,21 @@ searchKeyword: string = "";
     console.log(this.itemFilterType);
     
   }
+
+  /**
+   * Change branch action event
+   * @param event Event Action
+   */
+  public getBranchSelAction(event:any):void{
+    console.log(event);
+    // this.checkChangeBranch = false ;
+    if(event.action == 'continue'){
+      this.showBranches();
+      this.openOffcanvas('selectOutlet');
+      this.checkChangeBranch = false
+    } else{
+      this.closeOffcanvas('selectOutlet');
+      // this.checkChangeBranch = false ;
+    }
+  } 
 }
