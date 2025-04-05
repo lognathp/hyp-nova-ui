@@ -169,10 +169,11 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
         
 
       },
-      // error: error => {
-      //   this.unServiceable()
-      //   console.error('Error fetching location data:', error);
-      // }
+      error: error => {
+        this.unServiceable();
+        this.searchResults = [];
+        console.error('Error fetching location data:', error);
+      }
     });
   }
 

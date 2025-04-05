@@ -2,35 +2,34 @@
     <h5 class="offcanvas-title btmHeaderLoc">Select Delivery Location</h5>
     <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
 </div>
+@if(unServiceableValue){
+<div id="locationNotServiceable">
+    <div class="offcanvas-body">
+        <img src="assets/images/icons/locationNotServiceable.png">
+        <p class="title">Oops! Out of Reach</p>
+        <p class="desc">We can't deliver to this location yet.</p>
+        <button class="btn solidButton" (click)="unServiceableValue = false;"> Change Location </button>
+    </div>
+</div>
+}@else {
 <div class="offcanvas-body">
-
     <div class="row ">
         <div class="col-md-12 pos-rel ">
             <img src="assets/images/icons/search.png " class="searchIcon">
-            <input type="text " class="form-control searchText " placeholder="Search a new address" (input)="search($event)" >
+            <input type="text " class="form-control searchText " placeholder="Search a new address"
+                (input)="search($event)">
         </div>
     </div>
-    <p class="btmCurLoc"  >Use my current location</p>
+    <p class="btmCurLoc cursor-pointer">Use my current location</p>
     <!-- (click)="getMyCurrentLocation()" -->
 
     <ul class="locationBtm">
-        <ng-container *ngFor="let result of searchResults" >
-            <li  (click)="selectResult(result)">
+        <ng-container *ngFor="let result of searchResults">
+            <li title="Click to Select" class="cursor-pointer" (click)="selectResult(result)">
                 <p class="locationAddr">{{ result.text | splitFirstComma | slice:0:1 }}</p>
-                <span class="locationDes"> {{ result.text | splitFirstComma | slice:1:2 }}</span>   
+                <span class="locationDes"> {{ result.text | splitFirstComma | slice:1:2 }}</span>
             </li>
         </ng-container>
-        <!-- <li>
-            <p class="locationAddr">Madhapur Metro Station</p><span class="locationDes">Number 36, Aditya Enclave,
-                Venkatagiri Naga ...</span>
-        </li>
-        <li>
-            <p class="locationAddr">Madhapur Ayyappa Society</p><span class="locationDes">Ayyappa society, mega hills,
-                Madhapur, Hyde...</span>
-        </li>
-        <li>
-            <p class="locationAddr">Madhapur colony</p><span class="locationDes">Number 755, Sona Enclave, Tankkatagiri
-                Naga...</span>
-        </li> -->
     </ul>
 </div>
+}

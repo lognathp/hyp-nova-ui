@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+@if (loading) {
+    <app-menu-loader></app-menu-loader>
+    <!-- <app-something-went-wrong></app-something-went-wrong> -->
+} @else {
+    <router-outlet></router-outlet>
+}
+

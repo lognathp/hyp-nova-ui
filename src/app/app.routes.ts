@@ -62,6 +62,9 @@ export const routes: Routes = [
         path:'my-orders',
         loadComponent:() => import("./pages/order-history/order-history.component").then(m => m.OrderHistoryComponent),
         canActivate:[authGuard],
+    },{
+        path:'unexpected-error',
+        loadComponent:() => import("./components/errors/something-went-wrong/something-went-wrong.component").then(m => m.SomethingWentWrongComponent)
     },
     {
         path:"**", redirectTo:'home', pathMatch:'full'

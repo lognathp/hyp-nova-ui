@@ -29,10 +29,10 @@
                     <img src=" assets/images/icons/menu.png " class="headerIcon ">
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end menuItem" aria-labelledby="menuButton ">
-                <li><a class="account dropdown-item" routerLinkActive="active" routerLink="/account" >Account</a></li>
-                    <li><a class="about dropdown-item" href="# ">About</a></li>
-                    <li><a class="gallery dropdown-item" href="# ">Gallery</a></li>
-                    <li><a class="contact dropdown-item" href="# ">Contact</a></li>
+                <li><a class="account dropdown-item" [routerLink]="['/my-account']" >Account</a></li>
+                    <li><a class="about dropdown-item" >About</a></li>
+                    <li><a class="gallery dropdown-item" >Gallery</a></li>
+                    <li><a class="contact dropdown-item" >Contact</a></li>
                 </ul>
                 <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
                     data-bs-target="#contactSupport">

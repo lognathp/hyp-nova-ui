@@ -2220,9 +2220,12 @@ input[type="radio"] {
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    margin: 0px;
+    margin: auto;
     gap: 0px;
     height: 100vh;
+
+    width: 65%;
+    
 }
 
 #orderConfirm {
@@ -3508,3 +3511,51 @@ input {
     display: flex;
     justify-content: center;
 }
+
+#locationNotServiceable {
+    height: 90%;
+}
+
+#locationNotServiceable .offcanvas-header {
+    padding: 0px;
+}
+
+#locationNotServiceable .offcanvas-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#locationNotServiceable img {
+    width: 30%;
+    margin-bottom: 15px;
+}
+
+#locationNotServiceable .title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#locationNotServiceable .desc {
+    color: #636363;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+#locationNotServiceable .solidButton {
+    width: 70%;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.btn-close{
+    float: right !important;
+    margin: 10px 10px;
+    display: inline-flex;
+    img {
+        width: 10px;
+        height: 10px;
+    }
+}
+
