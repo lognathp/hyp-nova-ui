@@ -47,17 +47,17 @@
                     <div class="col-md-12 pos-rel ">
                         <h5 class="offcanvas-title btmHeaderLogin">OTP Verification</h5>
 
-                        <span class="btmHeaderLoginDes">OTP has been sent to +91 9875645675 <img
+                        <span class="btmHeaderLoginDes">OTP has been sent to +91 {{loginForm.value.mobile}} <img
                                 src="assets/images/icons/edit.png " class="editIcon"></span>
 
                     </div>
                     <div class="col-md-12 pos-rel ">
                         <form [formGroup]="otpForm">
                             <div class="otp-container">
-                                
-                                <input id="otp" type="text" class="otpInput" [formControl]="otpControls"
-                                (paste)="handlePaste($event)" maxlength="6"
-                                    placeholder="Enter OTP" />
+                                <input id="otp" type="text" class="otpInput"  formControlName="otp" [ngClass]="{ 'is-invalid': otpsubmitted && otpFormError['otp'].errors || InvalidOtp }"
+                                    (paste)="handlePaste($event)" maxlength="6" placeholder="Enter OTP" />
+                                <!-- <input id="otp" type="text" class="otpInput" [formControl]="otpControls" 
+                                    (paste)="handlePaste($event)" maxlength="6" placeholder="Enter OTP" />-->
                                 <!-- <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" />
@@ -65,9 +65,22 @@
                                     <input type="text" maxlength="1" class="otp-input" />
                                     <input type="text" maxlength="1" class="otp-input" /> -->
                             </div>
+                            @if(InvalidOtp){
+                                <div style="color: #d50c0d;">Incorrect OTP. Please enter again</div>
+                                }
                         </form>
                     </div>
-                    
+                    <div>
+                        @if (!showResendOTP) {
+                        <span style="text-align: center;display: block;padding: 16px;color: #000;">
+                            <countdown [config]="{leftTime: 100, format: 'm:s'}" (event)="timerEvent($event)">
+                            </countdown>
+                        </span> }
+                        @if (showResendOTP) {
+                        <span (click)="resendOtp()"
+                            style="text-align: center;display: block;padding: 16px;color: #000; cursor: pointer;">Resend
+                            OTP?</span> }
+                    </div>
                     <div class="col-md-12 pos-rel ">
                         <!-- <button class="btn loginBtn " data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation" >Done </button> -->
                         <!-- <button class="btn loginBtn" (click)="submitOtpForm()">Done </button> -->

@@ -4,10 +4,12 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsM
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+import { CountdownModule } from 'ngx-countdown';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule,CountdownModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -47,8 +49,8 @@ export class LoginComponent {
       mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')])
     });
     this.otpForm = this.formBuilder.group({
-      // otp: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{6}$')])
-      otp: new FormArray(Array(6).fill(0).map(() => new FormControl('')))
+      otp: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{6}$')])
+      // otp: new FormArray(Array(6).fill(0).map(() => new FormControl('')))
     });
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -88,10 +90,11 @@ export class LoginComponent {
     if (this.otpForm.invalid) {
       return;
     }
-    let otp = this.otpForm.value.otp.join("");
+    // let otp = this.otpForm.value.otp.join("");
+    let otp = this.otpForm.value.otp;
     // Call API to verify OTP
     if (this.restaurentId != undefined)
-      this.apiService.postMethod('/login/verify-otp', { mobile: this.loginForm.value.mobile, otp: otp, restaurantId: this.restaurentId }).subscribe({
+      this.apiService.postMethod('/login/verify-otp', { mobile: this.loginForm.value.mobile, otp, restaurantId: this.restaurentId }).subscribe({
         next: (response: any) => {
           localStorage.setItem('customerDetails', JSON.stringify(response.data[0]));
           this.router.navigateByUrl(this.returnUrl);
