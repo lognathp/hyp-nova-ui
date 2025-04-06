@@ -274,7 +274,7 @@
                         @if (item.active === '0') {
                         <img [src]="item.itemImageUrl" class="card-img-top greyImage ">
                         <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
-                        <span class="outOfStock ">Out of Stock</span>
+                        <span class="outOfStock mt-3">Out of Stock</span>
                         } @else {
                         <img [src]="item.itemImageUrl" class="card-img-top ">
                         @if(!seletedItemId.includes(item.id) && item.active === '1' &&(item.addon.length == 0 &&
@@ -295,7 +295,7 @@
                         }
 
                         @if (item.addon.length >0 || item.variation.length >0){
-                        <span class="customisable ">Customisable</span>
+                        <span class="customisable mt-3">Customisable</span>
                         }
                         }
 
