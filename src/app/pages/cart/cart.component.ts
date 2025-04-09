@@ -82,10 +82,10 @@ export class CartComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-      console.log(this.router, window.location.origin);
+    //   console.log(this.router, window.location.origin);
       let restId: any = localStorage.getItem("selectedRestId")
       this.restaurentId = parseInt(restId);
-      console.log('restaurentId', this.restaurentId);
+    //   console.log('restaurentId', this.restaurentId);
       // window.addEventListener('storage', (event: StorageEvent) => {
       //     if (event.key === 'selectedRestId') {
       //       let restId:any = localStorage.getItem("selectedRestId")
@@ -120,7 +120,7 @@ export class CartComponent implements OnInit, AfterViewInit {
       // this.sharedData.getMenuData().subscribe((data:any) => {
       //     console.log('menu',data);
       // });
-      console.log(' this.customDetails', this.customDetails);
+    //   console.log(' this.customDetails', this.customDetails);
       this.loadAddress();
     //   this.sharedData.getSelecetdAddress().subscribe((data: any) => {
     //       console.log('address', data);
@@ -147,7 +147,7 @@ export class CartComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // throw new Error('Method not implemented.');
     this.sharedData.getSelecetdAddress().pipe(take(1)).subscribe((data: any) => {
-        console.log('address', data);
+        // console.log('address', data);
         if (Object.entries(data).length > 0) {
             const tempcustomDetailsformattedAddress = {
                 addressOne: data.addressOne,
@@ -217,7 +217,7 @@ export class CartComponent implements OnInit, AfterViewInit {
       this.orderItems = [];
       const itemdiscountValue = 0; // Discount value kept static as of now
       this.foodBasket?.forEach((element: any, index: number) => {
-          console.log(element);
+        //   console.log(element);
           
           const item: any = {
               name: element.item.itemName,
@@ -270,10 +270,12 @@ export class CartComponent implements OnInit, AfterViewInit {
                       }
                   });
               });
+
+              
               let itemPrice = parseFloat(element.item.price).toFixed(2);
               let variationPrice = parseFloat(element.addonVariation.varients.price).toFixed(2);
               let itemWithVariationPrice:any = Math.max(Number(itemPrice), Number(variationPrice));;
-              // console.log(parseFloat(element.item.price).toFixed(2),'element.item.price',parseFloat(element.addonVariation.varients.price).toFixed(2), itemWithVariationPrice);
+              console.log(parseFloat(element.item.price).toFixed(2),'element.item.price',parseFloat(element.addonVariation.varients.price).toFixed(2), itemWithVariationPrice);
               let addonSumPrice = 0;
               // if( item.orderAddonItems?.length > 0){
               //     item.orderAddonItems.map((ele:any) => {
@@ -295,6 +297,8 @@ export class CartComponent implements OnInit, AfterViewInit {
                           // ((parseFloat(taxElement.tax) / 100 ) * parseFloat(element.item.price)).toFixed(2),
                       }
                   })
+                  console.log(item.price,'item.price');
+                  
 
           } else {
               console.log('add-on price caluculation');

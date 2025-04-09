@@ -1237,6 +1237,7 @@ float: right;
 
 .bg-footer-cart {
     border-radius: 9px;
+    
 }
 
 .bg-cart {
@@ -1250,9 +1251,11 @@ float: right;
 }
 
 .bg-footer-cart {
-    position: sticky;
+    /* position: sticky; */
+    position: fixed;
     bottom: 10px;
     width: 100%;
+    max-width: 400px;
 }
 
 .cartItems {

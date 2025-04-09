@@ -1,64 +1,68 @@
-
-
 @if(quoteLoading){
-    <app-quote-loader></app-quote-loader>
+<app-quote-loader></app-quote-loader>
 }
 @if(unKnownError){
-    <app-something-went-wrong></app-something-went-wrong>
+<app-something-went-wrong></app-something-went-wrong>
 }
 @if (!quoteLoading) {
-    <div class="cartBody">
+<div class="cartBody">
 
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container p-0 d-flex">
-                <button class="navbar-toggler headerButtonLeft" type="button " (click)="back()" data-bs-toggle="offcanvas"
-                    data-bs-target="#contactSupport">
-                    <img src="assets/images/icons/back.png " class="headerIconLeft ">
-                </button>
-                <div class="d-inline-block">
-                    <a class="navbar-brand cartHeader" href="" data-bs-toggle="offcanvas"
-                        data-bs-target="#selectDeliveryLocation">Your Cart</a>
-                </div>
-                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
-                    data-bs-target="#contactSupport">
-                    <img src="assets/images/icons/support.png " class="headerIcon ">
-                </button>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container p-0 d-flex">
+            <button class="navbar-toggler headerButtonLeft" type="button " (click)="back()" data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/back.png " class="headerIconLeft ">
+            </button>
+            <div class="d-inline-block">
+                <a class="navbar-brand cartHeader" href="" data-bs-toggle="offcanvas"
+                    data-bs-target="#selectDeliveryLocation">Your Cart</a>
             </div>
-        </nav>
-    
-    
-        <div class="container  cartOffer">
-            <p>You saved ₹{{orderPriceDetails.discount | number:'1.2-2'}} on this order</p>
+            <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                data-bs-target="#contactSupport">
+                <img src="assets/images/icons/support.png " class="headerIcon ">
+            </button>
         </div>
-    
-        <div class="container  bg-transparent">
-            <div class="card foodCard ">
-                @for (basketitem of foodBasket; track $index) {
-                <div class="card-body foodTile cartFoodTile">
-                    <div class="row ">
-                        <div class="col-8 col-md-8 food-item veg ">
-                            <h5 class="card-title cartFoodTitle "
-                                [ngClass]="{'veg': basketitem.item.itemAttributeId == '1' , 'nonVeg' :  basketitem.item.itemAttributeId == '2' || basketitem.item.itemAttributeId == '24'}">
-                                {{basketitem.item.itemName}} </h5>
-                            <span [ngClass]="{'addon' : basketitem.addonVariation}">
-                                {{basketitem.addonVariation?.varients?.name}} </span>
-    
-                        </div>
-                        <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
-                            <button class="btn btn-transparent cartQtyButton ">
-                                <span (click)="sameAddonConfirmation(basketitem.item, $index,'reduce')">-</span>
-                                {{basketitem.item.quantity}}
-                                <span (click)="sameAddonConfirmation(basketitem.item, $index,'add')">+</span>
-                            </button>
-                            <span class="priceStrike ">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
-                            <span class="price ">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
-                            </span>
-                        </div>
+    </nav>
+
+
+    <div class="container  cartOffer">
+        <p>You saved ₹{{orderPriceDetails.discount | number:'1.2-2'}} on this order</p>
+    </div>
+
+    <div class="container  bg-transparent">
+        <div class="card foodCard ">
+            @for (basketitem of foodBasket; track $index) {
+            <div class="card-body foodTile cartFoodTile">
+                <div class="row ">
+                    <div class="col-8 col-md-8 food-item veg ">
+                        <h5 class="card-title cartFoodTitle "
+                            [ngClass]="{'veg': basketitem.item.itemAttributeId == '1' , 'nonVeg' :  basketitem.item.itemAttributeId == '2' || basketitem.item.itemAttributeId == '24'}">
+                            {{basketitem.item.itemName}} </h5>
+                        <span [ngClass]="{'addon' : basketitem.addonVariation}">
+                            {{basketitem.addonVariation?.varients?.name}} </span>
+
+                    </div>
+                    <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
+                        <button class="btn btn-transparent cartQtyButton ">
+                            <span (click)="sameAddonConfirmation(basketitem.item, $index,'reduce')">-</span>
+                            {{basketitem.item.quantity}}
+                            <span (click)="sameAddonConfirmation(basketitem.item, $index,'add')">+</span>
+                        </button>
+                        @if(basketitem?.addonVariation?.varients){
+                        <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0' }}
+                        </span>
+                        <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice: flatDiscountpercentage }} </span>
+                        } @else {
+                        <span class="priceStrike ">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
+                        <span class="price ">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}  </span>
+                        }
+
                     </div>
                 </div>
-                }
-    
-                <!-- <div class="card-body foodTile cartFoodTile">
+            </div>
+            }
+
+            <!-- <div class="card-body foodTile cartFoodTile">
                     <div class="row ">
                         <div class="col-8 col-md-8 food-item veg ">
                             <h5 class="card-title cartFoodTitle veg">Veg Biryani</h5>
@@ -72,166 +76,169 @@
                         </div>
                     </div>
                 </div> -->
+        </div>
+    </div>
+
+
+    <div class="container cartDeal">
+        <div class="row ">
+            <div class="col-9 coupon-container">
+                <p class="coupon-content">Save ₹30 with HYPERDEAL
+                    <span data-bs-toggle="offcanvas" class="view-coupons" data-bs-target="#couponSheet">View all
+                        coupons</span>
+                </p>
+
+            </div>
+            <div class="col-3 ">
+                <!-- <button class="btn btn-transparent cartApplyCoupon ">Apply</button> -->
+                <button class="btn btn-transparent cartRemoveCoupon ">Remove</button>
             </div>
         </div>
-    
-    
-        <div class="container cartDeal">
-            <div class="row ">
-                <div class="col-9 coupon-container">
-                    <p class="coupon-content">Save ₹30 with HYPERDEAL 
-                        <span data-bs-toggle="offcanvas" class="view-coupons" data-bs-target="#couponSheet">View all coupons</span></p>
-    
-                </div>
-                <div class="col-3 ">
-                    <!-- <button class="btn btn-transparent cartApplyCoupon ">Apply</button> -->
-                    <button class="btn btn-transparent cartRemoveCoupon ">Remove</button>
-                </div>
-            </div>
-        </div>
-    
-    
-        <div class="container ">
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <ul class="cartCheckout">
-    
-                        <li>
-                            <p class="cartVal">Item Total<span>₹ {{orderPriceDetails.itemSubtotal +
-                                    orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum |
-                                    number:'1.2-2'}}</span></p>
-                        </li>
-                        @if (!showAddAddressButton){
-                        <li>
-                            <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge |
-                                    number:'1.2-2'}}</span></p>
-                        </li>
-                        }
-                        <li>
-                            <p class="cartVal">CGST<span>₹ {{orderPriceDetails.tax.CGST | number:'1.2-2'}}</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal">SGST<span>₹ {{orderPriceDetails.tax.SGST | number:'1.2-2'}}</span></p>
-                        </li>
-                        <li>
-                            <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount | number:'1.2-2'}}</span></p>
-                        </li>
-                        <li>
-                            <p class="cartValCategory">To Pay<span>₹ {{orderPriceDetails.toPay | number:'1.2-2'}}</span></p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    
-        <div class="container my-3 bg-transparent ">
-            <div class="row ">
-                <div class="col-md-12 ">
-                    @if (showAddAddressButton){
-                    <button class="btn cartAddressBtn" (click)="selectAddress()"> <span>Add / Select Address</span></button>
-                    } @else if(!quoteLoading) {
-                    <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled"
-                        (click)="onPrepareOrderClick()"> <span>Proceed to Payment</span></button>
-                    <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
+    </div>
+
+
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <ul class="cartCheckout">
+
+                    <li>
+                        <p class="cartVal">Item Total<span>₹ {{orderPriceDetails.itemSubtotal +
+                                orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
+                    </li>
+                    <li>
+                        <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum |
+                                number:'1.2-2'}}</span></p>
+                    </li>
+                    @if (!showAddAddressButton){
+                    <li>
+                        <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge |
+                                number:'1.2-2'}}</span></p>
+                    </li>
                     }
-                </div>
-            </div>
-        </div>
-    
-    
-        <div class="modal fade" id="orderPlaced" tabindex="-1" aria-labelledby="orderPlacedLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img
-                                src="assets/images/icons/close3.png "></button>
-                        <div class="orderPlacedContainer d-flex justify-content-center">
-                            <img src="assets/images/icons/party.png ">
-                            <p class="text1">You saved ₹30</p>
-                            <span class="text2">‘HYPERDEAL’ applied</span>
-                            <p class="text3">Whoa!</p>
-    
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-    
-        <!-- Select Delivery location Bottom Sheet -->
-        <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="couponSheet">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title btmHeaderCoupon">Apply Coupon</h5>
-                <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
-            </div>
-            <div class="offcanvas-body">
-    
-                <div class="row ">
-                    <div class="col-md-12 pos-rel ">
-                        <div class="couponInputContainer">
-                            <input type="text" placeholder="Enter Coupon Code">
-                            <button>Apply</button>
-                        </div>
-                    </div>
-                </div>
-                <p class="btmTitle">Available Coupons</p>
-    
-                <ul class="btmCartCoupon">
                     <li>
-                        <div class="outer">
-                            <div class="inner">
-                                <div class="couponHeader">
-                                    <img src="assets/images/icons/extraOffer.png " class="couponIcon ">
-                                    <span class="off1">₹30 OFF</span>
-                                    <span class="off2">HYPERDEAL</span>
-                                    <button class="couponBtn apply">Apply</button>
-                                </div>
-                                <i class="bottom right"></i>
-                                <i class="bottom left"></i>
-    
-                                <i class="top left"></i>
-                                <i class="top right"></i>
-                                <div class="couponDescripition">
-                                    <p class="title">Save ₹30 on this order!</p>
-                                    <span class="description">Use code HYPERDEAL & get ₹30 off</span>
-                                    <span class="more">+More</span>
-                                </div>
-                            </div>
-                        </div>
+                        <p class="cartVal">CGST<span>₹ {{orderPriceDetails.tax.CGST | number:'1.2-2'}}</span></p>
                     </li>
                     <li>
-                        <div class="outer">
-                            <div class="inner">
-                                <div class="couponHeader">
-                                    <img src="assets/images/icons/offer3.png " class="couponIcon ">
-                                    <span class="off1">₹25 CASHBACK</span>
-                                    <span class="off2">CREDUPI</span>
-                                    <button class="couponBtn remove">Remove</button>
-                                </div>
-                                <i class="bottom right"></i>
-                                <i class="bottom left"></i>
-    
-                                <i class="top left"></i>
-                                <i class="top right"></i>
-                                <div class="couponDescripition">
-                                    <p class="title">Get flat ₹25 cashback using Cred UPI</p>
-                                    <span class="description">Cashback will be credited to CRED balance.</span>
-                                    <pre class="terms">Terms & Conditions Apply:
-        - Offer applicable once per user
-        - Check your cashback on the CRED app within 7 days
-        - Other T&Cs may apply</pre>
-                                    <span class="more">View Less</span>
-                                </div>
-                            </div>
-                        </div>
+                        <p class="cartVal">SGST<span>₹ {{orderPriceDetails.tax.SGST | number:'1.2-2'}}</span></p>
                     </li>
-    
+                    <li>
+                        <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount |
+                                number:'1.2-2'}}</span></p>
+                    </li>
+                    <li>
+                        <p class="cartValCategory">To Pay<span>₹ {{orderPriceDetails.toPay | number:'1.2-2'}}</span></p>
+                    </li>
                 </ul>
             </div>
         </div>
-    
     </div>
+
+    <div class="container my-3 bg-transparent ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                @if (showAddAddressButton){
+                <button class="btn cartAddressBtn" (click)="selectAddress()"> <span>Add / Select Address</span></button>
+                } @else if(!quoteLoading) {
+                <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled"
+                    (click)="onPrepareOrderClick()"> <span>Proceed to Payment</span></button>
+                <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="orderPlaced" tabindex="-1" aria-labelledby="orderPlacedLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img
+                            src="assets/images/icons/close3.png "></button>
+                    <div class="orderPlacedContainer d-flex justify-content-center">
+                        <img src="assets/images/icons/party.png ">
+                        <p class="text1">You saved ₹30</p>
+                        <span class="text2">‘HYPERDEAL’ applied</span>
+                        <p class="text3">Whoa!</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Select Delivery location Bottom Sheet -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="couponSheet">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title btmHeaderCoupon">Apply Coupon</h5>
+            <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <div class="row ">
+                <div class="col-md-12 pos-rel ">
+                    <div class="couponInputContainer">
+                        <input type="text" placeholder="Enter Coupon Code">
+                        <button>Apply</button>
+                    </div>
+                </div>
+            </div>
+            <p class="btmTitle">Available Coupons</p>
+
+            <ul class="btmCartCoupon">
+                <li>
+                    <div class="outer">
+                        <div class="inner">
+                            <div class="couponHeader">
+                                <img src="assets/images/icons/extraOffer.png " class="couponIcon ">
+                                <span class="off1">₹30 OFF</span>
+                                <span class="off2">HYPERDEAL</span>
+                                <button class="couponBtn apply">Apply</button>
+                            </div>
+                            <i class="bottom right"></i>
+                            <i class="bottom left"></i>
+
+                            <i class="top left"></i>
+                            <i class="top right"></i>
+                            <div class="couponDescripition">
+                                <p class="title">Save ₹30 on this order!</p>
+                                <span class="description">Use code HYPERDEAL & get ₹30 off</span>
+                                <span class="more">+More</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="outer">
+                        <div class="inner">
+                            <div class="couponHeader">
+                                <img src="assets/images/icons/offer3.png " class="couponIcon ">
+                                <span class="off1">₹25 CASHBACK</span>
+                                <span class="off2">CREDUPI</span>
+                                <button class="couponBtn remove">Remove</button>
+                            </div>
+                            <i class="bottom right"></i>
+                            <i class="bottom left"></i>
+
+                            <i class="top left"></i>
+                            <i class="top right"></i>
+                            <div class="couponDescripition">
+                                <p class="title">Get flat ₹25 cashback using Cred UPI</p>
+                                <span class="description">Cashback will be credited to CRED balance.</span>
+                                <pre class="terms">Terms & Conditions Apply:
+        - Offer applicable once per user
+        - Check your cashback on the CRED app within 7 days
+        - Other T&Cs may apply</pre>
+                                <span class="more">View Less</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+</div>
 }

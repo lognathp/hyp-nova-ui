@@ -21,8 +21,8 @@
                     </span>
                     } @else if(restaurentId != null || restaurentId != undefined) {
                     <div class="restauran-brancht-info">
-                        <span class="outlet" data-bs-toggle="offcanvas"
-                        data-bs-target="#selectOutlet" (click)="checkChangeBranch = true;"  title="Click to View Branches">{{
+                        <span class="outlet" data-bs-toggle="offcanvas" data-bs-target="#selectOutlet"
+                            (click)="checkChangeBranch = true;" title="Click to View Branches">{{
                             branchData?.restaurantName }}</span>
                         <span class="badge storeOpen">Open</span>
                     </div>
@@ -575,7 +575,7 @@
 
     <!-- Powerby -->
 
-    <div class="container my-3 bg-footer-cont ">
+    <div class="container my-3 bg-footer-cont  p-b-70">
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
@@ -596,10 +596,9 @@
             Menu
         </button>
     </div>
-
     <!-- VIEW CART -->
     @if(foodBasket?.length > 0){
-    <div class="container my-3 bg-footer-cart ">
+    <div class="container my-3 bg-footer-cart">
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
@@ -619,6 +618,7 @@
     }
 
     <!-- VIEW CART -->
+
 
     <!-- Food Menu Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="foodMenu">

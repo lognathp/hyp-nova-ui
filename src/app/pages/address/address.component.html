@@ -27,7 +27,7 @@
             <div class="row ">
                 <div class="col-md-12  ">
                     @for (item of address; let index =$index ;track item){
-                        <div class="addressTile" title="Select Address" (click)="selectedAddress(index)">
+                        <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(index)">
                             <p class="" [ngClass]="{'home': item?.addressType == 'Home' , 'work' :  item?.addressType == 'Work', 'other' :  item?.addressType == 'Other' }" >
                                 {{item.addressType}}
                                 <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
