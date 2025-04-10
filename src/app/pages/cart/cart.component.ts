@@ -401,12 +401,19 @@ export class CartComponent implements OnInit, AfterViewInit {
       let times= 1;
       console.log(times);
       times ++;
+
+      const tQuoteData = {"data":[{"service":"zomato","manifest":false,"quote":{"price":0.0,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":[{"amount":0.0,"tax":0.0,"total":0.0,"order_id":"PGQ100425151026966994"}],"base_delivery_charge":0.0,"total_gst_amount":0.0,"additional_charges":[]}},"error":null,"token":null,"network_id":26,"network_name":"zomato","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
+
       if(this.quoteLoading){
         this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
             next: (reponse: any) => {
                 console.log("delivery/quote", reponse);
                 this.quoteLoading = false;
+
                 this.quoteData = reponse;
+               
+
+
                 // this.orderPriceDetails['deliveryCharge'] = 25;
                 // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
   
@@ -429,6 +436,8 @@ export class CartComponent implements OnInit, AfterViewInit {
                 this.quoteLoading = false;
                 this.unKnownError = true;
                 this.showAddAddressButton = true;
+
+                this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
                 // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
             }
   

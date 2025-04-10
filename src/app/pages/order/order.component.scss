@@ -85,8 +85,8 @@
   }
 
   .sliderCategory > div {
-    scroll-snap-align: start;
-    min-width: 100px;
+    scroll-snap-align:center start;
+    width: 100px;
     flex-shrink: 0;
   }
 

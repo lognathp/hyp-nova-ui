@@ -6,18 +6,20 @@ import { ApiService } from '../../core/services/api.service';
 import { CommonModule } from '@angular/common';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
 import { Router } from '@angular/router';
+import { LocationPickerComponent } from "../location-picker/location-picker.component";
 @Component({
   selector: 'app-select-location',
   standalone: true,
   imports: [
     FormsModule,
     CommonModule,
-    SplitFirstCommaPipe
-],
+    SplitFirstCommaPipe,
+    LocationPickerComponent
+  ],
   templateUrl: './select-location.component.html',
   styleUrl: './select-location.component.scss'
 })
-export class SelectLocationComponent implements OnInit,DoCheck  {
+export class SelectLocationComponent implements OnInit, DoCheck {
 
   searchTerm: string = '';
   searchPlaceId: string = '';
@@ -28,41 +30,55 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
   restaurentActive: boolean = true;
   locationEnabled: boolean = true;
   unServiceableValue: boolean = false;
-  
-  @Output() selectedLocation = new EventEmitter<any>(); 
+
+  editLocationValue: any;
+  selectedLocation: any = {
+    addressType: '',
+    addressOne: '',
+    addressTwo: "",
+    landmark: '',
+    city: "",
+    state: "",
+    country: "",
+    pincode: '',
+    location: {},
+    formattedAddress: ""
+  };
+
+  @Output() selectedLocationEmit = new EventEmitter<any>(); 
 
   constructor(
-    public apiService: ApiService, 
+    public apiService: ApiService,
     private router: Router,
     // private wsService: WebSocketService
   ) { }
 
-  ngOnInit():void{
+  ngOnInit(): void {
     const vendorDetail: any = localStorage.getItem('vendorData');
     let vdata = JSON.parse(vendorDetail)
     // console.log(vdata,vendorDetail);
-    let restId:any = localStorage.getItem("selectedRestId")
+    let restId: any = localStorage.getItem("selectedRestId")
     this.restaurentId = parseInt(restId);
-     console.log(restId,'this.restaurentId ');
-     
-    console.log('sellocatio',this.restaurentId)
-    if(vdata != undefined){
+    console.log(restId, 'this.restaurentId ');
+
+    console.log('sellocatio', this.restaurentId, this.selectedLocation)
+    if (vdata != undefined) {
       this.partnerId = vdata?.id;
     }
 
-    
-    if(this.restaurentId != undefined && !isNaN(this.restaurentId) && vdata != null){
+
+    if (this.restaurentId != undefined && !isNaN(this.restaurentId) && vdata != null) {
       this.isLocationEnabled();
       this.getRestaurantDetails();
     }
-    
+
   }
 
-    ngDoCheck():void {
-   
-    
-    
-    
+  ngDoCheck(): void {
+
+
+
+
     // this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
     //   this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
     // });
@@ -81,10 +97,10 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
     }
   }
 
-  public getRestaurantDetails():void {
+  public getRestaurantDetails(): void {
     this.apiService.getMethod(`/restaurant/${this.restaurentId}`).subscribe({
       next: (response) => {
-        
+
         this.restaurentActive = response.data[0].active;
         localStorage.setItem('restaurantDetails', JSON.stringify(response.data[0]));
       },
@@ -102,11 +118,11 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
     console.log((event.target as HTMLInputElement).value);
     this.searchTerm = (event.target as HTMLInputElement).value;
     if (this.searchTerm.length > 0) {
-      this.fetchPlacePrediction().subscribe((results:any) => {
+      this.fetchPlacePrediction().subscribe((results: any) => {
         this.searchResults = results;
         console.log(this.searchResults);
       });
-    } 
+    }
     // this. ngOnInit();
   }
 
@@ -127,8 +143,8 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
   }
 
   public selectResult(result: { placeId: string, text: string }): void {
-    console.log(result,'sdfgh');
-    
+    console.log(result, 'sdfgh');
+
     this.searchTerm = result.text;
     this.searchPlaceId = result.placeId;
     if (this.restaurentActive == false) return;
@@ -136,9 +152,10 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
     this.apiService.getMethod(`/location/maps/place/${this.partnerId}?placeId=${result.placeId}`).subscribe({
       next: (response: { data: any }) => {
         console.log(response.data[0]);
-        
+
         const locationData = response.data[0].address;
-        
+
+
         locationData.formattedAddress = '';
         if (Object(locationData).addressOne != null) locationData.formattedAddress += Object(locationData).addressOne + ', ';
         if (Object(locationData).addressTwo != null) locationData.formattedAddress += Object(locationData).addressTwo + ', ';
@@ -150,23 +167,25 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
         if (Object(locationData).pincode != null) locationData.formattedAddress += ' - ' + Object(locationData).pincode + '. ';
 
         console.log(Object.values(locationData));
-        
-        localStorage.setItem('selectedLocation', JSON.stringify(locationData));
-        if(response.data[0].restaurants.length == 1){
-          localStorage.setItem('selectedRestId',response.data[0].restaurants[0]);
+
+        // localStorage.setItem('selectedLocation', JSON.stringify(locationData));
+        if (response.data[0].restaurants.length == 1) {
+          localStorage.setItem('selectedRestId', response.data[0].restaurants[0]);
         }
         localStorage.setItem("availableBranches", JSON.stringify(response.data[0].restaurants));
 
         // this.closeSearchBar();
         // this.foodMenuComponent.closeDeliveryMode();
         // this.foodMenuComponent.loadAddress();
-        this.selectedLocation.emit({ selectedLocation: locationData })
-        this.router.navigate(['/order']);
+
+        // this.selectedLocation.emit({ selectedLocation: locationData });
+
+        // this.router.navigate(['/order']);    Commented for testing - To avoid routing on developnet process
 
         // Reset searchTerm and searchResults
         this.searchTerm = '';
         this.searchResults = [];
-        
+        this.editLocationValue = locationData.location;
 
       },
       error: error => {
@@ -175,6 +194,24 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
         console.error('Error fetching location data:', error);
       }
     });
+  }
+
+  getSelectedLocation(event: any): void {
+    // console.log(event);
+    Object.entries(event).forEach(([key, value]) => {
+      this.selectedLocation[key] = value
+      // console.log(key, value);
+    });
+    localStorage.setItem('selectedLocation', JSON.stringify(this.selectedLocation));
+    this.editLocationValue = "";
+    this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
+    this.searchTerm = '';
+    this.router.navigate(['/order']); 
+    // console.log(this.selectedLocation);
+    
+    // this.enableMapEdit = fal;
+    // this.selectedLocation = event;
+    // this.markedLocation = event;
   }
 
   // getMyCurrentLocation() {
@@ -207,7 +244,7 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
   //             // Reset searchTerm and searchResults
   //             this.searchTerm = '';
   //             this.searchResults = [];
-              
+
   //           },
   //           error: (error) => {
   //             this.unServiceable()
@@ -224,10 +261,10 @@ export class SelectLocationComponent implements OnInit,DoCheck  {
   //   }
   // }
 
- 
 
-  public unServiceable():void {
+
+  public unServiceable(): void {
     this.unServiceableValue = true;
   }
-  
+
 }

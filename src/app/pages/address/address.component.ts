@@ -96,8 +96,8 @@ export class AddressComponent implements OnInit, AfterViewInit {
         console.log(reponse);
 
         if (reponse.data.length > 0) {
-          // this.address = reponse.data;
-          this.address = this.addresslist;
+          this.address = reponse.data;
+          // this.address = this.addresslist;
         }
       },
       error: (error) => { console.log(error) }
@@ -117,6 +117,7 @@ export class AddressComponent implements OnInit, AfterViewInit {
     // console.log(event);
     if (event) {
       this.addNew = false;
+      this.getAddresssDetails();
     }
   }
   newAddress(): void {
@@ -133,5 +134,34 @@ export class AddressComponent implements OnInit, AfterViewInit {
     console.log(selectedAddress);
     this.addressToEdit = JSON.parse(JSON.stringify(selectedAddress));
     this.addNew = true;
+  }
+
+  /**
+   * Select address for deletion
+   * @param address Selected Address Index
+   */
+  deleteAddress(address: any):void {
+    this.checkDeleteAddress = true;
+    this.deleteAddressIndex = address.id;
+
+  }
+
+  /**
+   * Delete Address API once after the delete conformation
+   */
+  confirmDeleteAddress():void{
+    this.checkDeleteAddress = false;
+    this.apiService.deleteMethod(`/address/${this.deleteAddressIndex}`).subscribe({
+      next: (reponse) => {
+        if (reponse.status == 200) {
+          this.deleteAddressIndex = '';
+          // this.messageService.add({ severity: 'success', detail: 'Address Deleted.' });
+          console.log("Address DEleted");
+          this.getAddresssDetails();
+        }
+
+      },
+      error: (error) => { console.log(error) }
+    })
   }
 }

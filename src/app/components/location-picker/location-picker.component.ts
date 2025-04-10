@@ -11,37 +11,37 @@ declare const google: any;
   templateUrl: './location-picker.component.html',
   styleUrl: './location-picker.component.scss'
 })
-export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges  {
+export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Output() selectedLocation = new EventEmitter<any>();
-  @Input() editLocationData : any ;
+  @Input() editLocationData: any;
 
   map!: google.maps.Map;
   centerPosition!: { lat: number; lng: number };
   address: string = '';
   conformLocation: boolean = false;
-  editLocation: boolean =false;
+  editLocation: boolean = false;
 
 
 
   constructor(private googleMapsLoader: GoogleMapLoaderService) { }
 
-  ngOnInit(){
-    const selectedLocation:any = localStorage.getItem('selectedLocation');
+  ngOnInit() {
+    const selectedLocation: any = localStorage.getItem('selectedLocation');
     const tempLocationSelected = JSON.parse(selectedLocation);
-    if(this.editLocationData != undefined){
+    if (this.editLocationData != undefined) {
       this.centerPosition = {
-        lat: this.editLocationData.latitude, 
+        lat: this.editLocationData.latitude,
         lng: this.editLocationData.longitude
       }
-    } else{
+    } else {
       this.centerPosition = {
-        lat: tempLocationSelected.location.latitude, 
+        lat: tempLocationSelected.location.latitude,
         lng: tempLocationSelected.location.longitude
       }
     }
-    
-    
+
+
   }
   ngOnChanges(changes: SimpleChanges) {
     // console.log(this.conformLocation, this.editLocation);
@@ -67,7 +67,7 @@ export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges 
       center: this.centerPosition,
       zoom: 15,
       disableDefaultUI: false,
-      fullscreenControl:false
+      fullscreenControl: false
     };
 
     this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -88,7 +88,7 @@ export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges 
     let city = '';
     let state = '';
     let pincode = '';
-    let country =''
+    let country = ''
 
     geocoder.geocode({ location: latlng }, (results: any, status: any) => {
       if (status === 'OK' && results[0]) {
@@ -97,29 +97,30 @@ export class LocationPickerComponent implements OnInit, AfterViewInit,OnChanges 
         for (const component of results[0].address_components) {
           if (component.types.includes('locality')) {
             city = component.long_name;
-          } 
-           if (component.types.includes('administrative_area_level_1')) {
+          }
+          if (component.types.includes('administrative_area_level_1')) {
             state = component.long_name;
-          } 
+          }
           if (component.types.includes('country')) {
             country = component.long_name;
           }
-           if (component.types.includes('postal_code')) {
+          if (component.types.includes('postal_code')) {
             pincode = component.long_name;
           }
-          
+
         }
         // alert(`Current Address:\n${this.address}`);    this.centerPosition
         console.log('Address:', this.address);
         this.selectedLocation.emit(
           {
-            formattedAddress : this.address,
-            location: {latitude:this.centerPosition.lat, longitude:this.centerPosition.lng},
-            city:city,
-            state:state,
-            pincode:pincode,
-            country:country
-           });
+            address: results[0].address_components,
+            formattedAddress: this.address,
+            location: { latitude: this.centerPosition.lat, longitude: this.centerPosition.lng },
+            city: city,
+            state: state,
+            pincode: pincode,
+            country: country
+          });
         this.conformLocation = true;
         this.editLocation = false;
       } else {

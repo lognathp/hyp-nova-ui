@@ -1330,7 +1330,7 @@ float: right;
 }
 
 #addOn {
-    height: 50%;
+    height: 70%;
     background-color: #F6F6F6;
 }
 
@@ -1543,6 +1543,7 @@ input[type="radio"] {
 
 .addonBody {
     padding: 0px;
+    overflow-y: auto;
 }
 
 .addonBody>.addonDiv {
@@ -3694,3 +3695,10 @@ input {
     }
 }
 
+.offcanvas-bottom {
+    overflow-y: auto !important;
+}
+.scrollable {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }

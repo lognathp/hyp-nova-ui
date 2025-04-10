@@ -1,4 +1,4 @@
-<div>
+<div class="scrollable">
     <!-- Header -->
     <div class="topSection">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
@@ -133,21 +133,41 @@
                 <div class="col-md-12 ">
                     <div class="card bg-transparent border-0 ">
                         <div class="card-body p-0 ">
-                            <div class="sliderCategory d-flex overflow-auto">
-                                <div><img src="assets/images/food/food.jpg " /><span
-                                        class="categoryText ">Starters</span></div>
-                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Pulaos</span>
+                            <div class="sliderCategory d-flex overflow-auto ">
+                                @for (category of menuCategoryData; track $index){
+                                    <div class="cursor-pointer" title="Click Category" (click)="scrollToSection($index)">
+                                        <img src="assets/images/food/food.jpg " />
+                                        <span class="categoryText "> {{category!.categoryName | titlecase }}</span>
+                                    </div>
+                                }
+                                <!-- <div>
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText ">Starters</span>
                                 </div>
-                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups</span>
+                                <div>
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText ">Pulaos</span>
                                 </div>
-                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Rice &
-                                        Sides</span></div>
-                                <div><img src="assets/images/food/food.jpg " /><span
-                                        class="categoryText ">Starters2</span></div>
-                                <div><img src="assets/images/food/food.jpg " /><span
-                                        class="categoryText ">Pulaos2</span></div>
-                                <div><img src="assets/images/food/food.jpg " /><span class="categoryText ">Soups2</span>
+                                <div>
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText ">Soups</span>
                                 </div>
+                                <div>
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText ">Rice & Sides</span>
+                                    </div>
+                                <div>
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText ">Starters2</span>
+                                </div>
+                                <div>
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText ">Pulaos2</span>
+                                </div>
+                                <div>
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText ">Soups2</span>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -307,156 +327,6 @@
         }
 
         }
-        <!-- <div class="card foodCard ">
-                    <h5 class="card-title foodCategory ">Ankapur Specials (4)</h5>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                                <span class="badge bestSeller ">Bestseller</span>
-                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemImage ">
-                                <img src="assets/images/food/food.jpg " class="card-img-top ">
-                                <button class="btn btn-transparent addButton "> + Add</button>
-                                <span class="customisable ">Customisable</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemImage ">
-                                <img src="assets/images/food/food.jpg " class="card-img-top ">
-                                <button class="btn btn-transparent addButton "> + Add</button>
-                                <span class="customisable ">Customisable</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemNoImage ">
-                                <button class="btn btn-transparent addButton "> + Add</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemNoImage ">
-                                <button class="btn btn-transparent addButton "> + Add</button>
-                                <span class="customisable ">Customisable</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemNoImage ">
-                                <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
-                                <span class="outOfStock ">Out of Stock</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                                <h5 class="card-title foodTitle ">Ankapur Special Chicken Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemImage ">
-                                <img src="assets/images/food/food.jpg " class="card-img-top greyImage ">
-                                <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
-                                <span class="outOfStock ">Out of Stock</span>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-        <!-- <div class="card foodCard ">
-                    <h5 class="card-title foodCategory ">Ankapur Specials (4)</h5>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/veg.png " class="filterIcon ">
-                                <span class="badge bestSeller ">Bestseller</span>
-                                <h5 class="card-title foodTitle ">Ankapur Special Veg Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemImage ">
-                                <img src="assets/images/food/food.jpg " class="card-img-top ">
-                                <button class="btn btn-transparent addButton "> + Add</button>
-                                <span class="customisable ">Customisable</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body foodTile ">
-                        <div class="row ">
-                            <div class="col-7 col-md-7 food-item veg ">
-                                <img src="assets/images/icons/veg.png " class="filterIcon ">
-                                <h5 class="card-title foodTitle ">Ankapur Special Veg Biryani</h5>
-                                <span class="price ">₹ 225</span>
-                                <span class="priceStrike ">₹ 300</span>
-                                <span class="offer ">25% OFF</span>
-                                <p class="card-text foodDes ">Fragrant basmati rice, succulent chicken, and bold spices slow-c</p>
-                                <span class="foodDesMore ">more</span>
-                            </div>
-                            <div class="col-5 col-md-5 food-item foodItemImage ">
-                                <img src="assets/images/food/food.jpg " class="card-img-top ">
-                                <button class="btn btn-transparent addButton "> + Add</button>
-                                <span class="customisable ">Customisable</span>
-                            </div>
-                        </div>
-                    </div>
-        
-                </div> -->
     </div>
 
 
@@ -632,7 +502,7 @@
                 <li (click)="scrollToSection($index)">
                     <p class=""
                         [ngClass]="{'menuItemsCategory' : selectedCategoryIndex == $index, 'menuItems': selectedCategoryIndex != $index}">
-                        {{category!.categoryName | titlecase }} {{$index}} <span> {{category.items.length}} </span></p>
+                        {{category!.categoryName | titlecase }} <span> {{category.items.length}} </span></p>
                 </li>
                 }
             </ul>
@@ -658,7 +528,7 @@
 
     <!-- Select Delivery location Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectDeliveryLocation">
-        <app-select-location (selectedLocation)="getSelectedLocation($event)"></app-select-location>
+        <app-select-location (selectedLocationEmit)="getSelectedLocation($event)"></app-select-location>
     </div>
 
     <!-- Addon variation bottom sheet -->

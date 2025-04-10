@@ -209,6 +209,7 @@ searchKeyword: string = "";
    */
   public getSelectedLocation(locationSelectedEvent: any): void {
     console.log(locationSelectedEvent);
+    this.ngOnInit();
     this.closeOffcanvas('selectDeliveryLocation');
 
   }
