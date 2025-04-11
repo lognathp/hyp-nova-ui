@@ -133,7 +133,9 @@
                 <div class="col-md-12 ">
                     <div class="card bg-transparent border-0 ">
                         <div class="card-body p-0 ">
-                            <div class="sliderCategory d-flex overflow-auto ">
+                            <div class="sliderCategory d-flex overflow-auto"
+                            (wheel)="onScroll($event)"
+                            #sliderContainer>
                                 @for (category of menuCategoryData; track $index){
                                     <div class="cursor-pointer" title="Click Category" (click)="scrollToSection($index)">
                                         <img src="assets/images/food/food.jpg " />
@@ -178,7 +180,7 @@
     </div>
     <!-- Top Picks -->
     @if(!openSelectBranch){
-    <div class="container my-3 bg-transparent">
+    <!-- <div class="container my-3 bg-transparent">
         <div class="row  bg-transparent ">
             <div class="col-md-12 col-12">
                 <div class="card bg-transparent border-0">
@@ -244,7 +246,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- Filter -->
@@ -499,7 +501,7 @@
         <div class="offcanvas-body p-0">
             <ul class="foodBtm">
                 @for (category of menuCategoryData; track $index){
-                <li (click)="scrollToSection($index)">
+                <li class="cursor-pointer"  data-bs-dismiss="offcanvas" (click)="scrollToSection($index)">
                     <p class=""
                         [ngClass]="{'menuItemsCategory' : selectedCategoryIndex == $index, 'menuItems': selectedCategoryIndex != $index}">
                         {{category!.categoryName | titlecase }} <span> {{category.items.length}} </span></p>

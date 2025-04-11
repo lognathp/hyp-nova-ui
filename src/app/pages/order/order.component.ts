@@ -173,7 +173,10 @@ searchKeyword: string = "";
       // } else {
       console.log(this.restaurentId , this.partnerData.restaurantDetails[index].id);
       if(this.restaurentId  != parseInt(this.partnerData.restaurantDetails[index].id) ) {
-        localStorage.removeItem("foodBasket")
+        localStorage.removeItem("foodBasket");
+        this.foodBasket = [];
+        this.seletedItemId = [];
+        this.calculateCartPrice();
       }
       localStorage.setItem('selectedRestId', this.partnerData.restaurantDetails[index].id);
       this.ngOnInit();
@@ -719,10 +722,22 @@ searchKeyword: string = "";
     if(event.action == 'continue'){
       this.showBranches();
       this.openOffcanvas('selectOutlet');
-      this.checkChangeBranch = false
+      this.checkChangeBranch = false;
     } else{
       this.closeOffcanvas('selectOutlet');
       // this.checkChangeBranch = false ;
     }
   } 
+
+  /**
+   * For category slider scroll 
+   * @param event 
+   */
+  onScroll(event: WheelEvent): void {
+    const target = event.currentTarget as HTMLElement;
+    if (event.deltaY !== 0) {
+      event.preventDefault();
+      target.scrollLeft += event.deltaY;
+    }
+  }
 }

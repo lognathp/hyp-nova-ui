@@ -5,6 +5,7 @@ import { WebSocketService } from '../../core/services/websocket.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-order-tracking',
@@ -26,7 +27,8 @@ export class OrderTrackingComponent implements OnInit {
   constructor(
     public sharedData: SharedService,
     public apiService: ApiService,
-    private wsService: WebSocketService
+    private wsService: WebSocketService,
+    private location: Location
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -153,5 +155,12 @@ export class OrderTrackingComponent implements OnInit {
     console.log('trackingurl', this.orderStatus.deliveryTrackingLink);
 
     window.open(this.orderStatus.deliveryTrackingLink, "_blank");
+  }
+
+  /**
+   * Back Button
+   */
+  goBack():void {
+    this.location.back(); // Moves to the previous route
   }
 }
