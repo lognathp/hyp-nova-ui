@@ -22,9 +22,9 @@
                     } @else if(restaurentId != null || restaurentId != undefined) {
                     <div class="restauran-brancht-info">
                         <span class="outlet" data-bs-toggle="offcanvas" data-bs-target="#selectOutlet"
-                            (click)="checkChangeBranch = true;" title="Click to View Branches">{{
-                            branchData?.restaurantName }}</span>
-                        <span class="badge storeOpen">Open</span>
+                            (click)="checkChangeBranch = true;" title="Click to View Branches">Outlet: {{
+                            branchData?.restaurantName }}  </span>
+                        <span class="badge storeOpen ">Open</span>
                     </div>
                     <!-- (click)="showBranches()" -->
                     }
@@ -36,8 +36,8 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end menuItem" aria-labelledby="menuButton ">
                     <li><a class="account dropdown-item" [routerLink]="['/my-account']">Account</a></li>
-                    <li><a class="about dropdown-item">About</a></li>
-                    <li><a class="gallery dropdown-item">Gallery</a></li>
+                    <li><a (click)="scrollToSections('about')" class="about dropdown-item">About</a></li>
+                    <li><a (click)="scrollToSections('gallery')" class="gallery dropdown-item">Gallery</a></li>
                     <!-- <li><a class="contact dropdown-item" >Contact</a></li> -->
                 </ul>
                 <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
@@ -296,7 +296,7 @@
                         @if (item.active === '0') {
                         <img [src]="item.itemImageUrl" class="card-img-top greyImage ">
                         <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
-                        <span class="outOfStock mt-3">Out of Stock</span>
+                        <span class="outOfStock">Out of Stock</span>
                         } @else {
                         <img [src]="item.itemImageUrl" class="card-img-top ">
                         @if(!seletedItemId.includes(item.id) && item.active === '1' &&(item.addon.length == 0 &&
@@ -317,7 +317,7 @@
                         }
 
                         @if (item.addon.length >0 || item.variation.length >0){
-                        <span class="customisable mt-3">Customisable</span>
+                        <span class="customisable">Customisable</span>
                         }
                         }
 
@@ -355,7 +355,7 @@
 
     <!-- About -->
 
-    <div class="container my-4 ">
+    <div id="about" class="container my-4 ">
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
@@ -374,7 +374,7 @@
 
     <!-- Gallery -->
 
-    <div class="container my-4 ">
+    <div id="gallery" class="container my-4 ">
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">

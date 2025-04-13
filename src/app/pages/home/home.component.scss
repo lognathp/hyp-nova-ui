@@ -1,10 +1,24 @@
 .gallery-slider{
     display: flex;
     height: 120px;
-    gap: 12px;
+    gap: 16px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    white-space: nowrap;
+    padding: 0 12px;
+    scroll-padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+    .gallery-slider {
+        height: 120px;
+        gap: 12px;
+       
+    }
+
+    .gallery-slider img {
+        width: 80px;
+        height: 80px;
+    }
 }
 
 .gallery-slider img{

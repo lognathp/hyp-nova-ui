@@ -6,6 +6,9 @@ import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-order-tracking',
@@ -16,6 +19,7 @@ import { Location } from '@angular/common';
 })
 export class OrderTrackingComponent implements OnInit {
   contactHyperapps: string = environment.contactHyperapps;
+  
 
   currentOrder: any;
   orderStatus: any;
@@ -28,7 +32,8 @@ export class OrderTrackingComponent implements OnInit {
     public sharedData: SharedService,
     public apiService: ApiService,
     private wsService: WebSocketService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -161,6 +166,7 @@ export class OrderTrackingComponent implements OnInit {
    * Back Button
    */
   goBack():void {
-    this.location.back(); // Moves to the previous route
+    // this.location.back(); // Moves to the previous route
+    this.router.navigate(['/order']);
   }
 }

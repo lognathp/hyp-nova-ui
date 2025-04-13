@@ -729,6 +729,14 @@ searchKeyword: string = "";
     }
   } 
 
+  scrollToSections(id: string) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+  
+
   /**
    * For category slider scroll 
    * @param event 

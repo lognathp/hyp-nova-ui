@@ -67,7 +67,9 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
       center: this.centerPosition,
       zoom: 15,
       disableDefaultUI: false,
-      fullscreenControl: false
+      fullscreenControl: false,
+      gestureHandling: 'greedy',
+  
     };
 
     this.map = new google.maps.Map(document.getElementById('map'), mapOptions);

@@ -53,8 +53,8 @@
                         </span>
                         <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice: flatDiscountpercentage }} </span>
                         } @else {
-                        <span class="priceStrike ">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
-                        <span class="price ">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}  </span>
+                        <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
+                        <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}  </span>
                         }
 
                     </div>
@@ -83,9 +83,9 @@
     <div class="container cartDeal">
         <div class="row ">
             <div class="col-9 coupon-container">
-                <p class="coupon-content">Save ₹30 with HYPERDEAL
-                    <span data-bs-toggle="offcanvas" class="view-coupons" data-bs-target="#couponSheet">View all
-                        coupons</span>
+                <p class="coupon-content mt-1">Save ₹30 with HYPERDEAL
+                    <!-- <span data-bs-toggle="offcanvas" class="view-coupons" data-bs-target="#couponSheet">View all
+                        coupons</span> -->
                 </p>
 
             </div>
