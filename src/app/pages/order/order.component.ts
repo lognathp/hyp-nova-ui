@@ -352,9 +352,9 @@ searchKeyword: string = "";
           }
         });
       }
+
+
       // console.log('kdfkhj',event?.addonVariation.addOnNames,this.foodBasket[this.addItemQunatityIndex]?.addonVariation.addOnNames);
-
-
 
       if (this.addItemQunatityIndex >= 0 && (this.sameAddonItems(event?.addonVariation?.addOnNames, event?.addonVariation?.VatiationAddOnName, this.foodBasket[this.addItemQunatityIndex]?.addonVariation?.addOnNames))) {
         if (this.foodBasket[this.addItemQunatityIndex].addonVariation.varients.id == event?.addonVariation.varients.id) {
@@ -391,6 +391,7 @@ searchKeyword: string = "";
 
     this.addonResponse = [];
     this.variationResponse = [];
+    this.closeOffcanvas('addOn');
   }
 
   /**
@@ -498,6 +499,8 @@ searchKeyword: string = "";
     if (operation == 'add') {
       this.foodBasket.forEach((itemEle: any, index: number) => {
         if (itemEle.item.id == opteditem.id) {
+          console.log(itemEle.item.id, opteditem.id);
+                    
           if (opteditem.addon.length > 0 || opteditem.variation.length > 0) {
             this.indexOfSameItemWithAddons.push(index);
           } else {
@@ -505,18 +508,20 @@ searchKeyword: string = "";
           }
         }
       });
-      console.log(this.addItemQunatityIndex, Itemindex);
+      console.log(this.addItemQunatityIndex, Itemindex,  this.indexOfSameItemWithAddons);
 
     }
 
     if (operation == 'reduce') {
       if (opteditem.addon.length > 0 || opteditem.variation.length > 0) {
         // this.Showfoodcart = true;
+        this.openOffcanvas('verifySameAddon');
       } else {
         this.reduceItemQuantity();
       }
     } else if ((opteditem.addon.length > 0 || opteditem.variation.length > 0) && operation == 'add') {
       this.sameAddon = true;
+      this.openOffcanvas('verifySameAddon');
       // this.Showfoodcart = false;
       this.selectedItemWithAddon = JSON.parse(JSON.stringify(opteditem));
     } else {
@@ -524,6 +529,19 @@ searchKeyword: string = "";
     }
 
   }
+
+  /**
+   * Selected Item for new addon
+   */
+  addItemwithNewAddon(){
+    // this.sameAddon = false;
+    console.log("New Aaddon clicked");
+    
+    this.closeOffcanvas('verifySameAddon');
+    this.openOffcanvas('addOn');
+    this.selectItem(this.selectedItemWithAddon);
+}
+
   /**
     * To store food basket data in local storage so that on going back to menu-page data can be taken from local storage 
     */
@@ -599,7 +617,7 @@ searchKeyword: string = "";
     let is_equal: Boolean = (newAddonTemp.length == existingItemAddon.length) && sortedArray1.every((element: any, index: number) => {
       return element === sortedArray2[index];
     });
-
+    console.log(is_equal,'is_equal');
     return is_equal;
   }
 

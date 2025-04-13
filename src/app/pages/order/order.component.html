@@ -501,7 +501,7 @@
         <div class="offcanvas-body p-0">
             <ul class="foodBtm">
                 @for (category of menuCategoryData; track $index){
-                <li class="cursor-pointer"  data-bs-dismiss="offcanvas" (click)="scrollToSection($index)">
+                <li class="cursor-pointer" data-bs-dismiss="offcanvas" (click)="scrollToSection($index)">
                     <p class=""
                         [ngClass]="{'menuItemsCategory' : selectedCategoryIndex == $index, 'menuItems': selectedCategoryIndex != $index}">
                         {{category!.categoryName | titlecase }} <span> {{category.items.length}} </span></p>
@@ -541,6 +541,27 @@
             (addedItem)="getAddedItem($event)"></app-variation-addon>
         }
     </div>
+
+    <!-- Verify Variation Addon -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="verifySameAddon">
+        <div class="modal-dialog overflow-hidden">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="../../../../assets/images/icons/close3.png " ></button> -->
+                    <div class="outletChangeContainer">
+                        <p class="title">Customisable Item </p>
+                        <p class="title2"> The selected Item has Variation / Addon</p>
+                        <span class="text1">Select same Variation /Addon or New.</span>
+                        <div class="modalBtns">
+                            <button class="btn plainButton w-50" (click)="addItemQuantity('same')">Use Same</button>
+                            <button class="btn solidButton w-50" (click)="addItemwithNewAddon()" >New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Verify Variation Addon -->
 
     <!-- Select Outlet Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectOutlet">
