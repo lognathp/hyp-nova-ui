@@ -630,20 +630,34 @@ float: right;
 }
 
 .price {
-    font-size: 15px;
-    font-weight: 600;
-    color: #D20500;
-    vertical-align: middle;
-    padding: 0 2px;
-}
-
-.priceStrike {
     font-size: 13px;
+    font-weight: 600;
+    color: #000000;
+    padding: 0 2px;
+    line-height: 1.2;
+  }
+  
+  .priceStrike {
+    font-size: 12px;
     font-weight: 400;
-    padding-left: 6px;
     text-decoration: line-through;
-    vertical-align: middle;
-}
+    color: #888;
+    padding: 0 2px;
+    line-height: 1.2;
+  }
+  
+  .price-wrapper {
+    display: flex;
+    flex-direction:row;
+    align-items:flex-start;
+    gap: 1px;
+    margin-top: 4px;
+  }
+  
+
+
+
+
 
 .foodDes {
     font-size: 12px;
@@ -679,17 +693,7 @@ float: right;
     flex-direction: column;
 }
 
-.addButton {
-    border: 1px solid #D20500;
-    font-size: 13px;
-    width: 80%;
-    background-color: #FFECE7;
-    color: #D20500;
-    font-weight: 600;
-    border-radius: 8px;
-    position: relative;
-    top: -15px;
-}
+
 
 .customisable {
     color: #7A7A7A;
@@ -721,6 +725,42 @@ float: right;
 .greyImage {
     filter: grayscale(100%);
 }
+
+.addButton {
+    border: 1px solid #D20500;
+    font-size: 13px;
+    width: 80%;
+    background-color: #FFECE7;
+    color: #D20500;
+    font-weight: 600;
+    border-radius: 8px;
+    position: relative;
+    top: -15px;
+}
+
+
+.qtyButton {
+    border: 1px solid #D20500;
+    font-size: 13px;
+    width: 80%;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    position: relative;
+    top: -15px;
+    background-color: #D20500;
+}
+
+.qtyButton>span:first-child {
+    float: left;
+    font-size: 13px;
+}
+
+.qtyButton>span:last-child {
+    float: right;
+    font-size: 13px;
+}
+
 
 .outOfStockDes {
     font-weight: 500;
@@ -1324,28 +1364,6 @@ float: right;
     margin-right: 0px;
     margin-left: 8px;
     vertical-align: text-bottom;
-}
-
-.qtyButton {
-    border: 1px solid #D20500;
-    font-size: 13px;
-    width: 80%;
-    color: #fff;
-    font-weight: 600;
-    border-radius: 8px;
-    position: relative;
-    top: -15px;
-    background-color: #D20500;
-}
-
-.qtyButton>span:first-child {
-    float: left;
-    font-size: 13px;
-}
-
-.qtyButton>span:last-child {
-    float: right;
-    font-size: 13px;
 }
 
 #addOn {
@@ -2330,8 +2348,11 @@ input[type="radio"] {
 }
 
 .mapAddress {
-    height: 80vh;
+    height: 400px
+
 }
+
+
 
 .mapAddress>iframe {
     width: 100%;
@@ -2369,7 +2390,7 @@ input[type="radio"] {
 .addressDetailPageContainer {
     background-color: #fff;
     padding: 0px;
-    margin: 15px 0;
+    margin: 10px 0;
     border-radius: 20px;
 }
 
@@ -2388,6 +2409,7 @@ input[type="radio"] {
 }
 
 .addressDetailPageContainer .mapAddress {
+   
     height: auto;
 }
 
@@ -2395,6 +2417,7 @@ input[type="radio"] {
     width: 100%;
     height: 100%;
     border: none;
+   
     border: 0;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;

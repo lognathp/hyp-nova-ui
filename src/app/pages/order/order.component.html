@@ -23,7 +23,7 @@
                     <div class="restauran-brancht-info">
                         <span class="outlet" data-bs-toggle="offcanvas" data-bs-target="#selectOutlet"
                             (click)="checkChangeBranch = true;" title="Click to View Branches">Outlet: {{
-                            branchData?.restaurantName }}  </span>
+                            branchData?.restaurantName }} </span>
                         <span class="badge storeOpen ">Open</span>
                     </div>
                     <!-- (click)="showBranches()" -->
@@ -133,14 +133,13 @@
                 <div class="col-md-12 ">
                     <div class="card bg-transparent border-0 ">
                         <div class="card-body p-0 ">
-                            <div class="sliderCategory d-flex overflow-auto"
-                            (wheel)="onScroll($event)"
-                            #sliderContainer>
+                            <div class="sliderCategory d-flex overflow-auto" (wheel)="onScroll($event)"
+                                #sliderContainer>
                                 @for (category of menuCategoryData; track $index){
-                                    <div class="cursor-pointer" title="Click Category" (click)="scrollToSection($index)">
-                                        <img src="assets/images/food/food.jpg " />
-                                        <span class="categoryText "> {{category!.categoryName | titlecase }}</span>
-                                    </div>
+                                <div class="cursor-pointer" title="Click Category" (click)="scrollToSection($index)">
+                                    <img src="assets/images/food/food.jpg " />
+                                    <span class="categoryText "> {{category!.categoryName | titlecase }}</span>
+                                </div>
                                 }
                                 <!-- <div>
                                     <img src="assets/images/food/food.jpg " />
@@ -290,37 +289,46 @@
                         </p>
                         <!-- <span class="foodDesMore ">more</span> -->
                     </div>
-                    <div class="col-5 col-md-5 food-item"
-                        [ngClass]="{'foodItemImage': item.itemImageUrl != '' , 'foodItemNoImage' :  item.itemImageUrl == ''}">
-                        <!-- <img src="assets/images/food/food.jpg " class="card-img-top "> -->
+                    <div class="col-5 col-md-5 food-item" [ngClass]="{
+                               'foodItemImage': !!item.itemImageUrl,
+                               'foodItemNoImage': !item.itemImageUrl
+                             }">
+                        <!-- If item is inactive -->
                         @if (item.active === '0') {
-                        <img [src]="item.itemImageUrl" class="card-img-top greyImage ">
-                        <p class="badge outOfStockDes ">Available at 12 PM <br> tomorrow</p>
+                        @if (item.itemImageUrl) {
+                        <img [src]="item.itemImageUrl" class="card-img-top greyImage">
+                        }
+                        <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
                         <span class="outOfStock">Out of Stock</span>
-                        } @else {
-                        <img [src]="item.itemImageUrl" class="card-img-top ">
-                        @if(!seletedItemId.includes(item.id) && item.active === '1' &&(item.addon.length == 0 &&
-                        item.variation.length == 0)){
-                        <button class="btn btn-transparent addButton" (click)="selectItem(item)"> + Add</button>
                         }
-                        @if ((item.addon.length >0 || item.variation.length >0) && (!seletedItemId.includes(item.id)) ){
-                        <button class="btn btn-transparent addButton " data-bs-toggle="offcanvas"
-                            data-bs-target="#addOn" (click)="selectItem(item)"> + Add</button>
+                        @else {
+                        @if (item.itemImageUrl) {
+                        <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
                         }
-                        @if (seletedItemId.includes(item.id) && item.active === '1'){
-                        <button class="btn btn-transparent qtyButton ">
-                            <span (click)="sameAddonConfirmation(item, $index,'reduce')">-</span>
+
+                        @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
+                        item.variation.length == 0) {
+                        <button class="btn btn-transparent addButton " (click)="selectItem(item)"> + Add</button>
+                        }
+
+                        @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
+                        {
+                        <button class='btn btn-transparent addButton ' data-bs-toggle="offcanvas" data-bs-target="#addOn"
+                            (click)="selectItem(item)"> + Add</button>
+                        }
+
+                        @if (seletedItemId.includes(item.id) && item.active === '1') {
+                        <button class="btn btn-transparent qtyButton">
+                            <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
                             {{item | displayQuantity}}
-                            <span (click)="sameAddonConfirmation(item, $index,'add')">+</span>
+                            <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
                         </button>
-
                         }
 
-                        @if (item.addon.length >0 || item.variation.length >0){
+                        @if (item.addon.length > 0 || item.variation.length > 0) {
                         <span class="customisable">Customisable</span>
                         }
                         }
-
                     </div>
                 </div>
             </div>
