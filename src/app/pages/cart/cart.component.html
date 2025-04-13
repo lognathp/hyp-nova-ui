@@ -48,6 +48,7 @@
                             {{basketitem.item.quantity}}
                             <span (click)="sameAddonConfirmation(basketitem.item, $index,'add')">+</span>
                         </button>
+                        <div class="price-wrapper">
                         @if(basketitem?.addonVariation?.varients){
                         <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0' }}
                         </span>
@@ -56,7 +57,7 @@
                         <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
                         <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}  </span>
                         }
-
+                        </div>
                     </div>
                 </div>
             </div>
