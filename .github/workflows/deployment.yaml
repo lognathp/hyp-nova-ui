@@ -58,5 +58,5 @@ jobs:
           docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:staging)
           docker rmi lognathp/hyp-nova-ui:staging
           docker pull lognathp/hyp-nova-ui:staging
-          docker run -p 4200:80 -d lognathp/hyp-nova-ui:staging
+          docker run -d -p 4200:80 lognathp/hyp-nova-ui:staging
         EOF
