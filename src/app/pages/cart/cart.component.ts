@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, Subject, Subscription } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -10,6 +10,7 @@ import { SharedService } from '../../core/services/shared.service';
 import { take } from 'rxjs/operators';
 import { QuoteLoaderComponent } from "../../components/loaders/quote-loader/quote-loader.component";
 import { SomethingWentWrongComponent } from "../../components/errors/something-went-wrong/something-went-wrong.component";
+import { WebSocketService } from '../../core/services/websocket.service';
 
 @Component({
   selector: 'app-cart',
@@ -66,7 +67,7 @@ export class CartComponent implements OnInit, AfterViewInit {
     isMakePaymentEnabled: boolean = false;
 
     restaurentActive: boolean = true;
-    // private wsSubscription!: Subscription;
+    private wsSubscription!: Subscription;
     workingHours: boolean = true;
 
     indexOfSameItemWithAddons: any = [];
@@ -77,7 +78,7 @@ export class CartComponent implements OnInit, AfterViewInit {
       private router: Router,
       // private messageService: MessageService,
       // private primengConfig: PrimeNGConfig,
-      // private wsService: WebSocketService,
+      private wsService: WebSocketService,
   ) { }
 
 
@@ -94,9 +95,12 @@ export class CartComponent implements OnInit, AfterViewInit {
       //     }
       //   });
       this.checkWorkingHours();
-      // this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
-      //     this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
-      // });
+      this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+          this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
+      });
+
+
+
 
       const foodItem: any = localStorage.getItem("foodBasket");
       const menuData: any = localStorage.getItem("menu");

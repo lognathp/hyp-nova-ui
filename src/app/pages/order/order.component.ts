@@ -1,4 +1,4 @@
-import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SelectLocationComponent } from "../../components/select-location/select-location.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from "../../core/pipes/search-filter.pipe";
 import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
 import { BranchChangeComponent } from "../../components/alert-box/branch-change/branch-change.component";
+import { WebSocketService } from '../../core/services/websocket.service';
+import { Subscription } from 'rxjs';
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -36,7 +38,7 @@ declare var bootstrap: any; // Bootstrap is using from assets
     RouterLink,
     RouterModule,
     BranchChangeComponent
-],
+  ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
@@ -71,18 +73,21 @@ export class OrderComponent implements OnInit {
   availableBranchData: any;
   vendorData: any;
   openSelectBranch: boolean = false;
-searchKeyword: string = "";
+  searchKeyword: string = "";
   itemFilterType: string = "";
   checkChangeBranch: boolean = false;
+
+  private wsSubscription!: Subscription;
 
   constructor(
     public apiService: ApiService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private wsService: WebSocketService,
   ) { }
 
 
-  ngOnInit():void {
+  ngOnInit(): void {
 
     const selectedLocation = localStorage.getItem('selectedLocation');
     console.log('oreder-Componet-init', selectedLocation)
@@ -102,17 +107,23 @@ searchKeyword: string = "";
     }
     const branchData: any = localStorage.getItem("availableBranches");
     this.availableBranchData = JSON.parse(branchData);
-    
+
     console.log(this.restaurentId, this.partnerData?.restaurants?.length, this.availableBranchData?.length);
-    
+
     if ((this.restaurentId == undefined || isNaN(this.restaurentId)) && this.partnerData?.restaurants?.length > 1 && this.availableBranchData.length > 0) {
       this.openSelectBranch = true;
       this.openOffcanvas('selectOutlet');
     } else {
       this.ngAfterViewInit();
     }
-    
 
+    this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+      this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
+    });
+
+    this.wsSubscription = this.wsService.getItemStatusUpdates().subscribe((webSocketResponse: any) => {
+      this.updateItemStock(webSocketResponse);
+    });
 
   }
 
@@ -142,14 +153,15 @@ searchKeyword: string = "";
       }
 
       this.getFoodMenuCategoryApi();
-      this.openSelectBranch  = false;
+      this.openSelectBranch = false;
     }
     else {
-      console.log(this.availableBranchData, this.partnerData.restaurantDetails,'multibranch');
+      console.log(this.availableBranchData, this.partnerData.restaurantDetails, 'multibranch');
 
     }
-
   }
+
+
   ngDoCheck() {
 
     const localstrfoodItem: any = localStorage.getItem("foodBasket");
@@ -171,8 +183,8 @@ searchKeyword: string = "";
       // if (index == 99) {
       //   this.ShowBranch();
       // } else {
-      console.log(this.restaurentId , this.partnerData.restaurantDetails[index].id);
-      if(this.restaurentId  != parseInt(this.partnerData.restaurantDetails[index].id) ) {
+      console.log(this.restaurentId, this.partnerData.restaurantDetails[index].id);
+      if (this.restaurentId != parseInt(this.partnerData.restaurantDetails[index].id)) {
         localStorage.removeItem("foodBasket");
         this.foodBasket = [];
         this.seletedItemId = [];
@@ -294,6 +306,23 @@ searchKeyword: string = "";
   }
 
   /**
+   * Check Item stock
+   * @param itemUpdateMessage 
+   */
+
+  updateItemStock(itemUpdateMessage: any): void {
+    console.log(JSON.stringify(itemUpdateMessage))
+    const { itemID, inStock } = itemUpdateMessage;
+    const activeStatus = inStock ? '1' : '0';
+   this.menuCategoryData[this.selectedCategoryIndex].items.forEach((item: { id: any; active: string; }) => {
+        if (itemID.includes(item.id)) {
+            item.active = activeStatus;
+        }
+    });
+}
+
+
+  /**
      * To select the food category menu
      * @param selected : Data of selected menu category
      * @param index : Index of that respective selected array value
@@ -371,7 +400,7 @@ searchKeyword: string = "";
 
       } else {
         event.addonVariation?.quantity != undefined ? this.selectedItem.quantity = event.addonVariation.quantity : this.selectedItem.quantity = 1;
-         
+
         const addItem = {
           categoryId: this.selectedCategory.id,
           item: this.selectedItem,
@@ -500,7 +529,7 @@ searchKeyword: string = "";
       this.foodBasket.forEach((itemEle: any, index: number) => {
         if (itemEle.item.id == opteditem.id) {
           console.log(itemEle.item.id, opteditem.id);
-                    
+
           if (opteditem.addon.length > 0 || opteditem.variation.length > 0) {
             this.indexOfSameItemWithAddons.push(index);
           } else {
@@ -508,7 +537,7 @@ searchKeyword: string = "";
           }
         }
       });
-      console.log(this.addItemQunatityIndex, Itemindex,  this.indexOfSameItemWithAddons);
+      console.log(this.addItemQunatityIndex, Itemindex, this.indexOfSameItemWithAddons);
 
     }
 
@@ -533,14 +562,14 @@ searchKeyword: string = "";
   /**
    * Selected Item for new addon
    */
-  addItemwithNewAddon(){
+  addItemwithNewAddon() {
     // this.sameAddon = false;
     console.log("New Aaddon clicked");
-    
+
     this.closeOffcanvas('verifySameAddon');
     this.openOffcanvas('addOn');
     this.selectItem(this.selectedItemWithAddon);
-}
+  }
 
   /**
     * To store food basket data in local storage so that on going back to menu-page data can be taken from local storage 
@@ -560,17 +589,17 @@ searchKeyword: string = "";
     const tempFoodBasket = JSON.parse(JSON.stringify(this.foodBasket));
     tempFoodBasket.forEach((ele: any) => {
       console.log(ele);
-      
+
       if (ele.item.quantity == undefined) {
         // Item price will be 0 if there is variation
         if (ele.addonVariation != undefined) {
           console.log(ele.addonVariation?.addons);
-          
+
           this.cartItemPrice = this.cartItemPrice + parseFloat(ele.addonVariation?.varients.price);
           // if(ele.addonVariation?.addons?.data.length > 0){
           //  let addonPrice =  this.getSelectedAddonPrices(ele.addonVariation?.addonDetails, ele.addonVariation?.addons);
           //  console.log('addonPrice',addonPrice);
-           
+
           // }
         } else {
           this.cartItemPrice = this.cartItemPrice + parseFloat(ele.item.price);
@@ -579,17 +608,17 @@ searchKeyword: string = "";
         // Item price will be 0 if there is variation
         if (ele.addonVariation != undefined && ele.addonVariation?.varients != undefined) {
           this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.addonVariation.varients.price) * parseInt(ele.item.quantity));
-          
+
         } else {
           this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.item.price) * parseInt(ele.item.quantity));
         }
 
-        if(ele.addonVariation?.addons != undefined ){
-          let addonPrice:any =  this.getSelectedAddonPrices(ele.addonVariation?.addonDetails, ele.addonVariation?.addons.data);
-          console.log('addonPrice',addonPrice);
+        if (ele.addonVariation?.addons != undefined) {
+          let addonPrice: any = this.getSelectedAddonPrices(ele.addonVariation?.addonDetails, ele.addonVariation?.addons.data);
+          console.log('addonPrice', addonPrice);
           this.cartItemPrice = this.cartItemPrice + (parseFloat(addonPrice) * parseInt(ele.item.quantity));
-          
-         }
+
+        }
 
       }
     });
@@ -617,7 +646,7 @@ searchKeyword: string = "";
     let is_equal: Boolean = (newAddonTemp.length == existingItemAddon.length) && sortedArray1.every((element: any, index: number) => {
       return element === sortedArray2[index];
     });
-    console.log(is_equal,'is_equal');
+    console.log(is_equal, 'is_equal');
     return is_equal;
   }
 
@@ -665,13 +694,13 @@ searchKeyword: string = "";
       }
       // const backdrop = document.querySelector('.offcanvas-backdrop');
       const backdrops = document.querySelectorAll('.offcanvas-backdrop');
-      console.log(backdrops,'backdrops');
-      
-      if ( backdrops) {
+      console.log(backdrops, 'backdrops');
+
+      if (backdrops) {
         // backdrop.remove();
-        backdrops.forEach((backdrop:any) => backdrop.remove());  
+        backdrops.forEach((backdrop: any) => backdrop.remove());
       }
-      
+
     }
   }
 
@@ -696,56 +725,56 @@ searchKeyword: string = "";
   }
 
   public getSelectedAddonPrices(selectedData: any, addonGroups: any[]) {
-    console.log(selectedData,addonGroups);
+    console.log(selectedData, addonGroups);
     let price = 0;
-    selectedData.map((group:any,index:number) => {
-      group.addonItems.forEach((item:any) =>{
-        if(addonGroups[index].selectedAddon.includes(item.id)){
-          console.log(item.addonItemPrice,'dugufusdfhsj');
+    selectedData.map((group: any, index: number) => {
+      group.addonItems.forEach((item: any) => {
+        if (addonGroups[index].selectedAddon.includes(item.id)) {
+          console.log(item.addonItemPrice, 'dugufusdfhsj');
           price = item.addonItemPrice;
-          
+
         }
       });
     });
     return price;
     // return selectedData.map((group:any) => {
     //   const matchingGroup = addonGroups.find(addonGroup => addonGroup.id === group.addonGroupId);
-      
+
     //   if (matchingGroup) {
     //     return group.selectedAddon.map((selectedId:any) => {
     //       const matchingAddon = matchingGroup.addonItems.find((item:any) => item.id === selectedId);
     //       return matchingAddon ? { id: selectedId, price: matchingAddon.addonItemPrice } : null;
     //     }).filter(Boolean);
     //   }
-      
+
     //   return [];
     // }).flat();
   }
   /**
    * Veg Non-veg Filter
    */
-  public vegNonvegFilter(type:string){
-    this.itemFilterType == type ? this.itemFilterType = "" : this.itemFilterType = type ;
+  public vegNonvegFilter(type: string) {
+    this.itemFilterType == type ? this.itemFilterType = "" : this.itemFilterType = type;
     console.log(this.itemFilterType);
-    
+
   }
 
   /**
    * Change branch action event
    * @param event Event Action
    */
-  public getBranchSelAction(event:any):void{
+  public getBranchSelAction(event: any): void {
     console.log(event);
     // this.checkChangeBranch = false ;
-    if(event.action == 'continue'){
+    if (event.action == 'continue') {
       this.showBranches();
       this.openOffcanvas('selectOutlet');
       this.checkChangeBranch = false;
-    } else{
+    } else {
       this.closeOffcanvas('selectOutlet');
       // this.checkChangeBranch = false ;
     }
-  } 
+  }
 
   scrollToSections(id: string) {
     const el = document.getElementById(id);
@@ -753,7 +782,7 @@ searchKeyword: string = "";
       el.scrollIntoView({ behavior: 'smooth' });
     }
   }
-  
+
 
   /**
    * For category slider scroll 
