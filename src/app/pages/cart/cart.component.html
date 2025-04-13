@@ -39,7 +39,9 @@
                             [ngClass]="{'veg': basketitem.item.itemAttributeId == '1' , 'nonVeg' :  basketitem.item.itemAttributeId == '2' || basketitem.item.itemAttributeId == '24'}">
                             {{basketitem.item.itemName}} </h5>
                         <span [ngClass]="{'addon' : basketitem.addonVariation}">
-                            {{basketitem.addonVariation?.varients?.name}} </span>
+                            {{basketitem.addonVariation?.varients?.name}} 
+                            {{basketitem.addonVariation?.addOnNames}}
+                        </span>
 
                     </div>
                     <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
