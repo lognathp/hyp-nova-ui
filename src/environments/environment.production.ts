@@ -2,7 +2,7 @@ export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
     restId:'14490',
-    partnerId:'ju8tCXSeun',
+    partnerId:'7ycrA3dec5',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Hyperapps',
