@@ -34,10 +34,8 @@
               "src/assets/css/carousel.css",
               "src/assets/css/bootstrap.css",
               "src/assets/css/new-theme.css"
-              
             ],
             "scripts": [
-             
               "src/assets/js/jquery.js",
               "src/assets/js/carousel.js",
               "src/assets/js/carousel-category.js",
@@ -58,7 +56,7 @@
                   "maximumError": "4kb"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "sourceMap": true,
               "fileReplacements": [
                 {
@@ -89,7 +87,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-         "configurations": {
+          "configurations": {
             "production": {
               "buildTarget": "hyperapps:build:production"
             },
