@@ -582,7 +582,7 @@ export class CartComponent implements OnInit, AfterViewInit {
             //   } else if ((opteditem.addon.length > 0 || opteditem.variation.length > 0) && operation == 'add') {
             //       this.sameAddon = true;
             //       this.selectedItemWithAddon = JSON.parse(JSON.stringify(opteditem));
-            //   } else {
+              } else {
             this.addItemQuantity();
         }
     }
@@ -682,6 +682,8 @@ export class CartComponent implements OnInit, AfterViewInit {
                 this.foodBasket.push(newItem);
             }
 
+
+
             // if (this.sameAddonItems(event.addonVariation.addOnNames, this.foodBasket[this.addItemQunatityIndex].addonVariation.addOnNames)) {
             //     this.addItemQuantity();
             // } else {
@@ -696,7 +698,7 @@ export class CartComponent implements OnInit, AfterViewInit {
             //     this.foodBasket.push(newItem);
 
             // }
-
+           
             this.storefoodBasketData();
             this.prepareOrderItems();
             this.addonResponse = [];
