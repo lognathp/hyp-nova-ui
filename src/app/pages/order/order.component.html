@@ -1,4 +1,4 @@
-<div class="scrollable">
+<div class="scrollable" [ngClass]="{'storeClosed':restaurentActive == false}">
     <!-- Header -->
     <div class="topSection">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
@@ -47,7 +47,22 @@
             </div>
         </nav>
 
-
+        @if(!restaurentActive){
+            <div class="container my-2 bg-transparent outletclosedContainer">
+                <div class="outletClosed">
+                    <div class="row p-0">
+                        <div class="col-3 p-0">
+                            <img src="assets/images/icons/storeClosed.png ">
+                        </div>
+                        <div class="col-9 pad">
+                            <button>change</button>
+                            <p class="title">Oops! Outlet Closed</p>
+                            <p>This outlet isn’t accepting orders right now. We’ll be back at 11:00 AM.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
         <!-- Search Box -->
 
         <div class="container my-2 bg-transparent ">

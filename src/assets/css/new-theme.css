@@ -3737,6 +3737,65 @@ input {
     }
 }
 
+.storeClosed img {
+    filter: grayscale(100%);
+}
+
+.storeClosed .topPickOffer {
+    background-color: #5a5a5a;
+}
+
+.storeClosed .topPicksAddButton,
+.storeClosed .addButton {
+    background-color: #F4F4F4;
+    border: solid 1px #CCCCCC;
+    color: #AEAEAE;
+}
+
+.outletclosedContainer {
+    padding: 0px 20px 0 20px;
+}
+
+.outletClosed {
+    margin: 0px;
+    border: dotted 2px #894A0F;
+    background-color: #E87A15;
+    padding: 0px;
+    border-radius: 12px;
+}
+
+.outletClosed button {
+    float: right;
+    color: #fff;
+    background-color: #000;
+    border-radius: 8px;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.outletClosed img {
+    width: 100%;
+    filter: unset;
+}
+
+.outletClosed .pad {
+    padding: 0px 16px 0px 16px;
+}
+
+.outletClosed p {
+    font-size: 10px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0px;
+}
+
+.outletClosed .title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0px;
+    margin-top: 8px
+}
+
 .offcanvas-bottom {
     overflow-y: auto !important;
 }

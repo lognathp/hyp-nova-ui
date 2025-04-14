@@ -341,7 +341,7 @@ export class CartComponent implements OnInit, AfterViewInit {
                                     }
                                     
                                 }
-                            })
+                            });
                             // if (addonele[Object.keys(addonele)[0]] == true) {
 
 
