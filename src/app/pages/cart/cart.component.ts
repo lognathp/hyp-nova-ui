@@ -312,6 +312,7 @@ export class CartComponent implements OnInit, AfterViewInit {
                     console.log(element?.addonVariation, 'element?.addonVariation');
 
                     if (element?.addonVariation?.varients == undefined) {
+                       
                         // item['orderAddonItems'] = {
                         //     details: []
                         // }
@@ -335,7 +336,10 @@ export class CartComponent implements OnInit, AfterViewInit {
 
                                     }
                                     item.orderAddonItems.push(detail);
-                                    this.foodBasket[index].addonVariation?.addOnNames.push(items.addonItemName)
+                                    if(!this.foodBasket[index].addonVariation?.addOnNames.includes(items.addonItemName)){
+                                        this.foodBasket[index].addonVariation?.addOnNames.push(items.addonItemName)
+                                    }
+                                    
                                 }
                             })
                             // if (addonele[Object.keys(addonele)[0]] == true) {
@@ -466,7 +470,7 @@ export class CartComponent implements OnInit, AfterViewInit {
                     this.showAddAddressButton = true;
 
                     // this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
-                    
+
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 }
 
