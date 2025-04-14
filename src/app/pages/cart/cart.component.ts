@@ -469,8 +469,9 @@ export class CartComponent implements OnInit, AfterViewInit {
                     this.unKnownError = true;
                     this.showAddAddressButton = true;
 
-                    // this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
+                    // // this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
 
+                    
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 }
 
