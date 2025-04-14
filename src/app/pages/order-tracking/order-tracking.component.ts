@@ -3,7 +3,7 @@ import { SharedService } from '../../core/services/shared.service';
 import { ApiService } from '../../core/services/api.service';
 import { WebSocketService } from '../../core/services/websocket.service';
 import { Subscription } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-order-tracking',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe,CommonModule],
   templateUrl: './order-tracking.component.html',
   styleUrl: './order-tracking.component.scss'
 })
