@@ -1,4 +1,4 @@
-import { Component, DoCheck, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, DoCheck, EventEmitter, NgZone, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
@@ -50,6 +50,7 @@ export class SelectLocationComponent implements OnInit, DoCheck {
   constructor(
     public apiService: ApiService,
     private router: Router,
+    private ngZone: NgZone
     // private wsService: WebSocketService
   ) { }
 
@@ -206,7 +207,10 @@ export class SelectLocationComponent implements OnInit, DoCheck {
     this.editLocationValue = "";
     this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
     this.searchTerm = '';
-    this.router.navigate(['/order']); 
+    this.ngZone.run(() => {
+      this.router.navigate(['/order']); 
+    });
+    
     // console.log(this.selectedLocation);
     
     // this.enableMapEdit = fal;

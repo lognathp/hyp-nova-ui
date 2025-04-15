@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { SelectLocationComponent } from "../../components/select-location/select-location.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
@@ -84,13 +84,16 @@ export class OrderComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private wsService: WebSocketService,
-  ) { }
+    private ngZone: NgZone
+  ) {
+
+   }
 
 
   ngOnInit(): void {
 
     const selectedLocation = localStorage.getItem('selectedLocation');
-    console.log('oreder-Componet-init', selectedLocation)
+    // console.log('oreder-Componet-init', selectedLocation)
     if (!selectedLocation || selectedLocation == undefined) {
       this.router.navigate(['/home']);
     }
@@ -102,13 +105,13 @@ export class OrderComponent implements OnInit {
       this.partnerData = JSON.parse(vendorDetail);
       let restId: any = localStorage.getItem("selectedRestId")
       this.restaurentId = parseInt(restId);
-      console.log(this.partnerData, this.restaurentId);
+      // console.log(this.partnerData, this.restaurentId);
 
     }
     const branchData: any = localStorage.getItem("availableBranches");
     this.availableBranchData = JSON.parse(branchData);
 
-    console.log(this.restaurentId, this.partnerData?.restaurants?.length, this.availableBranchData?.length);
+    // console.log(this.restaurentId, this.partnerData?.restaurants?.length, this.availableBranchData?.length);
 
     if ((this.restaurentId == undefined || isNaN(this.restaurentId)) && this.partnerData?.restaurants?.length > 1 && this.availableBranchData.length > 0) {
       this.openSelectBranch = true;
@@ -128,6 +131,7 @@ export class OrderComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+
     if (this.restaurentId != undefined && !isNaN(this.restaurentId)) {
 
       if (!isNaN(this.restaurentId)) {
@@ -142,18 +146,23 @@ export class OrderComponent implements OnInit {
           this.vendorData.restaurantDetails.forEach((brdata: any) => {
             if (brdata.id == this.restaurentId) {
               this.branchData = brdata;
-
-              console.log(this.branchData);
+              // console.log(this.branchData);
 
             }
           });
 
         }
-        console.log(' this.workingHours', this.workingHours, this.restaurentId, this.branchData);
+        // console.log(' this.workingHours', this.workingHours, this.restaurentId, this.branchData);
       }
+
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+        document.body.style.overflow = 'auto'; // ensure scroll is enabled
+      }, 0);
 
       this.getFoodMenuCategoryApi();
       this.openSelectBranch = false;
+     
     }
     else {
       console.log(this.availableBranchData, this.partnerData.restaurantDetails, 'multibranch');
@@ -270,7 +279,8 @@ export class OrderComponent implements OnInit {
       error: (error) => { console.log(error); }
 
     });
-
+   
+    
   }
 
   /**
@@ -475,7 +485,9 @@ export class OrderComponent implements OnInit {
   public addItemQuantity(equivalent: string): void {
     console.log('add qnty method', this.foodBasket[this.addItemQunatityIndex], this.addItemQunatityIndex);
     if (equivalent == "same") {
-      // this.Showfoodcart = true;
+     
+      // In case of Item with Added is selected with different configurations to avoid confusion redirected to cart page so user can select as wanted
+      this.router.navigate(['/cart']);  
     }
     this.sameAddon = false;
     if (this.foodBasket[this.addItemQunatityIndex]) {
@@ -545,6 +557,7 @@ export class OrderComponent implements OnInit {
       if (opteditem.addon.length > 0 || opteditem.variation.length > 0) {
         // this.Showfoodcart = true;
         this.openOffcanvas('verifySameAddon');
+        this.addItemQunatityIndex = Itemindex;
       } else {
         this.reduceItemQuantity();
       }
