@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleMapLoaderService {
 
-  // myapiKey = 'AIzaSyDJtFMqXk-R-SBEoP2U9I0ISIWSImLjM_U'; // API Key
-  myapiKey = 'AIzaSyDBKXWYEUwFAMbratiQrRAndG4WyXLL6mY'; // API Key
+  myapiKey = environment.googleMapApiKey;
+
   private apiKey: string = this.myapiKey; 
   private scriptLoaded = false;
 

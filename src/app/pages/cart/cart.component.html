@@ -114,22 +114,23 @@
                         <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum |
                                 number:'1.2-2'}}</span></p>
                     </li>
-                    @if (!showAddAddressButton){
                     <li>
-                        <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge |
+                        <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount |
                                 number:'1.2-2'}}</span></p>
                     </li>
-                    }
                     <li>
                         <p class="cartVal">CGST<span>₹ {{orderPriceDetails.tax.CGST | number:'1.2-2'}}</span></p>
                     </li>
                     <li>
                         <p class="cartVal">SGST<span>₹ {{orderPriceDetails.tax.SGST | number:'1.2-2'}}</span></p>
                     </li>
-                    <li>
-                        <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount |
-                                number:'1.2-2'}}</span></p>
-                    </li>
+                    
+                    @if (!showAddAddressButton){
+                        <li>
+                            <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge |
+                                    number:'1.2-2'}}</span></p>
+                        </li>
+                        }
                     <li>
                         <p class="cartValCategory">To Pay<span>₹ {{orderPriceDetails.toPay | number:'1.2-2'}}</span></p>
                     </li>
