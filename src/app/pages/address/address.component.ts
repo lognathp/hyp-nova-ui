@@ -70,7 +70,7 @@ export class AddressComponent implements OnInit, AfterViewInit {
    * Back Button
    */
   goBack():void {
-    this.location.back(); // Moves to the previous route
+    this.router.navigate(['/order']);
   }
 
   ngOnInit(): void {

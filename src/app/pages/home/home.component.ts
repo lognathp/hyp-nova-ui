@@ -21,7 +21,9 @@ export class HomeComponent {
 
 
   ngOnInit(): void {
-    localStorage.clear();
+    // localStorage.clear();
+    localStorage.removeItem('foodBasket');
+
     let url = window.location.href;
     let domain = new URL(url).origin;
     console.log('isDevMode', isDevMode());

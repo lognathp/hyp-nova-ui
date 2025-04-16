@@ -55,7 +55,7 @@ export class AddressFormComponent {
    * Back Button
    */
   goBack():void {
-    this.addressSaved.emit('back')
+    this.router.navigate(['/order']);
   }
   ngOnInit() {
     // let restId: any = localStorage.getItem("selectedRestId")

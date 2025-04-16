@@ -17,6 +17,7 @@ export class PaymentComponent {
   private razorpay_key: string = Config.razorpay_key
 
   orderSaveResponse:any;
+  partnerData: any;
 
 // orderSaveResponse: any;
   constructor(
@@ -35,6 +36,10 @@ export class PaymentComponent {
     console.log(this.orderSaveResponse);
     // console.log(this.router.url);
     // call api to create order_id
+    const vendorDetail: any = localStorage.getItem('vendorData');
+    if (vendorDetail) {
+      this.partnerData = JSON.parse(vendorDetail);
+    }
     const localCurrentOrder: any = localStorage.getItem("currentOrder");
     let orderdataId = JSON.parse(localCurrentOrder)
     console.log(localCurrentOrder);
@@ -60,8 +65,8 @@ export class PaymentComponent {
       amount: orderData.totalAmount, // amount should be in paise format to display Rs 1255 without decimal point
       // amount: 125500, // amount should be in paise format to display Rs 1255 without decimal point
       currency: 'INR',
-      name: 'Chaitanya Food Court', // company name or product name
-      description: 'Chaitanya Food Court',  // product description
+      name: this.partnerData?.name, // company name or product name
+      description: this.partnerData?.type,  // product description
       image: './assets/images/logo/chaitanya-logo.png', // company logo or product image
       order_id: orderData.id, // order_id created by you in backend
       // modal: {

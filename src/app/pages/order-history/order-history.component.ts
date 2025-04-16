@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-history',
@@ -19,7 +20,7 @@ export class OrderHistoryComponent {
   constructor(
     private location: Location,
      public apiService: ApiService,
-    // private router: Router,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -56,7 +57,7 @@ export class OrderHistoryComponent {
    * Back Button
    */
   goBack(): void {
-    this.location.back(); // Moves to the previous route
+    this.router.navigate(['/order']);
   }
 
   /**

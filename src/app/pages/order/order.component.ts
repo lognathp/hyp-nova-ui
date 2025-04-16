@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, HostListener, ElementRef } from '@angular/core';
 import { SelectLocationComponent } from "../../components/select-location/select-location.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
@@ -84,7 +84,8 @@ export class OrderComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private wsService: WebSocketService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private elementRef: ElementRef
   ) {
 
    }
@@ -263,6 +264,7 @@ export class OrderComponent implements OnInit {
         // console.log(this.menuResponseFiltered);
         this.selectCategory(this.menuCategoryData[0], 0);
         localStorage.setItem("menuCategoryData", JSON.stringify(this.menuCategoryData));
+        this.scrollToSection(0)
         // this.mainLoading = false;
         // this.sharedData.sendMenuData(this.menuResponse)
 
@@ -692,6 +694,15 @@ export class OrderComponent implements OnInit {
     this.closeOffcanvas('foodMenu');
   }
 
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      console.log('inside');
+      
+      this.closeOffcanvas('addOn');
+    }
+  }
   /**
    * Method to close bootstrap canvas ans bottom slider
    */
