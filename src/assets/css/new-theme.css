@@ -633,7 +633,7 @@ float: right;
     font-size: 13px;
     font-weight: 600;
     color: #000000;
-    padding: 0 2px;
+    /* padding: 0 2px; */
     line-height: 1.2;
   }
   

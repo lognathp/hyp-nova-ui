@@ -4,7 +4,7 @@
         <div class="" id="loginSheet">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title btmHeaderLogin">Login</h5>
-                <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+                <!-- <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button> -->
             </div>
             <div class="offcanvas-body">
                 <form [formGroup]="loginForm">
@@ -47,8 +47,10 @@
                     <div class="col-md-12 pos-rel ">
                         <h5 class="offcanvas-title btmHeaderLogin">OTP Verification</h5>
 
-                        <span class="btmHeaderLoginDes">OTP has been sent to +91 {{loginForm.value.mobile}} <img
-                                src="assets/images/icons/edit.png " class="editIcon"></span>
+                        <span class="btmHeaderLoginDes">OTP has been sent to +91 {{loginForm.value.mobile}} 
+                            <!-- <img
+                                src="assets/images/icons/edit.png " class="editIcon"> -->
+                            </span>
 
                     </div>
                     <div class="col-md-12 pos-rel ">
