@@ -48,20 +48,20 @@
         </nav>
 
         @if(!restaurentActive){
-            <div class="container my-2 bg-transparent outletclosedContainer">
-                <div class="outletClosed">
-                    <div class="row p-0">
-                        <div class="col-3 p-0">
-                            <img src="assets/images/icons/storeClosed.png ">
-                        </div>
-                        <div class="col-9 pad">
-                            <button>change</button>
-                            <p class="title">Oops! Outlet Closed</p>
-                            <p>This outlet isn’t accepting orders right now. We’ll be back at 11:00 AM.</p>
-                        </div>
+        <div class="container my-2 bg-transparent outletclosedContainer">
+            <div class="outletClosed">
+                <div class="row p-0">
+                    <div class="col-3 p-0">
+                        <img src="assets/images/icons/storeClosed.png ">
+                    </div>
+                    <div class="col-9 pad">
+                        <button>change</button>
+                        <p class="title">Oops! Outlet Closed</p>
+                        <p>This outlet isn’t accepting orders right now. We’ll be back at 11:00 AM.</p>
                     </div>
                 </div>
             </div>
+        </div>
         }
         <!-- Search Box -->
 
@@ -323,17 +323,19 @@
 
                         @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
                         item.variation.length == 0) {
-                        <button class="btn btn-transparent addButton"  [disabled]="restaurentActive == false" (click)="selectItem(item)"> + Add</button>
+                        <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false"
+                            (click)="selectItem(item)"> + Add</button>
                         }
 
                         @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
                         {
-                        <button class='btn btn-transparent addButton ' data-bs-toggle="offcanvas" data-bs-target="#addOn" [disabled]="restaurentActive == false"
-                            (click)="selectItem(item)"> + Add</button>
+                        <button class='btn btn-transparent addButton ' data-bs-toggle="offcanvas"
+                            data-bs-target="#addOn" [disabled]="restaurentActive == false" (click)="selectItem(item)"> +
+                            Add</button>
                         }
 
                         @if (seletedItemId.includes(item.id) && item.active === '1') {
-                        <button class="btn btn-transparent qtyButton">
+                        <button [disabled]="restaurentActive == false" class="btn btn-transparent qtyButton">
                             <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
                             {{item | displayQuantity}}
                             <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
@@ -497,7 +499,7 @@
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
-                    <div class="card-body bg-cart ">
+                    <div class="card-body bg-cart" [ngClass]="{'disable-block' : restaurentActive == false}">
                         <p class="card-text cartItems" data-bs-toggle="offcanvas" data-bs-target="#loginSheet">₹
                             {{cartItemPrice | discountPrice: flatDiscountpercentage}}
                             <span>
@@ -577,7 +579,7 @@
                         <span class="text1">Select same Variation /Addon or New.</span>
                         <div class="modalBtns">
                             <button class="btn plainButton w-50" (click)="addItemQuantity('same')">Use Same</button>
-                            <button class="btn solidButton w-50" (click)="addItemwithNewAddon()" >New</button>
+                            <button class="btn solidButton w-50" (click)="addItemwithNewAddon()">New</button>
                         </div>
                     </div>
                 </div>
@@ -585,6 +587,63 @@
         </div>
     </div>
     <!-- Verify Variation Addon -->
+    <!-- Variation Addon  add reduce qunatity cart-->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="changeQtyVariationAddon">
+        <div class="modal-dialog overflow-hidden">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><img src="../../../../assets/images/icons/close3.png " ></button> -->
+                    <div class="">
+                        <p class="title">Customisable Item </p>
+                        <p class="title2"> The selected Item has Variation / Addon</p>
+                        <div class="container  bg-transparent">
+                            <div class="card foodCard ">
+                                @for (basketitem of foodBasket; track $index) {
+                                    @if(basketitem.id == addItemQunatityIndex){
+                                        <div class="card-body foodTile cartFoodTile">
+                                            <div class="row ">
+                                                <div class="col-8 col-md-8 food-item veg ">
+                                                    <h5 class="card-title cartFoodTitle "
+                                                        [ngClass]="{'veg': basketitem.item.itemAttributeId == '1' , 'nonVeg' :  basketitem.item.itemAttributeId == '2' || basketitem.item.itemAttributeId == '24'}">
+                                                        {{basketitem.item.itemName}} </h5>
+                                                    <span [ngClass]="{'addon' : basketitem.addonVariation}">
+                                                        {{basketitem.addonVariation?.varients?.name}}
+                                                        {{basketitem.addonVariation?.addOnNames}}
+                                                    </span>
+                            
+                                                </div>
+                                                <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
+                                                    <button class="btn btn-transparent cartQtyButton ">
+                                                        <span (click)="reduceItemQuantity()">-</span>
+                                                        {{basketitem.item.quantity}}
+                                                        <span (click)="addItemQuantity('')">+</span>
+                                                    </button>
+                                                    <div class="price-wrapper">
+                                                        @if(basketitem?.addonVariation?.varients){
+                                                        <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
+                                                            }}
+                                                        </span>
+                                                        <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice:
+                                                            flatDiscountpercentage }} </span>
+                                                        } @else {
+                                                        <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
+                                                        <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
+                                                        </span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Variation Addon  add reduce qunatity cart-->
 
     <!-- Select Outlet Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectOutlet">

@@ -31,7 +31,7 @@ export class OrderHistoryComponent {
     let restId: any = localStorage.getItem("selectedRestId")
     this.restaurentId = parseInt(restId);
 
-    console.log(this.customerDetails);
+    // console.log(this.customerDetails, this.restaurentId );
     if(this.customerDetails != undefined){
       this.getOrderHistory();
     }

@@ -123,6 +123,7 @@ export class OrderComponent implements OnInit {
 
     this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
       this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
+      // this.restaurentActive = false;
     });
 
     this.wsSubscription = this.wsService.getItemStatusUpdates().subscribe((webSocketResponse: any) => {
@@ -298,6 +299,7 @@ export class OrderComponent implements OnInit {
 
         const restaurantDetails: any = response.data[0];
         this.restaurentActive = restaurantDetails.active;
+        // this.restaurentActive = false;
         const workingHoursData = restaurantDetails.deliveryHours;
         const format = 'H:mm';
         const currentTime = moment().format('H:mm');
@@ -745,7 +747,10 @@ export class OrderComponent implements OnInit {
    * Method to navigate to cart page
    */
   public navigateCart(): void {
-    this.router.navigate(['/cart']);
+    if(this.restaurentActive){
+      this.router.navigate(['/cart']);
+    }
+    
   }
 
   public getSelectedAddonPrices(selectedData: any, addonGroups: any[]) {
