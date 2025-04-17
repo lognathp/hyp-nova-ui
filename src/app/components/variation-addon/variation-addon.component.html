@@ -130,14 +130,14 @@
                     <li *ngFor="let group of dataArray.controls; let i = index" [formGroupName]="i">
 
                         <!-- <p class="text1">{{ group.get('addonGroupName')?.value }}</p> -->
-                        <p class="text1">{{ taddOnChoice[i].addonGroupName }} <span>(Max: {{taddOnChoice[i].addonItemSelectionMax}} )</span></p> 
+                        <p class="text1">{{ taddOnChoice[i].addonGroupName }} <span>(Min: {{taddOnChoice[i].addonItemSelectionMin }}, Max: {{taddOnChoice[i].addonItemSelectionMax}} )</span></p> 
 
                         <ul class="addonBtm">
                             <li *ngFor="let item of taddOnChoice[i].addonItems; let first = first;">
                                 <p class="addonVal">{{ item.addonItemName }}</p>
                                 <span>
                                     <label class="custom-radio">
-                                        <label>+ ₹{{ item.addonItemPrice }} {{taddOnChoice[i].addonItemSelectionMin }},{{taddOnChoice[i].addonItemSelectionMax}} </label>
+                                        <label>+ ₹{{ item.addonItemPrice }} </label>
                                         <!-- <input
                                                 [type]="taddOnChoice[i].addonItemSelectionMin === '1' ? 'radio' : 'checkbox'"
                                                 formControlName="selectedAddon"
