@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, HostListener, ElementRef, DoCheck } from '@angular/core';
 import { SelectLocationComponent } from "../../components/select-location/select-location.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
@@ -42,7 +42,7 @@ declare var bootstrap: any; // Bootstrap is using from assets
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
-export class OrderComponent implements OnInit {
+export class OrderComponent implements OnInit,DoCheck  {
 
   flatDiscountpercentage: number = environment.flatDiscountpercentage;
   contactHyperapps: string = environment.contactHyperapps;
@@ -78,6 +78,8 @@ export class OrderComponent implements OnInit {
   checkChangeBranch: boolean = false;
 
   private wsSubscription!: Subscription;
+  customerDetails: any;
+  showTracking: boolean = false;
 
   constructor(
     public apiService: ApiService,
@@ -94,6 +96,7 @@ export class OrderComponent implements OnInit {
   ngOnInit(): void {
 
     const selectedLocation = localStorage.getItem('selectedLocation');
+    
     // console.log('oreder-Componet-init', selectedLocation)
     if (!selectedLocation || selectedLocation == undefined) {
       this.router.navigate(['/home']);
@@ -112,7 +115,12 @@ export class OrderComponent implements OnInit {
     const branchData: any = localStorage.getItem("availableBranches");
     this.availableBranchData = JSON.parse(branchData);
 
-    // console.log(this.restaurentId, this.partnerData?.restaurants?.length, this.availableBranchData?.length);
+    const custDetail: any = localStorage.getItem('customerDetails');
+    this.customerDetails = JSON.parse(custDetail);
+    
+    if(this.customerDetails != undefined){
+      this.getOrderHistory();
+    }
 
     if ((this.restaurentId == undefined || isNaN(this.restaurentId)) && this.partnerData?.restaurants?.length > 1 && this.availableBranchData.length > 0) {
       this.openSelectBranch = true;
@@ -174,6 +182,15 @@ export class OrderComponent implements OnInit {
 
 
   ngDoCheck() {
+    
+    this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+      this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
+      // this.restaurentActive = false;
+    });
+
+    this.wsSubscription = this.wsService.getItemStatusUpdates().subscribe((webSocketResponse: any) => {
+      this.updateItemStock(webSocketResponse);
+    });
 
     const localstrfoodItem: any = localStorage.getItem("foodBasket");
     if (localstrfoodItem != null) {
@@ -627,10 +644,10 @@ export class OrderComponent implements OnInit {
           this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.addonVariation.varients.price) * parseInt(ele.item.quantity));
 
         } else {
-          this.cartItemPrice = this.cartItemPrice + (parseFloat(ele.item.price) * parseInt(ele.item.quantity));
+          this.cartItemPrice = this.cartItemPrice + parseInt(ele.item.price) + (parseFloat(ele.item.price) * parseInt(ele.item.quantity));
         }
 
-        if (ele.addonVariation?.addons != undefined) {
+        if (ele.addonVariation?.addons != undefined && ele.addonVariation == undefined) {
           let addonPrice: any = this.getSelectedAddonPrices(ele.addonVariation?.addonDetails, ele.addonVariation?.addons.data);
           console.log('addonPrice', addonPrice);
           this.cartItemPrice = this.cartItemPrice + (parseFloat(addonPrice) * parseInt(ele.item.quantity));
@@ -639,8 +656,6 @@ export class OrderComponent implements OnInit {
 
       }
     });
-    console.log(this.cartItemPrice);
-
   }
   /**
      * To Check the selected addon on add quantity is same or not
@@ -755,17 +770,40 @@ export class OrderComponent implements OnInit {
 
   public getSelectedAddonPrices(selectedData: any, addonGroups: any[]) {
     console.log(selectedData, addonGroups);
-    let price = 0;
-    selectedData.map((group: any, index: number) => {
-      group.addonItems.forEach((item: any) => {
-        if (addonGroups[index].selectedAddon.includes(item.id)) {
-          console.log(item.addonItemPrice, 'dugufusdfhsj');
-          price = item.addonItemPrice;
-
-        }
-      });
+    let totalAddonPrice = 0;
+    addonGroups.forEach(group => {
+      const selectedDataGroup = selectedData.find((data: { id: any; }) => data.id === group.addonGroupId);
+      
+      if (selectedDataGroup) {
+        group.selectedAddon.forEach((selectedItemId: any) => {
+          const selectedItem = selectedDataGroup.addonItems.find((item: { id: any; }) => item.id === selectedItemId);
+          
+          if (selectedItem) {
+            totalAddonPrice += parseFloat(selectedItem.addonItemPrice);
+          }
+        });
+      }
     });
-    return price;
+    console.log(totalAddonPrice,'totalAddonPrice');
+    
+    return totalAddonPrice;
+    //OLD
+    // let price = 0;
+    // selectedData.map((group: any, index: number) => {
+    //   group.addonItems.forEach((item: any) => {
+    //     if (addonGroups[index].selectedAddon.includes(item.id)) {
+    //       console.log(item.addonItemPrice, 'dugufusdfhsj');
+    //       price = item.addonItemPrice;
+
+    //     }
+    //   });
+    // });
+    // return price;
+
+
+
+
+
     // return selectedData.map((group:any) => {
     //   const matchingGroup = addonGroups.find(addonGroup => addonGroup.id === group.addonGroupId);
 
@@ -822,6 +860,24 @@ export class OrderComponent implements OnInit {
     if (event.deltaY !== 0) {
       event.preventDefault();
       target.scrollLeft += event.deltaY;
+    }
+  }
+
+  /**
+  * To fetch order history
+  */
+  getOrderHistory(): void {
+    if (this.customerDetails) {
+      const orderStaus = ['PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP', 'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY']
+      this.apiService.getMethod(`/order?customerId_eq=${this.customerDetails.id}`).subscribe({
+        next: (reponse) => {
+          // this.orderHistory = reponse.data;
+          if (orderStaus.includes(reponse.data[0]?.status)) {
+            this.showTracking = true;
+          }
+        },
+        error: (error) => { console.log(error) }
+      })
     }
   }
 }

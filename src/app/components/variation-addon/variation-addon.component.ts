@@ -193,16 +193,64 @@ export class VariationAddonComponent  implements OnInit {
 
   }
 
+  isChecked(groupIndex: number, itemId: string): boolean {
+    const selectedAddonArray = this.dataFormArray.at(groupIndex).get('selectedAddon') as FormArray;
+    return selectedAddonArray.value.includes(itemId);
+  }
+
   toggleCheckbox(event: any, groupIndex: number, itemId: string) {
     const selectedAddonArray = this.dataFormArray.at(groupIndex).get('selectedAddon') as FormArray;
-    // console.log(this.taddOnChoice[groupIndex]);
-    
+    const addonChoice = this.taddOnChoice[groupIndex];
+    const maxSelections = parseInt(addonChoice.addonItemSelectionMax, 10); // Make sure it's a number
+  
     if (event.target.checked) {
+      if (selectedAddonArray.length >= maxSelections) {
+        // Already reached max allowed selections
+        event.target.checked = false; // Uncheck the box manually
+        return;
+      }
       selectedAddonArray.push(new FormControl(itemId));
     } else {
       const index = selectedAddonArray.controls.findIndex(x => x.value === itemId);
-      selectedAddonArray.removeAt(index);
+      if (index !== -1) {
+        selectedAddonArray.removeAt(index);
+      }
     }
+    //New OLD
+    // const selectedAddonArray = this.dataFormArray.at(groupIndex).get('selectedAddon') as FormArray;
+    // const addonChoice = this.taddOnChoice[groupIndex];
+  
+    // if (addonChoice.addonItemSelectionMin === '0' && addonChoice.addonItemSelectionMax === '1') {
+    //   // Only one selection allowed for this group
+    //   // Clear the previous selection
+    //   while (selectedAddonArray.length !== 0) {
+    //     selectedAddonArray.removeAt(0);
+    //   }
+  
+    //   if (event.target.checked) {
+    //     selectedAddonArray.push(new FormControl(itemId));
+    //   }
+    // } else {
+    //   // Allow multiple selections
+    //   if (event.target.checked) {
+    //     selectedAddonArray.push(new FormControl(itemId));
+    //   } else {
+    //     const index = selectedAddonArray.controls.findIndex(x => x.value === itemId);
+    //     if (index !== -1) {
+    //       selectedAddonArray.removeAt(index);
+    //     }
+    //   }
+    // }
+
+    // OLD CODE
+    // const selectedAddonArray = this.dataFormArray.at(groupIndex).get('selectedAddon') as FormArray;
+   
+    // if (event.target.checked) {
+    //   selectedAddonArray.push(new FormControl(itemId));
+    // } else {
+    //   const index = selectedAddonArray.controls.findIndex(x => x.value === itemId);
+    //   selectedAddonArray.removeAt(index);
+    // }
   }
 
   valueUpdate() {

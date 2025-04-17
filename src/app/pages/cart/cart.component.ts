@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, OnInit } from '@angular/core';
 import { debounceTime, Subject, Subscription } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ import { WebSocketService } from '../../core/services/websocket.service';
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss'
 })
-export class CartComponent implements OnInit, AfterViewInit {
+export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
     currentPage: string = "cart";
     foodBasket: any = {};
@@ -174,6 +174,13 @@ export class CartComponent implements OnInit, AfterViewInit {
         });
     }
 
+    ngDoCheck() {
+    
+        this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+          this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
+          // this.restaurentActive = false;
+        });
+    }
     checkWorkingHours() {
         // this.workingHours = this.sharedData.checkWorkingHours();
 
@@ -312,51 +319,88 @@ export class CartComponent implements OnInit, AfterViewInit {
                     console.log(element?.addonVariation, 'element?.addonVariation');
 
                     if (element?.addonVariation?.varients == undefined) {
-                       
+
                         // item['orderAddonItems'] = {
                         //     details: []
                         // }
                         //   element.addonVariation.addons.addOngrp.forEach((addonele: any, addonIndex: number) => {
-                        element.addonVariation?.addons?.data.forEach((addonele: any, addonIndex: number) => {
-                            console.log(addonele);
-                           
-                            element.addonVariation.addonDetails[addonIndex].addonItems.forEach((items: any, addonINdex: number) => {
-                               
-                                
-                                if (items.id == addonele.selectedAddon) {
-                                    console.log(items.id, addonele.selectedAddon);
-                                    console.log(items);
-                                    const detail: any = {
-                                        addonItemId: items.id,
-                                        addonItemName: items.addonItemName,
-                                        price: items.addonItemPrice,
-                                        quantity: element.item.quantity,
-                                        addonGroupName: element.addonVariation.addonDetails[addonIndex].addonGroupName,
-                                        addonGroupId: element.addonVariation.addonDetails[addonIndex].id
 
+                        // NEW
+
+                        const index = 0;
+
+                        // Loop through addons.data
+                        for (const addonGroup of element.addonVariation?.addons?.data) {
+                            const addonGroupId = addonGroup.addonGroupId;
+                            const selectedAddons = addonGroup.selectedAddon;
+
+                            // Find addonGroup details in addonDetails
+                            const addonIndex = element.addonVariation.addonDetails.findIndex((group:any) => group.id === addonGroupId);
+                            if (addonIndex !== -1) {
+                                const addonGroupDetail = element.addonVariation.addonDetails[addonIndex];
+
+                                // Loop through addonItems
+                                for (const items of addonGroupDetail.addonItems) {
+                                    if (selectedAddons.includes(items.id)) {
+                                        const detail: any = {
+                                            addonItemId: items.id,
+                                            addonItemName: items.addonItemName,
+                                            price: items.addonItemPrice,
+                                            quantity: element.item.quantity,
+                                            addonGroupName: element.addonVariation.addonDetails[addonIndex].addonGroupName,
+                                            addonGroupId: element.addonVariation.addonDetails[addonIndex].id
+                                        };
+                                        item.orderAddonItems.push(detail);
+
+                                        if (!this.foodBasket[index].addonVariation?.addOnNames.includes(items.addonItemName)) {
+                                            this.foodBasket[index].addonVariation?.addOnNames.push(items.addonItemName);
+                                        }
                                     }
-                                    item.orderAddonItems.push(detail);
-                                    if(!this.foodBasket[index].addonVariation?.addOnNames.includes(items.addonItemName)){
-                                        this.foodBasket[index].addonVariation?.addOnNames.push(items.addonItemName)
-                                    }
-                                    
                                 }
-                            });
-                            // if (addonele[Object.keys(addonele)[0]] == true) {
+                            }
+                        }
+                        // NEW
+
+                        // element.addonVariation?.addons?.data.forEach((addonele: any, addonIndex: number) => {
+                        //     console.log(addonele);
+
+                        //     element.addonVariation.addonDetails[addonIndex].addonItems.forEach((items: any, addonINdex: number) => {
 
 
-                            //     const detail: any = {
-                            //         addonItemId: element.addonVariation.addonDetails[0].addonItems[addonIndex].id,
-                            //         addonItemName: element.addonVariation.addonDetails[0].addonItems[addonIndex].addonItemName,
-                            //         price: element.addonVariation.addonDetails[0].addonItems[addonIndex].addonItemPrice,
-                            //         quantity: element.item.quantity,
-                            //         addonGroupName: element.addonVariation.addonDetails[0].addonGroupName,
-                            //         addonGroupId: element.addonVariation.addonDetails[0].id
+                        //         if (items.id == addonele.selectedAddon) {
+                        //             console.log(items.id, addonele.selectedAddon);
+                        //             console.log(items);
+                        //             const detail: any = {
+                        //                 addonItemId: items.id,
+                        //                 addonItemName: items.addonItemName,
+                        //                 price: items.addonItemPrice,
+                        //                 quantity: element.item.quantity,
+                        //                 addonGroupName: element.addonVariation.addonDetails[addonIndex].addonGroupName,
+                        //                 addonGroupId: element.addonVariation.addonDetails[addonIndex].id
 
-                            //     }
-                            //     item.orderAddonItems.push(detail);
-                            // }
-                        });
+                        //             }
+                        //             item.orderAddonItems.push(detail);
+                        //             if(!this.foodBasket[index].addonVariation?.addOnNames.includes(items.addonItemName)){
+                        //                 this.foodBasket[index].addonVariation?.addOnNames.push(items.addonItemName)
+                        //             }
+
+                        //         }
+                        //     });
+                        //     // if (addonele[Object.keys(addonele)[0]] == true) {
+
+
+                        //     //     const detail: any = {
+                        //     //         addonItemId: element.addonVariation.addonDetails[0].addonItems[addonIndex].id,
+                        //     //         addonItemName: element.addonVariation.addonDetails[0].addonItems[addonIndex].addonItemName,
+                        //     //         price: element.addonVariation.addonDetails[0].addonItems[addonIndex].addonItemPrice,
+                        //     //         quantity: element.item.quantity,
+                        //     //         addonGroupName: element.addonVariation.addonDetails[0].addonGroupName,
+                        //     //         addonGroupId: element.addonVariation.addonDetails[0].id
+
+                        //     //     }
+                        //     //     item.orderAddonItems.push(detail);
+                        //     // }
+                        // });
                     }
 
                 }
@@ -471,7 +515,7 @@ export class CartComponent implements OnInit, AfterViewInit {
 
                     // // this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
 
-                    
+
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 }
 
@@ -588,7 +632,7 @@ export class CartComponent implements OnInit, AfterViewInit {
             //   } else if ((opteditem.addon.length > 0 || opteditem.variation.length > 0) && operation == 'add') {
             //       this.sameAddon = true;
             //       this.selectedItemWithAddon = JSON.parse(JSON.stringify(opteditem));
-              } else {
+        } else {
             this.addItemQuantity();
         }
     }
@@ -704,7 +748,7 @@ export class CartComponent implements OnInit, AfterViewInit {
             //     this.foodBasket.push(newItem);
 
             // }
-           
+
             this.storefoodBasketData();
             this.prepareOrderItems();
             this.addonResponse = [];

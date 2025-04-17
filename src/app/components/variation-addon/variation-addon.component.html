@@ -93,8 +93,8 @@
 
         @if (taddOnChoice?.length > 0) {
         <div class="addonDiv">
-            <p class="text1">Add-on</p>
-            <p class="text2">Select addon of your choice</p>
+            <p class="text1">Add-on</p> 
+            <p class="text2">Select addon of your choice </p>
             <!-- <form [formGroup]="addonForm">
                         <div formArrayName="addOngrp">
                             @for (addonGroup of taddOnChoice; track addonGroup; let gIndex = $index){
@@ -130,14 +130,14 @@
                     <li *ngFor="let group of dataArray.controls; let i = index" [formGroupName]="i">
 
                         <!-- <p class="text1">{{ group.get('addonGroupName')?.value }}</p> -->
-                        <p class="text1">{{ taddOnChoice[i].addonGroupName }}</p>
+                        <p class="text1">{{ taddOnChoice[i].addonGroupName }} <span>(Max: {{taddOnChoice[i].addonItemSelectionMax}} )</span></p> 
 
                         <ul class="addonBtm">
                             <li *ngFor="let item of taddOnChoice[i].addonItems; let first = first;">
                                 <p class="addonVal">{{ item.addonItemName }}</p>
                                 <span>
                                     <label class="custom-radio">
-                                        <label>+ ₹{{ item.addonItemPrice }}</label>
+                                        <label>+ ₹{{ item.addonItemPrice }} {{taddOnChoice[i].addonItemSelectionMin }},{{taddOnChoice[i].addonItemSelectionMax}} </label>
                                         <!-- <input
                                                 [type]="taddOnChoice[i].addonItemSelectionMin === '1' ? 'radio' : 'checkbox'"
                                                 formControlName="selectedAddon"
@@ -152,7 +152,10 @@
                                         <!-- Checkbox (Multiple Selection) -->
                                         <input *ngIf="taddOnChoice[i].addonItemSelectionMin === '0'" type="checkbox"
                                             [value]="item.id" (change)="toggleCheckbox($event, i, item.id)" />
-                                            <!-- <label>{{ item.addonItemName }}</label> -->
+                                        
+                                        <input *ngIf="(taddOnChoice[i].addonItemSelectionMin === '0' && taddOnChoice[i].addonItemSelectionMax === '1')" type="checkbox"
+                                        [checked]="isChecked(i, item.id)"   [value]="item.id" (change)="toggleCheckbox($event, i, item.id)" />
+                                        <!-- <label>{{ item.addonItemName }}</label> -->
                                         <span></span>
                                     </label>
                                 </span>
