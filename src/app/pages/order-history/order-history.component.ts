@@ -15,6 +15,7 @@ export class OrderHistoryComponent {
   customerDetails: any;
   orderHistory: any;
   selectedOrderSummary: any;
+  restaurentId: number | undefined;
 
 
   constructor(
@@ -27,6 +28,8 @@ export class OrderHistoryComponent {
     let custDetail: any = localStorage.getItem('customerDetails');
     this.customerDetails = JSON.parse(custDetail);
 
+    let restId: any = localStorage.getItem("selectedRestId")
+    this.restaurentId = parseInt(restId);
 
     console.log(this.customerDetails);
     if(this.customerDetails != undefined){
