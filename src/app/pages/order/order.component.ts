@@ -577,7 +577,8 @@ export class OrderComponent implements OnInit,DoCheck  {
     if (operation == 'reduce') {
       if (opteditem.addon.length > 0 || opteditem.variation.length > 0) {
         // this.Showfoodcart = true;
-        this.openOffcanvas('verifySameAddon');
+        // this.openOffcanvas('verifySameAddon');
+        this.router.navigate(['/cart']);
         this.addItemQunatityIndex = Itemindex;
       } else {
         this.reduceItemQuantity();
