@@ -15,14 +15,13 @@
 
                     <br>
                     @if(availableBranchData?.length > 1 && (restaurentId == null || restaurentId == undefined) ){
-                    <span class="outlet" title="Click to View Branches" data-bs-toggle="offcanvas"
-                        data-bs-target="#selectOutlet">
+                    <span class="outlet" title="Click to View Branches"  (click)="openOffcanvas('selectOutlet');" >
                         select Outlet >
                     </span>
                     } @else if(restaurentId != null || restaurentId != undefined) {
                     <div class="restauran-brancht-info">
-                        <span class="outlet" data-bs-toggle="offcanvas" data-bs-target="#selectOutlet"
-                            (click)="checkChangeBranch = true;" title="Click to View Branches">Outlet: {{
+                        <span class="outlet" 
+                            (click)="openOffcanvas('selectOutlet'); checkChangeBranch = true;" title="Click to View Branches">Outlet: {{
                             branchData?.restaurantName }} </span>
                         <span class="badge storeOpen ">Open</span>
                     </div>

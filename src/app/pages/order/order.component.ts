@@ -783,9 +783,16 @@ export class OrderComponent implements OnInit,DoCheck  {
 
   public openOffcanvas(offcanvasId: string) {
     const offcanvasElement = document.getElementById(offcanvasId);
+    // if (offcanvasElement) {
+    //   const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
+    //   bsOffcanvas.show();
+    // }
     if (offcanvasElement) {
-      const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
-      bsOffcanvas.show();
+      this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement, {
+        backdrop: 'static',
+        keyboard: false
+      });
+      this.offcanvasInstance.show();
     }
   }
 
