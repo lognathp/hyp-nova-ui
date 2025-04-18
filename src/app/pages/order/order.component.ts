@@ -42,7 +42,7 @@ declare var bootstrap: any; // Bootstrap is using from assets
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
-export class OrderComponent implements OnInit,DoCheck  {
+export class OrderComponent implements OnInit, DoCheck {
 
   flatDiscountpercentage: number = environment.flatDiscountpercentage;
   contactHyperapps: string = environment.contactHyperapps;
@@ -91,13 +91,13 @@ export class OrderComponent implements OnInit,DoCheck  {
     private renderer: Renderer2
   ) {
 
-   }
+  }
 
 
   ngOnInit(): void {
 
     const selectedLocation = localStorage.getItem('selectedLocation');
-    
+
     // console.log('oreder-Componet-init', selectedLocation)
     if (!selectedLocation || selectedLocation == undefined) {
       this.router.navigate(['/home']);
@@ -119,7 +119,7 @@ export class OrderComponent implements OnInit,DoCheck  {
     const custDetail: any = localStorage.getItem('customerDetails');
     this.customerDetails = JSON.parse(custDetail);
 
-    if(this.customerDetails != undefined){
+    if (this.customerDetails != undefined) {
       this.getOrderHistory();
     }
 
@@ -173,7 +173,7 @@ export class OrderComponent implements OnInit,DoCheck  {
 
       this.getFoodMenuCategoryApi();
       this.openSelectBranch = false;
-     
+
     }
     else {
       console.log(this.availableBranchData, this.partnerData.restaurantDetails, 'multibranch');
@@ -183,7 +183,7 @@ export class OrderComponent implements OnInit,DoCheck  {
 
 
   ngDoCheck() {
-    
+
     this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
       this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
       // this.restaurentActive = false;
@@ -300,8 +300,8 @@ export class OrderComponent implements OnInit,DoCheck  {
       error: (error) => { console.log(error); }
 
     });
-   
-    
+
+
   }
 
   /**
@@ -346,12 +346,12 @@ export class OrderComponent implements OnInit,DoCheck  {
     console.log(JSON.stringify(itemUpdateMessage))
     const { itemID, inStock } = itemUpdateMessage;
     const activeStatus = inStock ? '1' : '0';
-   this.menuCategoryData[this.selectedCategoryIndex].items.forEach((item: { id: any; active: string; }) => {
-        if (itemID.includes(item.id)) {
-            item.active = activeStatus;
-        }
+    this.menuCategoryData[this.selectedCategoryIndex].items.forEach((item: { id: any; active: string; }) => {
+      if (itemID.includes(item.id)) {
+        item.active = activeStatus;
+      }
     });
-}
+  }
 
 
   /**
@@ -507,9 +507,9 @@ export class OrderComponent implements OnInit,DoCheck  {
   public addItemQuantity(equivalent: string): void {
     console.log('add qnty method', this.foodBasket[this.addItemQunatityIndex], this.addItemQunatityIndex);
     if (equivalent == "same") {
-     
+
       // In case of Item with Added is selected with different configurations to avoid confusion redirected to cart page so user can select as wanted
-      this.router.navigate(['/cart']);  
+      this.router.navigate(['/cart']);
     }
     this.sameAddon = false;
     if (this.foodBasket[this.addItemQunatityIndex]) {
@@ -696,22 +696,22 @@ export class OrderComponent implements OnInit,DoCheck  {
       this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
       console.log(this.offcanvasInstance);
     }
-  
+
     const element = document.getElementById('section-' + sectionId);
     const headerHeight = document.getElementById('veg-nonveg-filter')?.clientHeight || 0;
     this.selectedCategoryIndex = sectionId;
-  
+
     const scrollContainer = document.querySelector('.scroll-container') as HTMLElement;
-  
+
     if (element && scrollContainer) {
       const elementPosition = element.offsetTop - headerHeight;
-  
+
       scrollContainer.scrollTo({
         top: elementPosition,
         behavior: 'smooth',
       });
     }
-  
+
     this.closeOffcanvas('foodMenu');
     this.closeOffcanvas('addOn');
     // const offcanvasElement = document.getElementById('foodMenu');
@@ -743,7 +743,7 @@ export class OrderComponent implements OnInit,DoCheck  {
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
     if (!clickedInside) {
       console.log('inside');
-      
+
       this.closeOffcanvas('addOn');
     }
   }
@@ -783,27 +783,32 @@ export class OrderComponent implements OnInit,DoCheck  {
 
   public openOffcanvas(offcanvasId: string) {
     const offcanvasElement = document.getElementById(offcanvasId);
-    // if (offcanvasElement) {
-    //   const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
-    //   bsOffcanvas.show();
-    // }
-    if (offcanvasElement) {
-      this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement, {
-        backdrop: 'static',
-        keyboard: false
-      });
-      this.offcanvasInstance.show();
+    if (offcanvasId == 'selectOutlet') {
+      if (offcanvasElement) {
+        this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement, {
+          backdrop: 'static',
+          keyboard: false
+        });
+        this.offcanvasInstance.show();
+      }
+    } else {
+      if (offcanvasElement) {
+        const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
+        bsOffcanvas.show();
+      }
     }
+
+
   }
 
   /**
    * Method to navigate to cart page
    */
   public navigateCart(): void {
-    if(this.restaurentActive){
+    if (this.restaurentActive) {
       this.router.navigate(['/cart']);
     }
-    
+
   }
 
   public getSelectedAddonPrices(selectedData: any, addonGroups: any[]) {
@@ -811,19 +816,19 @@ export class OrderComponent implements OnInit,DoCheck  {
     let totalAddonPrice = 0;
     addonGroups.forEach(group => {
       const selectedDataGroup = selectedData.find((data: { id: any; }) => data.id === group.addonGroupId);
-      
+
       if (selectedDataGroup) {
         group.selectedAddon.forEach((selectedItemId: any) => {
           const selectedItem = selectedDataGroup.addonItems.find((item: { id: any; }) => item.id === selectedItemId);
-          
+
           if (selectedItem) {
             totalAddonPrice += parseFloat(selectedItem.addonItemPrice);
           }
         });
       }
     });
-    console.log(totalAddonPrice,'totalAddonPrice');
-    
+    console.log(totalAddonPrice, 'totalAddonPrice');
+
     return totalAddonPrice;
     //OLD
     // let price = 0;
@@ -912,7 +917,7 @@ export class OrderComponent implements OnInit,DoCheck  {
           // this.orderHistory = reponse.data;
           console.log(reponse.data);
           let length = reponse.data.length;
-          if (orderStaus.includes(reponse.data[length-1]?.status)) {
+          if (orderStaus.includes(reponse.data[length - 1]?.status)) {
             this.showTracking = true;
           }
         },
@@ -920,7 +925,7 @@ export class OrderComponent implements OnInit,DoCheck  {
       })
     }
   }
-  orderTrack(){
+  orderTrack() {
     this.router.navigate(['/order-tracking']);
   }
 }
