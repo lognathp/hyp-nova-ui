@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {  Location } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-something-went-wrong',
@@ -11,10 +11,11 @@ import { RouterModule } from '@angular/router';
 })
 export class SomethingWentWrongComponent {
   constructor(
-    private location: Location
+    private location: Location,
+     private router: Router,
   ) { }
 
   goBack(): void {
-    this.location.back(); // Moves to the previous route
+    this.router.navigate(['/order']);
   }
 }

@@ -11,11 +11,12 @@ import { take } from 'rxjs/operators';
 import { QuoteLoaderComponent } from "../../components/loaders/quote-loader/quote-loader.component";
 import { SomethingWentWrongComponent } from "../../components/errors/something-went-wrong/something-went-wrong.component";
 import { WebSocketService } from '../../core/services/websocket.service';
+import { RestaurentClosedComponent } from "../../components/errors/restaurent-closed/restaurent-closed.component";
 
 @Component({
     selector: 'app-cart',
     standalone: true,
-    imports: [CommonModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent],
+    imports: [CommonModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss'
 })
@@ -62,7 +63,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
     flatDiscountpercentage = environment.flatDiscountpercentage;
     unKnownError: boolean = false;
-    ;
+    restaurentClosed: boolean = false;
+    
     deliveryDiscount = 30;
     isMakePaymentEnabled: boolean = false;
 
@@ -167,7 +169,10 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 // if(!this.quoteLoading){
                 //     this.getDeliveryQuote(data.id);
                 // }
-                this.getDeliveryQuote(data.id);
+                this.checkWorkingHours();
+                console.log(this.workingHours,'this.workingHours');
+                this.workingHours ? this.getDeliveryQuote(data.id) : this.restaurentClosed = true;
+                // this.getDeliveryQuote(data.id);
             } else {
                 this.showAddAddressButton = true;
             }
@@ -592,6 +597,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             error: (error: { error: string; }) => {
                 console.log('getQuote ' + error.error);
                 // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
+                this.restaurentClosed = true;
                 this.isMakePaymentEnabled = false;
             },
             complete: () => {
