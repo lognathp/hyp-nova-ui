@@ -5,7 +5,7 @@
 <app-something-went-wrong></app-something-went-wrong>
 }
 @if (restaurentClosed) {
-    <app-restaurent-closed></app-restaurent-closed>
+<app-restaurent-closed></app-restaurent-closed>
 }
 @if (!quoteLoading && !restaurentClosed) {
 <div class="cartBody">
@@ -56,12 +56,18 @@
                         </button>
                         <div class="price-wrapper">
                             @if(basketitem?.addonVariation?.varients){
-                            <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
-                                }}
+                            @if (basketitem?.addonVariation?.varients.price == "0") {
+
+                            <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
+                            <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                             </span>
-                            <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice:
-                                flatDiscountpercentage }} </span>
                             } @else {
+                                <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'}} </span>
+                                <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice: flatDiscountpercentage }} </span>
+                                }
+                           
+                            } @else {
+
                             <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
                             <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                             </span>
@@ -74,7 +80,7 @@
         </div>
     </div>
 
-     <div class="container menubrowse">
+    <div class="container menubrowse">
         <div class="row ">
             <div class="col-12">
                 <p class="coupon-content mt-1" title="Back to Menu" (click)="back()">Add more Items </p>
