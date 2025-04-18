@@ -503,12 +503,13 @@
             <div class="col-md-12 ">
                 <div class="card border-0 ">
                     <div class="card-body bg-cart" [ngClass]="{'disable-block' : restaurentActive == false}">
-                        <p class="card-text cartItems" data-bs-toggle="offcanvas" data-bs-target="#loginSheet">₹
-                            {{cartItemPrice | discountPrice: flatDiscountpercentage}}
-                            <span>
+                        <p class="card-text cartItems">
+                            
+                            <!-- ₹{{cartItemPrice | discountPrice: flatDiscountpercentage}} -->
+                            <span class="border-0">
                                 {{foodBasket?.length}} Item@if(foodBasket?.length > 2){s}
                             </span>
-                            <span class="view-cart-btn" (click)="navigateCart();">View Cart</span>
+                            <span class="view-cart-btn " (click)="navigateCart();">View Cart</span>
                         </p>
                     </div>
                 </div>

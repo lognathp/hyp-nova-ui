@@ -67,6 +67,9 @@ export class OrderTrackingComponent implements OnInit {
     this.wsSubscription = this.wsService.getOrderStatusUpdates().subscribe((webSocketResponse: any) => {
       console.log(JSON.stringify(webSocketResponse))
       this.orderStatus = webSocketResponse;
+      if(this.orderStatus.status == 'CANCELLED'){
+        this.cancelled = true;
+      }
     });
   }
 
@@ -79,7 +82,7 @@ export class OrderTrackingComponent implements OnInit {
   async fetchOrderStatus(): Promise<void> {
     this.apiService.getMethod(`/order/${this.currentOrder.data[0].id}`).subscribe({
       next: (response) => {
-        // console.log('Initial order status:', response);
+        console.log('Initial order status:', response);
         this.orderStatus = response.data[0];
         this.getAddress(this.orderStatus.deliveryDetails.addressId);
       },
@@ -102,8 +105,8 @@ export class OrderTrackingComponent implements OnInit {
       { status: 'PICKED_UP', state: 'PICKED_UP' },
       { status: 'OUT_FOR_DELIVERY', state: 'OUT_FOR_DELIVERY' },
       { status: 'REACHED_DELIVERY', state: 'OUT_FOR_DELIVERY' },
-      { status: 'DELIVERED', state: 'DELIVERED' }
-      // { status: 'CANCELLED', state: 'CANCELLED' }
+      { status: 'DELIVERED', state: 'DELIVERED' },
+      { status: 'CANCELLED', state: 'CANCELLED' }
     ];
 
     
@@ -114,9 +117,7 @@ export class OrderTrackingComponent implements OnInit {
     if (!currentState || !targetState) {
       return false;
     }
-    if(targetState.status == 'CANCELLED'){
-      this.cancelled = true;
-    }
+   
     const currentStateIndex = statusOrder.indexOf(currentState);
     const targetStateIndex = statusOrder.indexOf(targetState);
     return targetStateIndex <= currentStateIndex;

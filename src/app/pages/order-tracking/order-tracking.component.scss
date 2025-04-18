@@ -23,5 +23,11 @@
     .msg-text{
         font-weight:500;
         color: #212529;
+
+        span{
+            font-weight: 700;
+            font-size: 16px;
+            color: #d20500;
+        }
     }
 }

@@ -17,10 +17,10 @@
     <div class="container my-3 orderStatusContainer">
         <div class="row ">
             <div class="col-md-12 orderStatus">
-                @if (cancelled) {
+                @if (cancelled || isOrderStatusReached('CANCELLED')) {
                     <div class="cancel">
                         <img height="100px" src="./../../../assets/images/food_order_canceelled.png" alt=""> 
-                    <p class="msg-text">Sorry Your order has been cancelled. You will receive refund shortly.</p>
+                    <p class="msg-text"> <span >Sorry!!</span> <br> Your order has been cancelled. <br>You will receive refund shortly.</p>
                     </div>
                     
                 }
@@ -61,10 +61,10 @@
                     </span>
                    
                     @if(!viewSummary){
-                        <p class="viewSummary" (click)="viewSummary = true;">View Summary</p>
+                        <p class="viewSummary cursor-pointer" (click)="viewSummary = true;">View Summary</p>
                     }
                     @if(viewSummary){
-                        <p class="viewSummary" (click)="viewSummary = false;">Hide Summary</p>
+                        <p class="viewSummary cursor-pointer" (click)="viewSummary = false;">Hide Summary</p>
                     }
                    
                 </div>
@@ -76,7 +76,7 @@
                                     <div class="col-12 col-md-12 food-item veg ">
                                         <h5 class="card-title cartFoodTitle nonVeg">{{item.name}}</h5>
                                         <span class="addon">{{item?.variationName}}</span>
-                                        <span class="price ">₹ {{item.quantity * item?.price}}</span>
+                                        <span class="price mx-2">₹ {{item.quantity * item?.price}}</span>
                                         <!-- <span class="priceStrike ">₹ 300</span> -->
                                         <span class="qty ">{{item.quantity}} X ₹{{item?.price}}</span>
                                     </div>
