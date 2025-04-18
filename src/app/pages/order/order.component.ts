@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone, HostListener, ElementRef, DoCheck } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, HostListener, ElementRef, DoCheck, Renderer2 } from '@angular/core';
 import { SelectLocationComponent } from "../../components/select-location/select-location.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
@@ -87,7 +87,8 @@ export class OrderComponent implements OnInit,DoCheck  {
     private cdr: ChangeDetectorRef,
     private wsService: WebSocketService,
     private ngZone: NgZone,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private renderer: Renderer2
   ) {
 
    }
@@ -688,28 +689,53 @@ export class OrderComponent implements OnInit,DoCheck  {
    * @param sectionId 
    */
   public scrollToSection(sectionId: number): void {
+
     const offcanvasElement = document.getElementById('foodMenu');
 
     if (offcanvasElement) {
       this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
       console.log(this.offcanvasInstance);
-
     }
-
+  
     const element = document.getElementById('section-' + sectionId);
     const headerHeight = document.getElementById('veg-nonveg-filter')?.clientHeight || 0;
     this.selectedCategoryIndex = sectionId;
-
-
-
-    if (element) {
-      const topPosition = element.offsetTop - headerHeight; // Adjust for header height
-      window.scrollTo({
-        top: topPosition,
-        behavior: 'smooth', // Smooth scrolling
+  
+    const scrollContainer = document.querySelector('.scroll-container') as HTMLElement;
+  
+    if (element && scrollContainer) {
+      const elementPosition = element.offsetTop - headerHeight;
+  
+      scrollContainer.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth',
       });
     }
+  
     this.closeOffcanvas('foodMenu');
+    this.closeOffcanvas('addOn');
+    // const offcanvasElement = document.getElementById('foodMenu');
+
+    // if (offcanvasElement) {
+    //   this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
+    //   console.log(this.offcanvasInstance);
+
+    // }
+
+    // const element = document.getElementById('section-' + sectionId);
+    // const headerHeight = document.getElementById('veg-nonveg-filter')?.clientHeight || 0;
+    // this.selectedCategoryIndex = sectionId;
+
+
+
+    // if (element) {
+    //   const topPosition = element.offsetTop - headerHeight; // Adjust for header height
+    //   window.scrollTo({
+    //     top: topPosition,
+    //     behavior: 'smooth', // Smooth scrolling
+    //   });
+    // }
+    // this.closeOffcanvas('foodMenu');
   }
 
   @HostListener('document:click', ['$event'])
@@ -733,6 +759,7 @@ export class OrderComponent implements OnInit,DoCheck  {
       const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
       if (offcanvasInstance) {
         offcanvasInstance.hide(); // Hide the offcanvas dynamically
+        this.renderer.setStyle(document.body, 'overflow', 'auto');
       }
       // const backdrop = document.querySelector('.offcanvas-backdrop');
       const backdrops = document.querySelectorAll('.offcanvas-backdrop');
@@ -741,9 +768,12 @@ export class OrderComponent implements OnInit,DoCheck  {
       if (backdrops) {
         // backdrop.remove();
         backdrops.forEach((backdrop: any) => backdrop.remove());
+        this.renderer.setStyle(document.body, 'overflow', 'auto');
       }
 
     }
+
+    document.body.style.overflow = 'auto';
   }
 
   public showBranches(): void {

@@ -233,12 +233,12 @@
   background-color: #cacaca;
 }
   /* Hide scrollbar - still scrollable */
-// .scroll-container {
-//   height: 100vh;
-//   overflow-y: auto; 
-//   -ms-overflow-style: none;  
-//   scrollbar-width: none;     
-// }
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto; 
+  -ms-overflow-style: none;  
+  scrollbar-width: none;     
+}
 
 // .scroll-container::-webkit-scrollbar {
 //   display: none;            
