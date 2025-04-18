@@ -1927,6 +1927,16 @@ input[type="radio"] {
     line-height: 8px;
 }
 
+.menubrowse p {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0px;
+    line-height: 8px;
+    text-align: right;
+    color: #D20500;
+    cursor: pointer;
+}
+
 .cartDeal span {
     font-size: 12px;
     font-weight: 400;
