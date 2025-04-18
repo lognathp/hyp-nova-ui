@@ -117,7 +117,7 @@ export class OrderComponent implements OnInit,DoCheck  {
 
     const custDetail: any = localStorage.getItem('customerDetails');
     this.customerDetails = JSON.parse(custDetail);
-    
+
     if(this.customerDetails != undefined){
       this.getOrderHistory();
     }
@@ -872,12 +872,17 @@ export class OrderComponent implements OnInit,DoCheck  {
       this.apiService.getMethod(`/order?customerId_eq=${this.customerDetails.id}`).subscribe({
         next: (reponse) => {
           // this.orderHistory = reponse.data;
-          if (orderStaus.includes(reponse.data[0]?.status)) {
+          console.log(reponse.data);
+          let length = reponse.data.length;
+          if (orderStaus.includes(reponse.data[length-1]?.status)) {
             this.showTracking = true;
           }
         },
         error: (error) => { console.log(error) }
       })
     }
+  }
+  orderTrack(){
+    this.router.navigate(['/order-tracking']);
   }
 }

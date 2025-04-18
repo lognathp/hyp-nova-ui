@@ -17,13 +17,23 @@
     <div class="container my-3 orderStatusContainer">
         <div class="row ">
             <div class="col-md-12 orderStatus">
-                <ul>
-                    <li [ngClass]="{'active': isOrderStatusReached('PAID')}">Order Received</li>
-                    <li [ngClass]="{'active': isOrderStatusReached('ACCEPTED')}">Preparing Food</li>
-                    <li [ngClass]="{'active': isOrderStatusReached('PICKED_UP')}">Order Picked Up</li>
-                    <li [ngClass]="{'active': isOrderStatusReached('OUT_FOR_DELIVERY')}" >Out for Delivery</li>
-                    <li [ngClass]="{'active': isOrderStatusReached('DELIVERED')}">Order Delivered</li>
-                </ul>
+                @if (cancelled) {
+                    <div class="cancel">
+                        <img height="100px" src="./../../../assets/images/food_order_canceelled.png" alt=""> 
+                    <p class="msg-text">Sorry Your order has been cancelled. You will receive refund shortly.</p>
+                    </div>
+                    
+                }
+                @else {
+                    <ul>
+                        <li [ngClass]="{'active': isOrderStatusReached('PAID')}">Order Received</li>
+                        <li [ngClass]="{'active': isOrderStatusReached('ACCEPTED')}">Preparing Food</li>
+                        <li [ngClass]="{'active': isOrderStatusReached('PICKED_UP')}">Order Picked Up</li>
+                        <li [ngClass]="{'active': isOrderStatusReached('OUT_FOR_DELIVERY')}" >Out for Delivery</li>
+                        <li [ngClass]="{'active': isOrderStatusReached('DELIVERED')}">Order Delivered</li>
+                    </ul>
+                }
+               
             </div>
             <!-- <div class="container my-3 bg-transparent ">
                 <div class="row m-auto">
@@ -49,12 +59,85 @@
                     <span class="order">Order # {{orderStatus?.id}}
                         <br><span >{{orderStatus?.orderTime | date:'h:mm a'}}</span>
                     </span>
-                    <p class="viewSummary">View Summary</p>
+                   
+                    @if(!viewSummary){
+                        <p class="viewSummary" (click)="viewSummary = true;">View Summary</p>
+                    }
+                    @if(viewSummary){
+                        <p class="viewSummary" (click)="viewSummary = false;">Hide Summary</p>
+                    }
+                   
                 </div>
-                <div class="col-md-12 addressDetails">
-                    <p>Delivery Address</p>
-                    <span>{{addressDetails}}</span>
-                </div>
+                @if(viewSummary){
+                    <div class="card foodCard my-3 overflow-auto">
+                        @for (item of currentOrder?.data[0].orderItems; track $index) {
+                            <div class="card-body foodTile cartFoodTile">
+                                <div class="row ">
+                                    <div class="col-12 col-md-12 food-item veg ">
+                                        <h5 class="card-title cartFoodTitle nonVeg">{{item.name}}</h5>
+                                        <span class="addon">{{item?.variationName}}</span>
+                                        <span class="price ">₹ {{item.quantity * item?.price}}</span>
+                                        <!-- <span class="priceStrike ">₹ 300</span> -->
+                                        <span class="qty ">{{item.quantity}} X ₹{{item?.price}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                        <!-- <div class="card-body foodTile cartFoodTile">
+                            <div class="row ">
+                                <div class="col-12 col-md-12 food-item veg ">
+                                    <h5 class="card-title cartFoodTitle veg">Veg Biryani</h5>
+                                    <span class="addon">Full</span>
+                                    <span class="price ">₹ 225</span>
+                                    <span class="priceStrike ">₹ 300</span>
+                                    <span class="qty ">1 X ₹225</span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-12 ">
+                            <ul class="cartCheckout">
+                                <li>
+                                    <p class="cartVal">Item Total<span>₹ {{currentOrder?.data[0].totalAmount + currentOrder?.data[0].discountAmount}}</span></p>
+                                </li>
+                                @if (currentOrder?.data[0]?.addonPrice) {
+                                    <li>
+                                        <p class="cartVal">Add-On Price<span>₹ {{currentOrder?.data[0]?.addonPrice}}</span></p>
+                                    </li>
+                                }
+                                <li>
+                                    <p class="cartVal">Delivery Fee<span>₹ {{currentOrder?.data[0].deliveryCharge}}</span></p>
+                                </li>
+                                <li>
+                                    <p class="cartVal">TAX Value<span>₹ {{currentOrder?.data[0].taxAmount}} </span></p>
+                                </li>
+                                <!-- <li>
+                                    <p class="cartVal">CGST<span>₹ 5</span></p>
+                                </li>
+                                <li>
+                                    <p class="cartVal">SGST<span>₹ 5</span></p>
+                                </li> -->
+                                <!-- <li>
+                                    <p class="cartVal disc">Coupon applied (HYPERDEAL)<span>-₹ 150</span></p>
+                                </li> -->
+                                <li>
+                                    <p class="cartVal disc">Discounted Value<span>-₹ {{currentOrder?.data[0].discountAmount}} </span></p>
+                                </li>
+                                <li>
+                                    <p class="cartValCategory">Grand Total<span>₹  {{currentOrder?.data[0].grandTotalAmount}} </span></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }@if(!viewSummary) {
+                    <div class="col-md-12 addressDetails">
+                        <p>Delivery Address</p>
+                        <span>{{addressDetails}}</span>
+                    </div>
+                }
+                
+
+              
             </div>
         </div>
         <div class="container my-3 bg-transparent p-0">

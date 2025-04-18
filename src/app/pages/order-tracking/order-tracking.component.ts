@@ -28,6 +28,10 @@ export class OrderTrackingComponent implements OnInit {
   restaurentId: number | undefined;
   vendorData: any;
   branchData: any;
+
+  viewSummary:boolean = false;
+  cancelled: boolean = false;
+
   constructor(
     public sharedData: SharedService,
     public apiService: ApiService,
@@ -57,7 +61,7 @@ export class OrderTrackingComponent implements OnInit {
 
     }
 
-    console.log(this.currentOrder);
+    // console.log(this.currentOrder);
     localStorage.removeItem("foodBasket");
     await this.fetchOrderStatus();
     this.wsSubscription = this.wsService.getOrderStatusUpdates().subscribe((webSocketResponse: any) => {
@@ -75,7 +79,7 @@ export class OrderTrackingComponent implements OnInit {
   async fetchOrderStatus(): Promise<void> {
     this.apiService.getMethod(`/order/${this.currentOrder.data[0].id}`).subscribe({
       next: (response) => {
-        console.log('Initial order status:', response);
+        // console.log('Initial order status:', response);
         this.orderStatus = response.data[0];
         this.getAddress(this.orderStatus.deliveryDetails.addressId);
       },
@@ -99,15 +103,20 @@ export class OrderTrackingComponent implements OnInit {
       { status: 'OUT_FOR_DELIVERY', state: 'OUT_FOR_DELIVERY' },
       { status: 'REACHED_DELIVERY', state: 'OUT_FOR_DELIVERY' },
       { status: 'DELIVERED', state: 'DELIVERED' }
+      // { status: 'CANCELLED', state: 'CANCELLED' }
     ];
-    // console.log(JSON.stringify(this.orderStatus))
+
+    
+    
     const currentState = statusOrder.find(item => item.status === this.orderStatus?.status);
     const targetState = statusOrder.find(item => item.status === status);
-
+    // console.log(currentState,targetState)
     if (!currentState || !targetState) {
       return false;
     }
-
+    if(targetState.status == 'CANCELLED'){
+      this.cancelled = true;
+    }
     const currentStateIndex = statusOrder.indexOf(currentState);
     const targetStateIndex = statusOrder.indexOf(targetState);
     return targetStateIndex <= currentStateIndex;
@@ -128,7 +137,7 @@ export class OrderTrackingComponent implements OnInit {
           pincode: response.data[0].pincode
         }
         this.addressDetails = Object.values(tempcustomDetailsformattedAddress).filter(part => part !== null && part !== undefined).join(', ');
-        console.log(this.addressDetails);
+        // console.log(this.addressDetails);
 
         // this.showTable = false;
         // this.viewItem = item;
@@ -157,7 +166,7 @@ export class OrderTrackingComponent implements OnInit {
   }
 
   navigateMap() {
-    console.log('trackingurl', this.orderStatus.deliveryTrackingLink);
+    // console.log('trackingurl', this.orderStatus.deliveryTrackingLink);
 
     window.open(this.orderStatus.deliveryTrackingLink, "_blank");
   }
@@ -168,5 +177,9 @@ export class OrderTrackingComponent implements OnInit {
   goBack():void {
     // this.location.back(); // Moves to the previous route
     this.router.navigate(['/order']);
+  }
+
+  viewOrderSummary(){
+
   }
 }
