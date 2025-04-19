@@ -25,7 +25,7 @@
                     
                 }
                 @else {
-                    <ul>
+                    <ul> 
                         <li [ngClass]="{'active': isOrderStatusReached('PAID')}">Order Received</li>
                         <li [ngClass]="{'active': isOrderStatusReached('ACCEPTED')}">Preparing Food</li>
                         <li [ngClass]="{'active': isOrderStatusReached('PICKED_UP')}">Order Picked Up</li>

@@ -99,7 +99,7 @@ export class OrderTrackingComponent implements OnInit {
       { status: 'PAYMENT_PENDING', state: 'CONFIRMED' },
       { status: 'PAID', state: 'PAID' },
       { status: 'ACCEPTED', state: 'ACCEPTED' },
-      { status: 'MARK_FOOD_READY', state: 'ACCEPTED' },
+      { status: 'READY_FOR_DELIVERY', state: 'ACCEPTED' },
       { status: 'OUT_FOR_PICKUP', state: 'ACCEPTED' },
       { status: 'REACHED_PICKUP', state: 'ACCEPTED' },
       { status: 'PICKED_UP', state: 'PICKED_UP' },
