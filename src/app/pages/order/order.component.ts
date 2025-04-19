@@ -738,14 +738,21 @@ export class OrderComponent implements OnInit, DoCheck {
     // this.closeOffcanvas('foodMenu');
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    const clickedInside = this.elementRef.nativeElement.contains(event.target);
-    if (!clickedInside) {
-      console.log('inside');
 
-      this.closeOffcanvas('addOn');
+  /**
+   * TO close the backdrop on clicking outside the canvas
+   * @param event Mouse click event
+   */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const clickedInsideOffcanvas = (event.target as HTMLElement).closest('.offcanvas.show');
+    if (!clickedInsideOffcanvas) {
+      this.removeOffcanvasBackdrop();
     }
+  }
+  removeOffcanvasBackdrop() {
+    const backdrops = document.querySelectorAll('.offcanvas-backdrop');
+    backdrops.forEach((backdrop) => backdrop.remove());
   }
   /**
    * Method to close bootstrap canvas ans bottom slider
