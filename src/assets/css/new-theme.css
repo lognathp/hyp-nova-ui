@@ -3090,7 +3090,7 @@ input[type="radio"] {
     left: 16px;
 }
 
-.orderStatus .active:nth-child(4)::before {
+.orderStatus .active:nth-child(5)::before {
     content: "";
     display: inline-block;
     width: 25px;

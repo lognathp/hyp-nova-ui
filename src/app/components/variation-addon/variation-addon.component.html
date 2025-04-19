@@ -131,7 +131,6 @@
 
                         <!-- <p class="text1">{{ group.get('addonGroupName')?.value }}</p> -->
                         <p class="text1">{{ taddOnChoice[i].addonGroupName }} <span>(Min: {{taddOnChoice[i].addonItemSelectionMin }}, Max: {{taddOnChoice[i].addonItemSelectionMax}} )</span></p> 
-
                         <ul class="addonBtm">
                             <li *ngFor="let item of taddOnChoice[i].addonItems; let first = first;">
                                 <p class="addonVal">{{ item.addonItemName }}</p>
@@ -153,9 +152,12 @@
                                         <input *ngIf="taddOnChoice[i].addonItemSelectionMin === '0'" type="checkbox"
                                             [value]="item.id" (change)="toggleCheckbox($event, i, item.id)" />
                                         
-                                        <input *ngIf="(taddOnChoice[i].addonItemSelectionMin === '0' && taddOnChoice[i].addonItemSelectionMax === '1')" type="checkbox"
+                                        <input *ngIf="(taddOnChoice[i].addonItemSelectionMin === '0' && taddOnChoice[i].addonItemSelectionMax > '1')" type="checkbox"
                                         [checked]="isChecked(i, item.id)"   [value]="item.id" (change)="toggleCheckbox($event, i, item.id)" />
                                         <!-- <label>{{ item.addonItemName }}</label> -->
+                                        @if(taddOnChoice[i].addonItemSelectionMin === '0' && taddOnChoice[i].addonItemSelectionMax > '1'){
+                                            {{tostInfoShow()}}
+                                        }
                                         <span></span>
                                     </label>
                                 </span>
@@ -175,3 +177,5 @@
         </div>
     </div>
 </div>
+
+<p-toast></p-toast>

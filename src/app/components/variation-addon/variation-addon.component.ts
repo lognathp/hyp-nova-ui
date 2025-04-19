@@ -4,12 +4,16 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } f
 import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
 import { environment } from '../../../environments/environment';
 
+import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 @Component({
   selector: 'app-variation-addon',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DiscountPricePipe],
+  imports: [CommonModule, ReactiveFormsModule, DiscountPricePipe,ToastModule],
   templateUrl: './variation-addon.component.html',
-  styleUrl: './variation-addon.component.scss'
+  styleUrl: './variation-addon.component.scss',
+  providers: [MessageService]
 })
 export class VariationAddonComponent  implements OnInit {
 
@@ -29,9 +33,13 @@ export class VariationAddonComponent  implements OnInit {
 
   variationForm!: FormGroup;
   addonForm!: FormGroup;
+  addontostshown: boolean = false;
 
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig,
+  ) {
     this.variationForm = this.formBuilder.group({
       addOngrp: this.formBuilder.array([])
     });
@@ -55,7 +63,7 @@ export class VariationAddonComponent  implements OnInit {
     this.totalPrice = parseFloat(this.tvariations[this.selectedVarient]?.price);
 
     // console.log(this.variationForm.controls);
-
+    this.primengConfig.ripple = true;
   }
 
   /**
@@ -358,4 +366,16 @@ export class VariationAddonComponent  implements OnInit {
   // submitForm(): void {
   //   console.log(this.addonForm.value);
   // }
+
+  /**
+   * To show toast
+   */
+  tostInfoShow(){
+    
+    if(!this.addontostshown){
+      this.messageService.add({ severity: 'info', detail: 'Click same addon to Unselect. ', life: 5000 });
+      this.addontostshown = true;
+    }
+   
+  }
 }

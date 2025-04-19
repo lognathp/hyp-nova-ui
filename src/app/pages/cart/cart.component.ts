@@ -457,7 +457,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
             this.orderPriceDetails.itemSubtotal = (parseFloat(this.orderPriceDetails.itemSubtotal) + (parseFloat(items.price)) * items.quantity).toFixed(2)
             this.orderPriceDetails['discount'] = (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100));
-            this.orderPriceDetails.toPay = ((parseFloat(this.orderPriceDetails.itemSubtotal) - parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100)) + this.orderPriceDetails.totalTax + this.orderPriceDetails.addOnPriceSum).toFixed(2)
+            this.orderPriceDetails.toPay = ((parseFloat(this.orderPriceDetails.itemSubtotal) - (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100)) )+ this.orderPriceDetails.totalTax + this.orderPriceDetails.addOnPriceSum).toFixed(2)
         });
         console.log(this.orderPriceDetails, 'this.orderPriceDetails');
 

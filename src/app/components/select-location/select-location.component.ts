@@ -60,9 +60,7 @@ export class SelectLocationComponent implements OnInit, DoCheck {
     // console.log(vdata,vendorDetail);
     let restId: any = localStorage.getItem("selectedRestId")
     this.restaurentId = parseInt(restId);
-    console.log(restId, 'this.restaurentId ');
 
-    console.log('sellocatio', this.restaurentId, this.selectedLocation)
     if (vdata != undefined) {
       this.partnerId = vdata?.id;
     }
@@ -116,12 +114,12 @@ export class SelectLocationComponent implements OnInit, DoCheck {
   }
 
   public search(event: any): void {
-    console.log((event.target as HTMLInputElement).value);
+   
     this.searchTerm = (event.target as HTMLInputElement).value;
     if (this.searchTerm.length > 0) {
       this.fetchPlacePrediction().subscribe((results: any) => {
         this.searchResults = results;
-        console.log(this.searchResults);
+        // console.log(this.searchResults);
       });
     }
     // this. ngOnInit();
@@ -144,15 +142,15 @@ export class SelectLocationComponent implements OnInit, DoCheck {
   }
 
   public selectResult(result: { placeId: string, text: string }): void {
-    console.log(result, 'sdfgh');
+    // console.log(result, 'sdfgh');
 
     this.searchTerm = result.text;
     this.searchPlaceId = result.placeId;
     if (this.restaurentActive == false) return;
-    console.log(this.restaurentId);
+    // console.log(this.restaurentId);
     this.apiService.getMethod(`/location/maps/place/${this.partnerId}?placeId=${result.placeId}`).subscribe({
       next: (response: { data: any }) => {
-        console.log(response.data[0]);
+        // console.log(response.data[0]);
 
         const locationData = response.data[0].address;
 
@@ -167,7 +165,7 @@ export class SelectLocationComponent implements OnInit, DoCheck {
         if (Object(locationData).state != null) locationData.formattedAddress += Object(locationData).state;
         if (Object(locationData).pincode != null) locationData.formattedAddress += ' - ' + Object(locationData).pincode + '. ';
 
-        console.log(Object.values(locationData));
+        // console.log(Object.values(locationData));
 
         // localStorage.setItem('selectedLocation', JSON.stringify(locationData));
         if (response.data[0].restaurants.length == 1) {
@@ -205,18 +203,75 @@ export class SelectLocationComponent implements OnInit, DoCheck {
     });
     localStorage.setItem('selectedLocation', JSON.stringify(this.selectedLocation));
     this.editLocationValue = "";
-    this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
+
+    // this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
     this.searchTerm = '';
     this.ngZone.run(() => {
-      this.router.navigate(['/order']); 
+      // this.router.navigate(['/order']); 
+      this.checkServiceable(event.location);
     });
     
+    
+
+
     // console.log(this.selectedLocation);
     
     // this.enableMapEdit = fal;
     // this.selectedLocation = event;
     // this.markedLocation = event;
   }
+
+  checkServiceable(location:any){
+
+
+    this.apiService.getMethod(`/location/maps/place/${this.partnerId}?latitude=${location.latitude}&longitude=${location.longitude}`).subscribe({
+      next: (response: { data: any }) => {
+        // console.log(response.data[0]);
+
+        const locationData = response.data[0].address;
+
+
+        locationData.formattedAddress = '';
+        if (Object(locationData).addressOne != null) locationData.formattedAddress += Object(locationData).addressOne + ', ';
+        if (Object(locationData).addressTwo != null) locationData.formattedAddress += Object(locationData).addressTwo + ', ';
+        if (Object(locationData).addressType != null) locationData.formattedAddress += Object(locationData).addressType + ', ';
+        if (Object(locationData).city != null) locationData.formattedAddress += Object(locationData).city + ', ';
+        if (Object(locationData).country != null) locationData.formattedAddress += Object(locationData).country + ', ';
+        if (Object(locationData).landmark != null) locationData.formattedAddress += Object(locationData).landmark + ', ';
+        if (Object(locationData).state != null) locationData.formattedAddress += Object(locationData).state;
+        if (Object(locationData).pincode != null) locationData.formattedAddress += ' - ' + Object(locationData).pincode + '. ';
+
+        // console.log(Object.values(locationData));
+
+        // localStorage.setItem('selectedLocation', JSON.stringify(locationData));
+        if (response.data[0].restaurants.length == 1) {
+          localStorage.setItem('selectedRestId', response.data[0].restaurants[0]);
+        }
+        localStorage.setItem("availableBranches", JSON.stringify(response.data[0].restaurants));
+
+        // this.closeSearchBar();
+        // this.foodMenuComponent.closeDeliveryMode();
+        // this.foodMenuComponent.loadAddress();
+        this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
+        // this.selectedLocation.emit({ selectedLocation: locationData });
+
+        this.router.navigate(['/order']);    
+
+        // Reset searchTerm and searchResults
+        this.searchTerm = '';
+        this.searchResults = [];
+        this.editLocationValue = locationData.location;
+
+      },
+      error: error => {
+        this.unServiceable();
+        this.searchResults = [];
+        this.unServiceableValue = true;
+        console.error('Error fetching location data:', error);
+      }
+    });
+  }
+
 
   // getMyCurrentLocation() {
   //   if (navigator.geolocation) {

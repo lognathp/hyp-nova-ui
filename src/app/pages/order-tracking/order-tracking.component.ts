@@ -80,7 +80,7 @@ export class OrderTrackingComponent implements OnInit {
   }
 
   async fetchOrderStatus(): Promise<void> {
-    this.apiService.getMethod(`/order/${this.currentOrder.data[0].id}`).subscribe({
+    this.apiService.getMethod(`/order/${this.currentOrder?.data[0].id}`).subscribe({
       next: (response) => {
         console.log('Initial order status:', response);
         this.orderStatus = response.data[0];

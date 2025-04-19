@@ -81,7 +81,7 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
   }
 
   getPinLocation(): void {
-    console.log('Current Pin Location:', this.centerPosition);
+    // console.log('Current Pin Location:', this.centerPosition);
     this.getAddressFromLatLng(this.centerPosition.lat, this.centerPosition.lng);
   }
   getAddressFromLatLng(lat: number, lng: number): void {
@@ -95,7 +95,7 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
     geocoder.geocode({ location: latlng }, (results: any, status: any) => {
       if (status === 'OK' && results[0]) {
         this.address = results[0].formatted_address;
-        console.log(results[0]);
+        // console.log(results[0]);
         for (const component of results[0].address_components) {
           if (component.types.includes('locality')) {
             city = component.long_name;
@@ -112,7 +112,7 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
 
         }
         // alert(`Current Address:\n${this.address}`);    this.centerPosition
-        console.log('Address:', this.address);
+        // console.log('Address:', this.address);
         this.selectedLocation.emit(
           {
             address: results[0].address_components,
