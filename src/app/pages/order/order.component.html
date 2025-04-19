@@ -332,8 +332,7 @@
 
                         @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
                         {
-                        <button class='btn btn-transparent addButton ' data-bs-toggle="offcanvas"
-                            data-bs-target="#addOn" [disabled]="restaurentActive == false" (click)="selectItem(item)"> +
+                        <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false" (click)="selectItem(item)"> +
                             Add</button>
                         }
 

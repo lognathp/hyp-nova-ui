@@ -22,6 +22,8 @@ import { RestaurentClosedComponent } from "../../components/errors/restaurent-cl
 })
 export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
+    contactHyperapps: string = environment.contactHyperapps;
+
     currentPage: string = "cart";
     foodBasket: any = {};
     menuData: any = {};
@@ -64,7 +66,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     flatDiscountpercentage = environment.flatDiscountpercentage;
     unKnownError: boolean = false;
     restaurentClosed: boolean = false;
-    
+
     deliveryDiscount = 30;
     isMakePaymentEnabled: boolean = false;
 
@@ -73,6 +75,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     workingHours: boolean = true;
 
     indexOfSameItemWithAddons: any = [];
+    branchData: any;
 
     constructor(
         public apiService: ApiService,
@@ -88,6 +91,9 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         //   console.log(this.router, window.location.origin);
         let restId: any = localStorage.getItem("selectedRestId")
         this.restaurentId = parseInt(restId);
+
+        const branchdata:any = localStorage.getItem("currentBranch")
+        this.branchData = JSON.parse(branchdata)
         //   console.log('restaurentId', this.restaurentId);
         // window.addEventListener('storage', (event: StorageEvent) => {
         //     if (event.key === 'selectedRestId') {
@@ -120,7 +126,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         let tempcustomDetails: any = localStorage.getItem('customerDetails');
         this.customDetails = JSON.parse(tempcustomDetails);
         this.mobile = this.customDetails.mobile
-       
+
         // console.log('md',this.menuData);
 
         // this.sharedData.getMenuData().subscribe((data:any) => {
@@ -170,7 +176,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 //     this.getDeliveryQuote(data.id);
                 // }
                 this.checkWorkingHours();
-                console.log(this.workingHours,'this.workingHours');
+                console.log(this.workingHours, 'this.workingHours');
                 this.workingHours ? this.getDeliveryQuote(data.id) : this.restaurentClosed = true;
                 // this.getDeliveryQuote(data.id);
             } else {
@@ -180,10 +186,10 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     }
 
     ngDoCheck() {
-    
+
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
-          this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
-          // this.restaurentActive = false;
+            this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
+            // this.restaurentActive = false;
         });
     }
     checkWorkingHours() {
@@ -284,7 +290,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                             }
                             item.orderAddonItems.push(detail);
-                           
+
                         }
                     });
                 });
@@ -333,7 +339,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                         // NEW
 
-                       
+
 
                         // Loop through addons.data
                         for (const addonGroup of element.addonVariation?.addons?.data) {
@@ -341,7 +347,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                             const selectedAddons = addonGroup.selectedAddon;
 
                             // Find addonGroup details in addonDetails
-                            const addonIndex = element.addonVariation.addonDetails.findIndex((group:any) => group.id === addonGroupId);
+                            const addonIndex = element.addonVariation.addonDetails.findIndex((group: any) => group.id === addonGroupId);
                             if (addonIndex !== -1) {
                                 const addonGroupDetail = element.addonVariation.addonDetails[addonIndex];
 

@@ -177,6 +177,20 @@
         </div>
     </div>
 
+    <!-- Customer Support Bottom Sheet -->
+    <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="contactSupport">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title btmHeader">Customer Support</h5>
+            <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            @if (restaurentId != null || restaurentId != undefined){
+            <p class="btmSptCnt ">Restaurant <span>+91-{{ branchData?.supportContact}}</span></p>
+            <p class="btmSptCnt ">Hyperapps <span>+91-{{ contactHyperapps }}</span></p>
+            }
+
+        </div>
+    </div>
 
     <!-- Select Delivery location Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="couponSheet">

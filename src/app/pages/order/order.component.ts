@@ -80,6 +80,7 @@ export class OrderComponent implements OnInit, DoCheck {
   private wsSubscription!: Subscription;
   customerDetails: any;
   showTracking: boolean = false;
+  addOnBackdrop: boolean = false;
 
   constructor(
     public apiService: ApiService,
@@ -157,6 +158,7 @@ export class OrderComponent implements OnInit, DoCheck {
           this.vendorData.restaurantDetails.forEach((brdata: any) => {
             if (brdata.id == this.restaurentId) {
               this.branchData = brdata;
+              localStorage.setItem('currentBranch',JSON.stringify(this.branchData) )
               // console.log(this.branchData);
 
             }
@@ -746,8 +748,13 @@ export class OrderComponent implements OnInit, DoCheck {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const clickedInsideOffcanvas = (event.target as HTMLElement).closest('.offcanvas.show');
-    if (!clickedInsideOffcanvas) {
+    if (!clickedInsideOffcanvas && this.addOnBackdrop) {
       this.removeOffcanvasBackdrop();
+      // this.closeOffcanvas('contactSupport');
+      // this.closeOffcanvas('foodMenu');
+      // this.closeOffcanvas('selectOutlet');
+      // this.closeOffcanvas('addOn');
+      // this.closeOffcanvas('verifySameAddon');
     }
   }
   removeOffcanvasBackdrop() {
@@ -804,7 +811,7 @@ export class OrderComponent implements OnInit, DoCheck {
         bsOffcanvas.show();
       }
     }
-
+    offcanvasId == 'addOn' ?  this.addOnBackdrop = true :  this.addOnBackdrop = false;
 
   }
 
