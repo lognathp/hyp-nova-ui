@@ -1825,10 +1825,10 @@ input[type="radio"] {
     font-size: 12px;
     font-weight: 400;
     color: #4D4D4D;
-    padding-left: 18px;
+    /* padding-left: 18px; */
 }
 
-.cartFoodTile .food-item .addon::after {
+/* .cartFoodTile .food-item .addon::after {
     content: "";
     display: inline-block;
     width: 10px;
@@ -1837,7 +1837,7 @@ input[type="radio"] {
     background-size: contain;
     margin-left: 6px;
     vertical-align: middle;
-}
+} */
 
 .cartCheckout>li {
     padding: 10px;

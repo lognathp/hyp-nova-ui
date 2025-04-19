@@ -108,7 +108,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         const menuData: any = localStorage.getItem("menu");
         this.foodBasket = JSON.parse(foodItem);
         this.menuData = JSON.parse(menuData);
-
+        // console.log('fb', this.foodBasket);
         this.prepareOrderSubject.pipe(
             debounceTime(500) // Adjust debounce time as needed
         ).subscribe(() => {
@@ -120,7 +120,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         let tempcustomDetails: any = localStorage.getItem('customerDetails');
         this.customDetails = JSON.parse(tempcustomDetails);
         this.mobile = this.customDetails.mobile
-        console.log('fb', this.foodBasket);
+       
         // console.log('md',this.menuData);
 
         // this.sharedData.getMenuData().subscribe((data:any) => {
@@ -284,6 +284,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                             }
                             item.orderAddonItems.push(detail);
+                           
                         }
                     });
                 });
@@ -332,7 +333,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                         // NEW
 
-                        const index = 0;
+                       
 
                         // Loop through addons.data
                         for (const addonGroup of element.addonVariation?.addons?.data) {
@@ -356,7 +357,6 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                                             addonGroupId: element.addonVariation.addonDetails[addonIndex].id
                                         };
                                         item.orderAddonItems.push(detail);
-
                                         if (!this.foodBasket[index].addonVariation?.addOnNames.includes(items.addonItemName)) {
                                             this.foodBasket[index].addonVariation?.addOnNames.push(items.addonItemName);
                                         }
