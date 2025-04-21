@@ -9,7 +9,7 @@ import { MenuLoaderComponent } from "./components/loaders/menu-loader/menu-loade
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, GoogleMapsModule, MenuLoaderComponent, ],
+  imports: [RouterOutlet, GoogleMapsModule, MenuLoaderComponent,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
