@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - chaitanya-food-court
 
 jobs:
   build:
@@ -58,5 +59,5 @@ jobs:
           docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:production)
           docker rmi lognathp/hyp-nova-ui:production
           docker pull lognathp/hyp-nova-ui:production
-          docker run -d -p 4235:80 lognathp/hyp-nova-ui:production
+          docker run -d -p 4252:80 lognathp/hyp-nova-ui:production
         EOF
