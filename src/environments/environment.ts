@@ -8,7 +8,7 @@ export const environment = {
     partnerId:'ju8tCXSeun',
     production: false,
     razorPayKey:'rzp_test_dUt1jZJm3Whtxk',
-    title:'Hyperapps',
+    title:'Chaitanya Food Court',
     contactRestaurant:"9642887733",
     contactHyperapps:"8885026686",
     flatDiscountpercentage : 25,
