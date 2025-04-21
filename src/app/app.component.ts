@@ -9,7 +9,7 @@ import { MenuLoaderComponent } from "./components/loaders/menu-loader/menu-loade
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, GoogleMapsModule, MenuLoaderComponent, ],
+  imports: [RouterOutlet, GoogleMapsModule, MenuLoaderComponent,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -27,7 +27,11 @@ export class AppComponent {
     console.log('isDevMode',isDevMode());
     if(isDevMode()){
       // domain ="https://chaitanyafoodcourt.hyperapps.in"
-      domain ="https://saharshudipigrand.hyperapps.in"
+<<<<<<< HEAD
+      domain ="https://yumyumtree.hyperapps.in"
+=======
+      domain ="https://order.chaitanyafoodcourt.com"
+>>>>>>> 593ec49 (Onboard Chaitanya Food Court)
       // domain ="https://order.madhapurbawarchi.com"
       // domain ="https://31.178.75.55:9090"
     }

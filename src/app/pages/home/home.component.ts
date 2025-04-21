@@ -47,9 +47,11 @@ export class HomeComponent {
     let domain = new URL(url).origin;
     console.log('isDevMode', isDevMode());
     if (isDevMode()) {
-      // domain = "https://rasyumm.hyperapps.cloud"
-      domain = "https://saharshudipigrand.hyperapps.in"
-
+<<<<<<< HEAD
+      domain = "https://yumyumtree.hyperapps.in"
+=======
+      domain = "https://order.chaitanyafoodcourt.com"
+>>>>>>> 593ec49 (Onboard Chaitanya Food Court)
     }
     this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
       next: (response) => {
