@@ -144,6 +144,13 @@
         </div>
     </div>
 
+    @if(showTracking){
+        <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+            <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
+                <img src="assets/images/icons/outForDelivery.png"> </button>
+        </div>
+    }
+
     <div class="container my-3 bg-transparent ">
         <div class="row ">
             <div class="col-md-12 ">
@@ -176,7 +183,7 @@
             </div>
         </div>
     </div>
-
+  
     <!-- Customer Support Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="contactSupport">
         <div class="offcanvas-header">

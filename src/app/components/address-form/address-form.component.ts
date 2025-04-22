@@ -5,13 +5,20 @@ import { Router } from '@angular/router';
 import { AbstractControl, FormControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { LocationPickerComponent } from "../location-picker/location-picker.component";
 import { CommonModule } from '@angular/common';
+import { SelectLocationComponent } from "../select-location/select-location.component";
+
+import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
+declare var bootstrap: any; // Bootstrap is using from assets
 
 @Component({
   selector: 'app-address-form',
   standalone: true,
-  imports: [LocationPickerComponent, FormsModule, CommonModule],
+  imports: [LocationPickerComponent, FormsModule, CommonModule, SelectLocationComponent,ToastModule],
   templateUrl: './address-form.component.html',
-  styleUrl: './address-form.component.scss'
+  styleUrl: './address-form.component.scss',
+  providers: [MessageService]
 })
 export class AddressFormComponent {
 
@@ -38,6 +45,8 @@ export class AddressFormComponent {
   editAddress:boolean = false;
   editLocationValue: any;
   addressId!: number;
+  showSellocation: boolean = false;
+  showmap: boolean =  false;
   // editLocationdata: { formattedAddress: any; location: any; city: any; state: any; pincode: any; country: any; };
   // enableMapEdit: boolean = true;
 
@@ -46,8 +55,8 @@ export class AddressFormComponent {
     public sharedDervice: SharedService,
     private router: Router,
     // private formBuilder: FormBuilder,
-    // private messageService: MessageService,
-    // private primengConfig: PrimeNGConfig,
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig,
     // private foodMenuComponent: FoodMenuComponent
   ) {}
 
@@ -58,6 +67,7 @@ export class AddressFormComponent {
     this.router.navigate(['/order']);
   }
   ngOnInit() {
+    this.primengConfig.ripple = true;
     // let restId: any = localStorage.getItem("selectedRestId")
     // this.restaurentId = parseInt(restId);
 
@@ -84,7 +94,9 @@ export class AddressFormComponent {
 
     const tempLocationSelected: any = localStorage.getItem('selectedLocation');
     this.selectedLocation = JSON.parse(tempLocationSelected);
-
+    if(this.selectedLocation){
+      this.showmap = true;
+    }
     let custDetail: any = localStorage.getItem('customerDetails');
     this.customerDetails = JSON.parse(custDetail);
 
@@ -105,10 +117,22 @@ export class AddressFormComponent {
 
   }
 
+  getchangedLocation(event: any):void{
+    
+    this.showmap = true;
+    // this.selectedLocation = event.selectedLocation;
+    // this.editLocationValue = event.selectedLocation.location
+    const tempLocationSelected: any = localStorage.getItem('selectedLocation');
+    this.selectedLocation = JSON.parse(tempLocationSelected);
+    this.closeOffcanvas('selectDeliveryLocation');
+    this.showSellocation = false;
+  }
+
   getSelectedLocation(event: any): void {
     console.log(event);
     // this.enableMapEdit = fal;
     this.locationConformed = true;
+    
     this.selectedLocation = event;
     // this.markedLocation = event;
   }
@@ -151,6 +175,9 @@ export class AddressFormComponent {
         },
         error: (error) => { console.log(error) }
       });
+    }
+    if(!this.locationConformed){
+      this.messageService.add({ severity: 'error', detail: 'PLease conform location. ', life: 1000 });
     }
 
     // }
@@ -217,6 +244,28 @@ export class AddressFormComponent {
     // this.enableMapEdit = true;
     // console.log(this.enableMapEdit);
 
+  }
+
+  
+  public openOffcanvas(offcanvasId: string) {
+    this.showSellocation = true;
+    const offcanvasElement = document.getElementById(offcanvasId);
+      if (offcanvasElement) {
+        const bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
+        bsOffcanvas.show();
+      }
+      this.showmap = false;
+  }
+  /**
+   * Method to close bootstrap canvas ans bottom slider
+   */
+  public closeOffcanvas(offcanvasId: string): void {
+    const offcanvasElement = document.getElementById(offcanvasId);
+    if (offcanvasElement) {
+      const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      offcanvasInstance.hide();  // Close offcanvas
+    }
+    
   }
 
 }

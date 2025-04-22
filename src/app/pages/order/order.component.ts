@@ -17,6 +17,7 @@ import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
 import { BranchChangeComponent } from "../../components/alert-box/branch-change/branch-change.component";
 import { WebSocketService } from '../../core/services/websocket.service';
 import { Subscription } from 'rxjs';
+import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -37,8 +38,9 @@ declare var bootstrap: any; // Bootstrap is using from assets
     VegNonvegFilterPipe,
     RouterLink,
     RouterModule,
-    BranchChangeComponent
-  ],
+    BranchChangeComponent,
+    SplitFirstCommaPipe
+],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })

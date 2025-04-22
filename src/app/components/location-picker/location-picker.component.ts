@@ -43,12 +43,23 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
 
 
   }
-  ngOnChanges(changes: SimpleChanges) {
-    // console.log(this.conformLocation, this.editLocation);
-    // if(this.editLocation){
-    //   this.conformLocation = false;
-    // }
+  ngOnChanges() {
+    console.log(this.conformLocation, this.editLocation, );
+    const selectedLocation: any = localStorage.getItem('selectedLocation');
+    const tempLocationSelected = JSON.parse(selectedLocation);
+    if (this.editLocationData != undefined) {
+      this.centerPosition = {
+        lat: this.editLocationData.latitude,
+        lng: this.editLocationData.longitude
+      }
+    } else {
+      this.centerPosition = {
+        lat: tempLocationSelected.location.latitude,
+        lng: tempLocationSelected.location.longitude
+      }
+    }
   }
+  
 
   ngAfterViewInit() {
     // this.initMap();

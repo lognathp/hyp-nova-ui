@@ -121,19 +121,32 @@
     right: 20px;
     z-index: 1000;
 }
+.track{
+    bottom: 100px;
+
+    
+}
 
 @media (min-width: 768px) {
     .floating-menu{
         right: 38%;
         bottom: 30px;
     }
+    .track{
+        bottom: 110px !important;
+    }
 }
 
 .floating-menu.cart-active {
     bottom: 80px; 
 }
+.track.cart-active {
+    bottom: 145px !important;
+}
 
-.menuBtn {
+
+
+.menuBtn, .trackBtn {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -148,7 +161,10 @@
     justify-content: center;
     transition: 0.3s;
 }
-
+.trackBtn{
+    bottom: 50px;
+    background: #d20500;
+}
 .menuBtn:hover {
     background: #171717;
 }
@@ -158,6 +174,18 @@
     background-color: #000;
     text-align: center;
     margin: auto;
+}
+
+.trackBtn>img {
+    width: 85%;
+    background-color: #d20500;
+    text-align: center;
+    margin: auto;
+
+   
+}
+.trackBtn:hover{
+    background: #d20500;
 }
 /* Menu Items */
 
@@ -2408,6 +2436,16 @@ input[type="radio"] {
     padding: 0px;
     margin: 10px 0;
     border-radius: 20px;
+}
+.changeaddress{
+    padding: 0px;
+    margin: 10px 0;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 15px;
+    height: 50px;
+    border: 1px solid #D20500;
+    color: #D20500;
 }
 
 .addressPage p {

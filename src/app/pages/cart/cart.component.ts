@@ -76,6 +76,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
     indexOfSameItemWithAddons: any = [];
     branchData: any;
+    showTracking: boolean = false;
 
     constructor(
         public apiService: ApiService,
@@ -838,4 +839,26 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     back(): void {
         this.router.navigate(['/order']);
     }
+    /**
+  * To fetch order history
+  */
+  getOrderHistory(): void {
+    if (this.customDetails) {
+      const orderStaus = ['PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP', 'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY']
+      this.apiService.getMethod(`/order?customerId_eq=${this.customDetails.id}`).subscribe({
+        next: (reponse) => {
+          // this.orderHistory = reponse.data;
+          console.log(reponse.data);
+          let length = reponse.data.length;
+          if (orderStaus.includes(reponse.data[length - 1]?.status)) {
+            this.showTracking = true;
+          }
+        },
+        error: (error) => { console.log(error) }
+      })
+    }
+  }
+  orderTrack() {
+    this.router.navigate(['/order-tracking']);
+  }
 }

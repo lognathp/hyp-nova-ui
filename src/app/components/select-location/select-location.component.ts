@@ -1,4 +1,4 @@
-import { Component, DoCheck, EventEmitter, NgZone, OnInit, Output } from '@angular/core';
+import { Component, DoCheck, EventEmitter, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription, catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
@@ -19,7 +19,7 @@ import { LocationPickerComponent } from "../location-picker/location-picker.comp
   templateUrl: './select-location.component.html',
   styleUrl: './select-location.component.scss'
 })
-export class SelectLocationComponent implements OnInit, DoCheck {
+export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
 
   searchTerm: string = '';
   searchPlaceId: string = '';
@@ -46,6 +46,7 @@ export class SelectLocationComponent implements OnInit, DoCheck {
   };
 
   @Output() selectedLocationEmit = new EventEmitter<any>(); 
+  @Output() changedLocationEmit = new EventEmitter<any>(); 
 
   constructor(
     public apiService: ApiService,
@@ -81,6 +82,10 @@ export class SelectLocationComponent implements OnInit, DoCheck {
     // this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
     //   this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
     // });
+  }
+
+  ngOnDestroy() {
+    this.clearAll();
   }
 
   public isLocationEnabled() {
@@ -167,7 +172,7 @@ export class SelectLocationComponent implements OnInit, DoCheck {
 
         // console.log(Object.values(locationData));
 
-        // localStorage.setItem('selectedLocation', JSON.stringify(locationData));
+        localStorage.setItem('selectedLocation', JSON.stringify(locationData));
         if (response.data[0].restaurants.length == 1) {
           localStorage.setItem('selectedRestId', response.data[0].restaurants[0]);
         }
@@ -178,6 +183,7 @@ export class SelectLocationComponent implements OnInit, DoCheck {
         // this.foodMenuComponent.loadAddress();
 
         // this.selectedLocation.emit({ selectedLocation: locationData });
+        this.changedLocationEmit.emit({ selectedLocation: locationData });
 
         // this.router.navigate(['/order']);    Commented for testing - To avoid routing on developnet process
 
@@ -253,6 +259,7 @@ export class SelectLocationComponent implements OnInit, DoCheck {
         // this.foodMenuComponent.closeDeliveryMode();
         // this.foodMenuComponent.loadAddress();
         this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
+      
         // this.selectedLocation.emit({ selectedLocation: locationData });
 
         this.router.navigate(['/order']);    
@@ -326,4 +333,10 @@ export class SelectLocationComponent implements OnInit, DoCheck {
     this.unServiceableValue = true;
   }
 
+  public clearAll(){
+    this.editLocationValue = "";
+    this.searchTerm = '';
+    this.searchResults = [];
+  }
+ 
 }

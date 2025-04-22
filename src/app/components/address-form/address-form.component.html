@@ -6,7 +6,7 @@
                 <img src="assets/images/icons/back.png "  (click)="goBack();" class="headerIconLeft "  >
             </button>
             <div class="d-inline-block">
-                <a class="navbar-brand cartHeader" href="" data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation">
+                <a class="navbar-brand cartHeader" href="">
                     @if(!editAddress){
                         Add Address Details
                     }@else {
@@ -23,10 +23,13 @@
 
     <div class="container">
         <div class="row addressDetailPageContainer">
+            <button class="btn changeaddress btnActive" (click)="openOffcanvas('selectDeliveryLocation')">Change Location </button>
+        </div>
+        <div class="row addressDetailPageContainer">
             <div class="col-md-12 p-0 mapAddress mb-3">
                 <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30468.04554232425!2d78.565699!3d17.339383!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3427bf787ad%3A0xd353a7d2d429feb!2sAnkapur%20Village%20-%20A%20Military%20Hotel%20(Vanasthalipuram)!5e0!3m2!1sen!2sin!4v1739698519949!5m2!1sen!2sin "
                     width="100% " allowfullscreen=" " loading="lazy " referrerpolicy="no-referrer-when-downgrade "></iframe> -->
-                    @if (selectedLocation) {
+                    @if (showmap) {
                         <app-location-picker [editLocationData]="editLocationValue" (selectedLocation)="getSelectedLocation($event)"></app-location-picker>
                     }
                    
@@ -88,5 +91,14 @@
 
 
     </div>
+     <!-- Select Delivery location Bottom Sheet -->
+     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="selectDeliveryLocation">
+        @if(showSellocation){
+            <app-select-location (changedLocationEmit)="getchangedLocation($event)"></app-select-location>
+        }
+       
+    </div>
 
 </div>
+
+<p-toast position="top-center" styleClass="custom-toast"></p-toast>
