@@ -48,15 +48,15 @@
         <div class="row addressForm">
             <div class="col-md-12 pos-rel ">
                 <label>Flat No. / Floor*</label>
-                <input type="text " class="form-control" [ngClass]="{ 'errorBorder': submitted && flatNo == '' }" [(ngModel)]="flatNo">
+                <input type="text" class="form-control highlightInput" [ngClass]="{ 'errorBorder': submitted && flatNo == '' }" [(ngModel)]="flatNo">
             </div>
             <div class="col-md-12 pos-rel ">
                 <label>Building / Block No.*</label>
-                <input type="text " class="form-control" [ngClass]="{ 'errorBorder': submitted && addressOne == '' }" [(ngModel)]="addressOne" >
+                <input type="text" class="form-control highlightInput" [ngClass]="{ 'errorBorder': submitted && addressOne == '' }" [(ngModel)]="addressOne" >
             </div>
             <div class="col-md-12 pos-rel ">
                 <label>Landmark & Area Name (Optional)</label>
-                <input type="text " class="form-control" [(ngModel)]="landmark" >
+                <input type="text" class="form-control highlightInput" [(ngModel)]="landmark" >
             </div>
         </div>
     </div>

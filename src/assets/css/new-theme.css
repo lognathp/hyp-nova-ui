@@ -282,23 +282,67 @@
     border: solid 0.5px #00A15E;
 }
 
-.searchText {
+input.searchText {
     height: 50px;
     border-radius: 12px;
-    font-size: 14px;
-    padding-left: 50px;
-}
+    font-size: 15px;
+    padding-left: 48px;
+    border: 1.5px solid #d1d5db !important; 
+    background-color: #fff;
+    color: #111827; 
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); 
+  }
+  
+  input.searchText::placeholder {
+    color: #9ca3af; 
+    opacity: 1;
+    
+  }
+  
+  input.searchText:focus {
+    border-color: #D20500 !important;
+    box-shadow: 0 0 0 4px rgba(210, 5, 0, 0.15) !important; 
+    outline: none;
+  }
 
-.searchText:before {
-    content: "";
-    display: block;
-    width: 25px;
-    height: 25px;
-    background: url('../images/icons/search.png') no-repeat center;
-    background-size: contain;
-    margin-right: 12px;
-    vertical-align: text-top;
-}
+  
+  input.highlightInput {
+    height: 50px;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    font-size: 15px;
+    padding: 12px 16px;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: #111;
+  }
+  
+  input.highlightInput:focus {
+    border-color: #D20500;
+    box-shadow: 0 0 0 3px rgba(210, 5, 0, 0.2);
+    outline: none;
+  }
+
+
+  input.form-control.highlightInput {
+    height: 50px;
+    border: 2px solid #ccc !important;
+    border-radius: 12px;
+    font-size: 15px;
+    padding: 12px 16px;
+    background-color: #fff;
+    transition: all 0.25s ease-in-out;
+    color: #111;
+  }
+  
+  input.form-control.highlightInput:focus {
+    border-color: #D20500 !important;
+    box-shadow:
+      0 0 0 3px rgba(210, 5, 0, 0.2) !important,
+      inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    outline: none;
+  }
 
 .btnText::before {
     content: "";
@@ -878,6 +922,7 @@ float: right;
     color: #fff;
     height: 50px
 }
+
 
 .card-img-top{
     height: 120px;
@@ -1642,7 +1687,6 @@ input[type="radio"] {
     background: linear-gradient(0deg, #FFDDAA, #FF6B00 80%) no-repeat;
     padding-top: 32px;
     padding: 16px;
-    margin-top: 90px;
    
 }
 
@@ -1650,9 +1694,8 @@ input[type="radio"] {
     #loginSheet {
     height: 100vh;
     background: linear-gradient(0deg, #FFDDAA, #FF6B00 80%) no-repeat;
-    padding-top: 32px;
+    padding-top: 90px;
     padding: 16px;
-    margin-top: 90px;
     }
 }
 
