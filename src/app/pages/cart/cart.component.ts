@@ -51,7 +51,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     showAddressbox: boolean = false;
     showPayment: boolean = false;
     orderSaveResponse: any = {};
-    address: any = {};
+    address!:any;
     mobile: any = {};
     sameAddon: boolean = false;
 
@@ -160,7 +160,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     ngAfterViewInit(): void {
         // throw new Error('Method not implemented.');
         this.sharedData.getSelecetdAddress().pipe(take(1)).subscribe((data: any) => {
-            // console.log('address', data);
+            console.log('address', data);
             if (Object.entries(data).length > 0) {
                 const tempcustomDetailsformattedAddress = {
                     addressOne: data.addressOne,
@@ -178,7 +178,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 // }
                 this.checkWorkingHours();
                 console.log(this.workingHours, 'this.workingHours');
+
+                // const quoteDatatemp:any = localStorage.getItem('quoteData')
+                // console.log(JSON.parse(quoteDatatemp),'quoteDatatemp');
+                
                 this.workingHours ? this.getDeliveryQuote(data.id) : this.restaurentClosed = true;
+                // this.workingHours ? this.getSharedDeliverQuoteData() : this.restaurentClosed = true;
                 // this.getDeliveryQuote(data.id);
             } else {
                 this.showAddAddressButton = true;
@@ -499,8 +504,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     this.quoteLoading = false;
 
                     this.quoteData = reponse;
-
-
+                    // localStorage.setItem('quoteData',JSON.stringify(reponse))
+                   
 
                     // this.orderPriceDetails['deliveryCharge'] = 25;
                     // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
@@ -535,6 +540,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         }
 
     }
+
+ 
 
     removeItem(index: number): void {
 

@@ -628,12 +628,12 @@ export class OrderComponent implements OnInit, DoCheck {
     this.cartItemPrice = 0;
     const tempFoodBasket = JSON.parse(JSON.stringify(this.foodBasket));
     tempFoodBasket.forEach((ele: any) => {
-      console.log(ele);
+      // console.log(ele);
 
       if (ele.item.quantity == undefined) {
         // Item price will be 0 if there is variation
         if (ele.addonVariation != undefined) {
-          console.log(ele.addonVariation?.addons);
+          // console.log(ele.addonVariation?.addons);
 
           this.cartItemPrice = this.cartItemPrice + parseFloat(ele.addonVariation?.varients.price);
           // if(ele.addonVariation?.addons?.data.length > 0){
@@ -655,7 +655,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
         if (ele.addonVariation?.addons != undefined && ele.addonVariation == undefined) {
           let addonPrice: any = this.getSelectedAddonPrices(ele.addonVariation?.addonDetails, ele.addonVariation?.addons.data);
-          console.log('addonPrice', addonPrice);
+          // console.log('addonPrice', addonPrice);
           this.cartItemPrice = this.cartItemPrice + (parseFloat(addonPrice) * parseInt(ele.item.quantity));
 
         }
@@ -670,7 +670,7 @@ export class OrderComponent implements OnInit, DoCheck {
      * @returns : Boolean value of true / false is added addon Item same or not
      */
   public sameAddonItems(newItemAddon: any, newItemVariationAddon: any, existingItemAddon: any): Boolean {
-    console.log(newItemAddon, newItemVariationAddon, existingItemAddon);
+    // console.log(newItemAddon, newItemVariationAddon, existingItemAddon);
     let newAddonTemp: any = [];
     if (newItemAddon.length > 0) {
       newAddonTemp = newAddonTemp;
@@ -684,7 +684,7 @@ export class OrderComponent implements OnInit, DoCheck {
     let is_equal: Boolean = (newAddonTemp.length == existingItemAddon.length) && sortedArray1.every((element: any, index: number) => {
       return element === sortedArray2[index];
     });
-    console.log(is_equal, 'is_equal');
+    // console.log(is_equal, 'is_equal');
     return is_equal;
   }
 
@@ -698,7 +698,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
     if (offcanvasElement) {
       this.offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
-      console.log(this.offcanvasInstance);
+      // console.log(this.offcanvasInstance);
     }
 
     const element = document.getElementById('section-' + sectionId);
@@ -828,7 +828,7 @@ export class OrderComponent implements OnInit, DoCheck {
   }
 
   public getSelectedAddonPrices(selectedData: any, addonGroups: any[]) {
-    console.log(selectedData, addonGroups);
+    // console.log(selectedData, addonGroups);
     let totalAddonPrice = 0;
     addonGroups.forEach(group => {
       const selectedDataGroup = selectedData.find((data: { id: any; }) => data.id === group.addonGroupId);
@@ -843,7 +843,7 @@ export class OrderComponent implements OnInit, DoCheck {
         });
       }
     });
-    console.log(totalAddonPrice, 'totalAddonPrice');
+    // console.log(totalAddonPrice, 'totalAddonPrice');
 
     return totalAddonPrice;
     //OLD

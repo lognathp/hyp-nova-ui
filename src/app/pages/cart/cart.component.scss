@@ -14,3 +14,14 @@
 html {
     scroll-behavior: smooth;
   }
+
+  .address-block{
+    padding: 0 12px;
+   .addressDetails{
+    border-radius: 10px;
+
+    .simpleBtn{
+        float: right;
+    }
+   }
+  }

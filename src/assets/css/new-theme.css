@@ -338,9 +338,8 @@ input.searchText {
   
   input.form-control.highlightInput:focus {
     border-color: #D20500 !important;
-    box-shadow:
-      0 0 0 3px rgba(210, 5, 0, 0.2) !important,
-      inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow:  0 0 0 3px rgba(210, 5, 0, 0.2) !important;
+    inset: 0 1px 3px rgba(0, 0, 0, 0.05);
     outline: none;
   }
 
