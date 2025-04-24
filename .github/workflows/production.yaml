@@ -8,7 +8,7 @@ on:
       - yum-yum
 =======
       - chaitanya-food-court
->>>>>>> 593ec49 (Onboard Chaitanya Food Court)
+      - kanchi-cafe
 
 jobs:
   build:
@@ -70,6 +70,5 @@ jobs:
           docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:production)
           docker rmi lognathp/hyp-nova-ui:production
           docker pull lognathp/hyp-nova-ui:production
-          docker run -d -p 4252:80 lognathp/hyp-nova-ui:production
->>>>>>> 593ec49 (Onboard Chaitanya Food Court)
+          docker run -d -p 4222:80 lognathp/hyp-nova-ui:production
         EOF
