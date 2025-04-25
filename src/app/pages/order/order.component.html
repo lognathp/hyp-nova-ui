@@ -300,9 +300,7 @@
                         <img src="assets/images/icons/non-veg.png " class="filterIcon ">
                         }
 
-                        <!-- Best Seller Badge
-                        <span class="badge bestSeller ">Bestseller</span> -->
-
+                        <!-- <span class="badge bestSeller ">Bestseller</span> -->
                         <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
                         <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
                         <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
