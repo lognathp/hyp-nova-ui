@@ -1,8 +1,8 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'131508',
-    partnerId:'rnCDvOSXZK',
+    restId:'135348',
+    partnerId:'Lbqg9o4ib2',
     production: false,
     razorPayKey:'rzp_test_dUt1jZJm3Whtxk',
     title:'Chaitanya Food Court',
