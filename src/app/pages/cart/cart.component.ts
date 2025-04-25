@@ -51,7 +51,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     showAddressbox: boolean = false;
     showPayment: boolean = false;
     orderSaveResponse: any = {};
-    address!:any;
+    address!: any;
     mobile: any = {};
     sameAddon: boolean = false;
 
@@ -93,7 +93,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         let restId: any = localStorage.getItem("selectedRestId")
         this.restaurentId = parseInt(restId);
 
-        const branchdata:any = localStorage.getItem("currentBranch")
+        const branchdata: any = localStorage.getItem("currentBranch")
         this.branchData = JSON.parse(branchdata)
         //   console.log('restaurentId', this.restaurentId);
         // window.addEventListener('storage', (event: StorageEvent) => {
@@ -181,7 +181,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                 // const quoteDatatemp:any = localStorage.getItem('quoteData')
                 // console.log(JSON.parse(quoteDatatemp),'quoteDatatemp');
-                
+
                 this.workingHours ? this.getDeliveryQuote(data.id) : this.restaurentClosed = true;
                 // this.workingHours ? this.getSharedDeliverQuoteData() : this.restaurentClosed = true;
                 // this.getDeliveryQuote(data.id);
@@ -435,6 +435,9 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             };
             this.prepareOrderPrice(this.orderItems);
             this.prepareOrderTax(JSON.stringify(this.orderItems));
+            if (!this.isMakePaymentEnabled) {
+                this.getdeliveryQuoteshareddata();
+            }
         }
     }
 
@@ -463,7 +466,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
             this.orderPriceDetails.itemSubtotal = (parseFloat(this.orderPriceDetails.itemSubtotal) + (parseFloat(items.price)) * items.quantity).toFixed(2)
             this.orderPriceDetails['discount'] = (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100));
-            this.orderPriceDetails.toPay = ((parseFloat(this.orderPriceDetails.itemSubtotal) - (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100)) )+ this.orderPriceDetails.totalTax + this.orderPriceDetails.addOnPriceSum).toFixed(2)
+            this.orderPriceDetails.toPay = ((parseFloat(this.orderPriceDetails.itemSubtotal) - (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100))) + this.orderPriceDetails.totalTax + this.orderPriceDetails.addOnPriceSum).toFixed(2)
         });
         console.log(this.orderPriceDetails, 'this.orderPriceDetails');
 
@@ -505,24 +508,25 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                     this.quoteData = reponse;
                     // localStorage.setItem('quoteData',JSON.stringify(reponse))
-                   
-
+                    this.sharedData.sendDeliveryQuotedata({ reponse, addressId });
+                    this.assignQuoteData(addressId, reponse);
                     // this.orderPriceDetails['deliveryCharge'] = 25;
                     // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
 
-                    this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price - (this.quoteData.data[0].quote.price * (this.deliveryDiscount / 100));;
-                    // this.orderPriceDetails['dcTaxAmount'] = 10;
+                    // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price - (this.quoteData.data[0].quote.price * (this.deliveryDiscount / 100));;
+                    // // this.orderPriceDetails['dcTaxAmount'] = 10;
 
-                    this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
+                    // this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
 
-                    this.deliveryDetails['addressId'] = addressId;
-                    this.deliveryDetails['service'] = this.quoteData.data[0].service;
-                    // this.deliveryDetails['service'] ='wefast';
-                    this.deliveryDetails['pickupNow'] = this.quoteData.data[0].pickup_now;
-                    // this.deliveryDetails['pickupNow'] = true;
-                    // this.deliveryDetails['networkId'] = 18;
-                    this.deliveryDetails['networkId'] = this.quoteData.data[0].network_id;
-                    console.log(this.orderPriceDetails, this.quoteData, this.deliveryDetails);
+                    // this.deliveryDetails['addressId'] = addressId;
+                    // this.deliveryDetails['service'] = this.quoteData.data[0].service;
+                    // // this.deliveryDetails['service'] ='wefast';
+                    // this.deliveryDetails['pickupNow'] = this.quoteData.data[0].pickup_now;
+                    // // this.deliveryDetails['pickupNow'] = true;
+                    // // this.deliveryDetails['networkId'] = 18;
+                    // this.deliveryDetails['networkId'] = this.quoteData.data[0].network_id;
+                    // console.log(this.orderPriceDetails, this.quoteData, this.deliveryDetails);
+
                 },
                 error: (error: { error: string; }) => {
                     console.log('getQuote ' + error.error);
@@ -541,7 +545,40 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
     }
 
- 
+    /**
+     * Get delivaty quote data shared service
+     */
+    getdeliveryQuoteshareddata() {
+        this.sharedData.getDeliveryQuotedata().subscribe((data: any) => {
+            this.assignQuoteData(data.addressId, data.reponse)
+        });
+    }
+
+    /**
+     * TO assign quote value to the order element
+     * @param addressId Address id
+     * @param quoteData Qelivery Quote value response
+     */
+    assignQuoteData(addressId:any, quoteData: any) {
+
+        // this.orderPriceDetails['deliveryCharge'] = 25;
+        // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
+
+        this.orderPriceDetails['deliveryCharge'] = quoteData.data[0].quote.price - (quoteData.data[0].quote.price * (this.deliveryDiscount / 100));;
+        // this.orderPriceDetails['dcTaxAmount'] = 10;
+
+        this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
+
+        this.deliveryDetails['addressId'] = addressId;  
+        this.deliveryDetails['service'] = quoteData.data[0].service;
+        // this.deliveryDetails['service'] ='wefast';
+        this.deliveryDetails['pickupNow'] = quoteData.data[0].pickup_now;
+        // this.deliveryDetails['pickupNow'] = true;
+        // this.deliveryDetails['networkId'] = 18;
+        this.deliveryDetails['networkId'] = quoteData.data[0].network_id;
+        console.log(this.orderPriceDetails, quoteData, this.deliveryDetails);
+    }
+
 
     removeItem(index: number): void {
 
@@ -849,23 +886,23 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     /**
   * To fetch order history
   */
-  getOrderHistory(): void {
-    if (this.customDetails) {
-      const orderStaus = ['PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP', 'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY']
-      this.apiService.getMethod(`/order?customerId_eq=${this.customDetails.id}`).subscribe({
-        next: (reponse) => {
-          // this.orderHistory = reponse.data;
-          console.log(reponse.data);
-          let length = reponse.data.length;
-          if (orderStaus.includes(reponse.data[length - 1]?.status)) {
-            this.showTracking = true;
-          }
-        },
-        error: (error) => { console.log(error) }
-      })
+    getOrderHistory(): void {
+        if (this.customDetails) {
+            const orderStaus = ['PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP', 'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY']
+            this.apiService.getMethod(`/order?customerId_eq=${this.customDetails.id}`).subscribe({
+                next: (reponse) => {
+                    // this.orderHistory = reponse.data;
+                    console.log(reponse.data);
+                    let length = reponse.data.length;
+                    if (orderStaus.includes(reponse.data[length - 1]?.status)) {
+                        this.showTracking = true;
+                    }
+                },
+                error: (error) => { console.log(error) }
+            })
+        }
     }
-  }
-  orderTrack() {
-    this.router.navigate(['/order-tracking']);
-  }
+    orderTrack() {
+        this.router.navigate(['/order-tracking']);
+    }
 }

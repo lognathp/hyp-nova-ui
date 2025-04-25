@@ -14,6 +14,7 @@ export class SharedService {
   showLoginForm$ = this.showLoginFormSource.asObservable();
   private restaurantDetails = new BehaviorSubject<any>({});
   private vendorDetails = new BehaviorSubject<any>({});
+  private sharedDeliveryQuotedata = new BehaviorSubject<any>({});
 
 
 sendBasketData(data:any){
@@ -30,6 +31,15 @@ sendMenuData(data:any){
 
 getMenuData(){
   return this.sharedMenuData.asObservable();
+}
+
+
+sendDeliveryQuotedata(data:any){
+  this.sharedDeliveryQuotedata.next(data);
+}
+
+getDeliveryQuotedata(){
+return  this.sharedDeliveryQuotedata.asObservable();
 }
 
 SelecetdAddress(data:any){
