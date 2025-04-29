@@ -112,6 +112,7 @@ export class AddressComponent implements OnInit, AfterViewInit {
     this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
     this.router.navigateByUrl('/cart');
   }
+  
 
   getSavedAddress(event: any) {
     // console.log(event);

@@ -160,7 +160,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     ngAfterViewInit(): void {
         // throw new Error('Method not implemented.');
         this.sharedData.getSelecetdAddress().pipe(take(1)).subscribe((data: any) => {
-            console.log('address', data);
+            // console.log('address', data);
             if (Object.entries(data).length > 0) {
                 const tempcustomDetailsformattedAddress = {
                     addressOne: data.addressOne,
@@ -177,13 +177,29 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 //     this.getDeliveryQuote(data.id);
                 // }
                 this.checkWorkingHours();
-                console.log(this.workingHours, 'this.workingHours');
+                // console.log(this.workingHours, 'this.workingHours');
 
                 // const quoteDatatemp:any = localStorage.getItem('quoteData')
                 // console.log(JSON.parse(quoteDatatemp),'quoteDatatemp');
 
-                this.workingHours ? this.getDeliveryQuote(data.id) : this.restaurentClosed = true;
-                // this.workingHours ? this.getSharedDeliverQuoteData() : this.restaurentClosed = true;
+                // this.workingHours ? this.getDeliveryQuote(data.id) : this.restaurentClosed = true;
+                // this.workingHours ? this.getdeliveryQuoteshareddata() : this.restaurentClosed = true;
+                let existingDeliveryQuoteData: any = [];
+                this.sharedData.getDeliveryQuotedata().subscribe((data: any) => {
+                    // console.log(Object.entries(data).length);
+                    if(Object.entries(data).length){
+                        existingDeliveryQuoteData = data;
+                    }
+                    
+                });
+
+                if (this.workingHours && Object.entries(existingDeliveryQuoteData).length > 0) {
+                    this.getdeliveryQuoteshareddata();
+                } else if (this.workingHours && existingDeliveryQuoteData.response == undefined) {
+                    this.getDeliveryQuote(data.id)
+                } else {
+                    this.restaurentClosed = true
+                }
                 // this.getDeliveryQuote(data.id);
             } else {
                 this.showAddAddressButton = true;
@@ -245,7 +261,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         this.orderItems = [];
         const itemdiscountValue = 0; // Discount value kept static as of now
         this.foodBasket?.forEach((element: any, index: number) => {
-            console.log(element, index);
+            // console.log(element, index);
 
             const item: any = {
                 name: element.item.itemName,
@@ -269,12 +285,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 }
                 item.orderItemTax.push(taxFormat);
             });
-            console.log(item);
+            // console.log(item);
 
             this.orderItems.push(item);
 
             if (element?.addonVariation?.varients != undefined) {  //|| element?.addonVariation?.addons != undefined 
-                console.log(element.addonVariation);
+                // console.log(element.addonVariation);
                 // item['orderAddonItems'] = {
                 //     details: []
                 // }
@@ -305,7 +321,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 let itemPrice = parseFloat(element.item.price).toFixed(2);
                 let variationPrice = parseFloat(element.addonVariation?.varients?.price).toFixed(2);
                 let itemWithVariationPrice: any = Math.max(Number(itemPrice), Number(variationPrice));;
-                console.log(parseFloat(element.item.price).toFixed(2), 'element.item.price', parseFloat(element.addonVariation.varients.price).toFixed(2), itemWithVariationPrice);
+                // console.log(parseFloat(element.item.price).toFixed(2), 'element.item.price', parseFloat(element.addonVariation.varients.price).toFixed(2), itemWithVariationPrice);
                 let addonSumPrice = 0;
                 // if( item.orderAddonItems?.length > 0){
                 //     item.orderAddonItems.map((ele:any) => {
@@ -327,14 +343,14 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                             // ((parseFloat(taxElement.tax) / 100 ) * parseFloat(element.item.price)).toFixed(2),
                         }
                     })
-                console.log(item.price, 'item.price');
+                // console.log(item.price, 'item.price');
 
 
             } else {
-                console.log('add-on price caluculation');
+                // console.log('add-on price caluculation');
 
                 if (element?.addonVariation?.addons?.data.length > 0) {
-                    console.log(element?.addonVariation, 'element?.addonVariation');
+                    // console.log(element?.addonVariation, 'element?.addonVariation');
 
                     if (element?.addonVariation?.varients == undefined) {
 
@@ -425,7 +441,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             }
         });
 
-        console.log(this.orderItems);
+        // console.log(this.orderItems);
         if (this.orderItems?.length > 0) {
             this.orderPriceDetails = {
                 itemSubtotal: 0,
@@ -445,7 +461,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // console.log(this.orderItems);
 
         orderItems.forEach((items: any) => {
-            console.log(items);
+            // console.log(items);
             items.orderItemTax.forEach((tax: any) => {
                 if (tax.name in this.orderPriceDetails.tax) {
                     this.orderPriceDetails.tax[tax.name] += (parseFloat(tax.amount) * items.quantity);
@@ -488,14 +504,14 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             temOrederTax.push(taxObj)
         });
         this.orderTax = JSON.stringify(temOrederTax)
-        console.log('this.orderTax', this.orderTax);
+        // console.log('this.orderTax', this.orderTax);
 
     }
 
     getDeliveryQuote(addressId: string) {
         this.quoteLoading = true;
         let times = 1;
-        console.log(times);
+        // console.log(times);
         times++;
 
         const tQuoteData = { "data": [{ "service": "zomato", "manifest": false, "quote": { "price": 0.0, "eta": { "pickup": null, "drop": null, "pickup_min": null, "drop_min": null }, "price_breakup": { "surge": 0.0, "items": [{ "amount": 0.0, "tax": 0.0, "total": 0.0, "order_id": "PGQ100425151026966994" }], "base_delivery_charge": 0.0, "total_gst_amount": 0.0, "additional_charges": [] } }, "error": null, "token": null, "network_id": 26, "network_name": "zomato", "pickup_now": true }], "error": false, "message": "Delivery Quotes Fetched" }
@@ -503,7 +519,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         if (this.quoteLoading) {
             this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
                 next: (reponse: any) => {
-                    console.log("delivery/quote", reponse);
+                    // console.log("delivery/quote", reponse);
                     this.quoteLoading = false;
 
                     this.quoteData = reponse;
@@ -550,7 +566,10 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      */
     getdeliveryQuoteshareddata() {
         this.sharedData.getDeliveryQuotedata().subscribe((data: any) => {
-            this.assignQuoteData(data.addressId, data.reponse)
+            // console.log(Object.entries(data).length);
+            if(Object.entries(data).length){
+                this.assignQuoteData(data.addressId, data.reponse)
+            }
         });
     }
 
@@ -559,24 +578,24 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      * @param addressId Address id
      * @param quoteData Qelivery Quote value response
      */
-    assignQuoteData(addressId:any, quoteData: any) {
+    assignQuoteData(addressId: any, quoteData: any) {
 
         // this.orderPriceDetails['deliveryCharge'] = 25;
         // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
 
-        this.orderPriceDetails['deliveryCharge'] = quoteData.data[0].quote.price - (quoteData.data[0].quote.price * (this.deliveryDiscount / 100));;
+        this.orderPriceDetails['deliveryCharge'] = quoteData?.data[0].quote.price - (quoteData?.data[0].quote.price * (this.deliveryDiscount / 100));;
         // this.orderPriceDetails['dcTaxAmount'] = 10;
 
         this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
 
-        this.deliveryDetails['addressId'] = addressId;  
+        this.deliveryDetails['addressId'] = addressId;
         this.deliveryDetails['service'] = quoteData.data[0].service;
         // this.deliveryDetails['service'] ='wefast';
         this.deliveryDetails['pickupNow'] = quoteData.data[0].pickup_now;
         // this.deliveryDetails['pickupNow'] = true;
         // this.deliveryDetails['networkId'] = 18;
         this.deliveryDetails['networkId'] = quoteData.data[0].network_id;
-        console.log(this.orderPriceDetails, quoteData, this.deliveryDetails);
+        // console.log(this.orderPriceDetails, quoteData, this.deliveryDetails);
     }
 
 
@@ -749,9 +768,9 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      */
     getAddedItem(event: any): void {
         this.showAddonVariationDialig = false;
-        console.log('event', event);
-        console.log(this.selectedItemWithAddon);
-        console.log(this.foodBasket[this.addItemQunatityIndex]);
+        // console.log('event', event);
+        // console.log(this.selectedItemWithAddon);
+        // console.log(this.foodBasket[this.addItemQunatityIndex]);
 
         if (event.action == "add") {
 

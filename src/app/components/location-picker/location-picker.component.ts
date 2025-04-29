@@ -2,14 +2,19 @@ import { Component, AfterViewInit, Output, EventEmitter, OnInit, Input, OnChange
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { GoogleMapLoaderService } from '../../core/services/google-map-loader.service'
+import { ApiService } from '../../core/services/api.service';
+
+import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 declare const google: any;
 @Component({
   selector: 'app-location-picker',
   standalone: true,
-  imports: [CommonModule, GoogleMapsModule],
+  imports: [CommonModule, GoogleMapsModule,ToastModule],
   templateUrl: './location-picker.component.html',
-  styleUrl: './location-picker.component.scss'
+  styleUrl: './location-picker.component.scss',
+  providers: [MessageService]
 })
 export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges {
 
@@ -21,10 +26,16 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
   address: string = '';
   conformLocation: boolean = false;
   editLocation: boolean = false;
+  partnerId: any;
 
 
 
-  constructor(private googleMapsLoader: GoogleMapLoaderService) { }
+  constructor(
+    private googleMapsLoader: GoogleMapLoaderService, 
+    public apiService: ApiService,
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig,
+  ) { }
 
   ngOnInit() {
     const selectedLocation: any = localStorage.getItem('selectedLocation');
@@ -40,8 +51,11 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
         lng: tempLocationSelected.location.longitude
       }
     }
+    const vendorDetail: any = localStorage.getItem('vendorData');
+    let vdata = JSON.parse(vendorDetail)
 
-
+    this.partnerId = vdata.id;
+    this.primengConfig.ripple = true;
   }
   ngOnChanges() {
     console.log(this.conformLocation, this.editLocation, );
@@ -93,8 +107,35 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
 
   getPinLocation(): void {
     // console.log('Current Pin Location:', this.centerPosition);
-    this.getAddressFromLatLng(this.centerPosition.lat, this.centerPosition.lng);
+    // this.getAddressFromLatLng(this.centerPosition.lat, this.centerPosition.lng);
+    const location = {
+      latitude :this.centerPosition.lat,
+      longitude : this.centerPosition.lng
+    }
+    this.checkServiceable(location);
   }
+
+   /**
+   * Chaeck Serviceable location
+   * @param location Location
+   */
+
+   checkServiceable(location:any){
+
+    this.apiService.getMethod(`/location/maps/place/${this.partnerId}?latitude=${location.latitude}&longitude=${location.longitude}`).subscribe({
+      next: (response: { data: any }) => {
+        console.log(response.data[0]);
+        this.getAddressFromLatLng(this.centerPosition.lat, this.centerPosition.lng);
+      },
+      error: (error:any) => {
+        // this.unServiceable();
+        console.error('Error fetching location data:', error);
+        this.messageService.add({ severity: 'error', detail: 'Sorry!! Undelivarable location.', life: 5000 });
+      }
+    });
+  }
+
+
   getAddressFromLatLng(lat: number, lng: number): void {
     const geocoder = new google.maps.Geocoder();
     const latlng = { lat, lng };

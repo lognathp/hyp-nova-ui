@@ -47,6 +47,8 @@ export class AddressFormComponent {
   addressId!: number;
   showSellocation: boolean = false;
   showmap: boolean =  false;
+  unServiceableValue: boolean = false;
+  partnerId: any;
   // editLocationdata: { formattedAddress: any; location: any; city: any; state: any; pincode: any; country: any; };
   // enableMapEdit: boolean = true;
 
@@ -73,7 +75,7 @@ export class AddressFormComponent {
 
     // const vendorDetail: any = localStorage.getItem('vendorData');
     // let vdata = JSON.parse(vendorDetail)
-    // console.log(vdata);
+
     // this.partnerId = vdata.id;
 
     // this.addressForm = this.formBuilder.group({
@@ -131,9 +133,11 @@ export class AddressFormComponent {
   getSelectedLocation(event: any): void {
     console.log(event);
     // this.enableMapEdit = fal;
+    // this.checkServiceable(event.location);
+
     this.locationConformed = true;
-    
     this.selectedLocation = event;
+
     // this.markedLocation = event;
   }
 
@@ -267,5 +271,7 @@ export class AddressFormComponent {
     }
     
   }
+
+
 
 }
