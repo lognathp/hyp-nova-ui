@@ -1,15 +1,15 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'345121',
-    partnerId:'EoPZmWWGxr',
+    restId:'56590',
+    partnerId:'rAO7sR9LJJ',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
-    contactHyperapps:"7801057583",
+    title:'Udipis Upahar',
+    contactRestaurant:"9701988200",
+    contactHyperapps:"8885025585",
     flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
