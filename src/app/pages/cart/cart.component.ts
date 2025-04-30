@@ -274,7 +274,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 orderAddonItems: []
             }
             element.item.taxes.forEach((taxElement: any) => {
-                console.log(taxElement, 'taxElement', element.item.price, parseFloat(element.item.price) - ((this.flatDiscountpercentage / 100) * parseFloat(element.item.price)));
+                // console.log(taxElement, 'taxElement', element.item.price, parseFloat(element.item.price) - ((this.flatDiscountpercentage / 100) * parseFloat(element.item.price)));
                 let itemPricePostDiscount = parseFloat(element.item.price) - ((this.flatDiscountpercentage / 100) * parseFloat(element.item.price));
                 const taxFormat: any = {
                     id: taxElement.id,
@@ -296,7 +296,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 // }
                 element.addonVariation.variationaddOns.addOngrp.forEach((addonGroup: any, addongroupIndex: number) => {
                     //   element.addonVariation?.addons?.data.forEach((addonGroup: any, addongroupIndex: number) => {
-                    console.log(addonGroup);
+                    // console.log(addonGroup);
 
                     addonGroup.addons.forEach((adonId: any, addonIndex: number) => {
                         if (adonId[Object.keys(adonId)[0]] == true) {
@@ -514,18 +514,19 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // console.log(times);
         times++;
 
-        const tQuoteData = { "data": [{ "service": "zomato", "manifest": false, "quote": { "price": 0.0, "eta": { "pickup": null, "drop": null, "pickup_min": null, "drop_min": null }, "price_breakup": { "surge": 0.0, "items": [{ "amount": 0.0, "tax": 0.0, "total": 0.0, "order_id": "PGQ100425151026966994" }], "base_delivery_charge": 0.0, "total_gst_amount": 0.0, "additional_charges": [] } }, "error": null, "token": null, "network_id": 26, "network_name": "zomato", "pickup_now": true }], "error": false, "message": "Delivery Quotes Fetched" }
+        const tQuoteData = {"data":[{"service":"flash","manifest":false,"quote":{"price":72.33,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":72.33,"total_gst_amount":0.0,"additional_charges":[]}},"error":null,"token":null,"network_id":60,"network_name":"Flash by Shadowfax","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
 
         if (this.quoteLoading) {
             this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
                 next: (reponse: any) => {
                     // console.log("delivery/quote", reponse);
                     this.quoteLoading = false;
-
+                    reponse = tQuoteData;
                     this.quoteData = reponse;
                     // localStorage.setItem('quoteData',JSON.stringify(reponse))
                     this.sharedData.sendDeliveryQuotedata({ reponse, addressId });
-                    this.assignQuoteData(addressId, reponse);
+                    // this.assignQuoteData(addressId, reponse);
+                    
                     // this.orderPriceDetails['deliveryCharge'] = 25;
                     // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
 
@@ -580,7 +581,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      */
     assignQuoteData(addressId: any, quoteData: any) {
 
-        // this.orderPriceDetails['deliveryCharge'] = 25;
+        this.orderPriceDetails['deliveryCharge'] = 0;
         // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
 
         this.orderPriceDetails['deliveryCharge'] = quoteData?.data[0].quote.price - (quoteData?.data[0].quote.price * (this.deliveryDiscount / 100));;
