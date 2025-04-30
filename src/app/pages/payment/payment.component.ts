@@ -67,7 +67,11 @@ export class PaymentComponent {
       currency: 'INR',
       name: this.partnerData?.name, // company name or product name
       description: this.partnerData?.type,  // product description
-      image: '../../../assets/images/shahrasha-udipi-grand.png', // company logo or product image
+<<<<<<< HEAD
+      image: '../../../assets/images/nawaabs-logo.png', // company logo or product image
+=======
+      image: '../../../assets/images/udipi-upahar.png', // company logo or product image
+>>>>>>> db5fbeb (Onboard Udipis Upahar)
       order_id: orderData.id, // order_id created by you in backend
       // modal: {
       //   // We should prevent closing of the form when esc key is pressed.
