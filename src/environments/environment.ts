@@ -1,8 +1,8 @@
 export const environment = {
-    baseUrl:'https://api.hyperapps.digital/api/v2',
-    baseWsUrl:'wss://api.hyperapps.digital/api/v2/ws',
-    restId:'345121',
-    partnerId:'ju8tCXSeun',
+    baseUrl:'https://api.hyperapps.in/api/v2',
+    baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
+    restId:'358659',
+    partnerId:'iFtgqbYtdY',
     production: true,
     razorPayKey:'rzp_test_dUt1jZJm3Whtxk',
     title:'The Nawaabs Restaurant',
