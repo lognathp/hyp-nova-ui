@@ -9,6 +9,6 @@ export const environment = {
     contactRestaurant:"7569263150",
     contactHyperapps:"8885025585",
     flatDiscountpercentage : 25,
-    deliveryDiscount : 30,
+    deliveryDiscount : 0,
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw'
 };
