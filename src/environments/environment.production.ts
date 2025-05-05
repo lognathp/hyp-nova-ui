@@ -8,9 +8,7 @@ export const environment = {
     title:'Kanchi Cafe',
     contactRestaurant:"7569263150",
     contactHyperapps:"8885025585",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 30,
-    itemdiscountValue : 0,
-    itempackagingCharge: 0,
+    flatDiscountpercentage : 10,
+    deliveryDiscount : 0,
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw'
 };
