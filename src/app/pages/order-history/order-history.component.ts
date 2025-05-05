@@ -67,7 +67,7 @@ export class OrderHistoryComponent {
    * To fetch order history
    */
   getOrderHistory():void {
-    this.apiService.getMethod(`/order?customerId_eq=${this.customerDetails.id}`).subscribe({
+    this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
       next: (reponse) => {
         this.orderHistory = reponse.data;
         // let SNo:number = 1;
