@@ -392,11 +392,7 @@
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
                         <h5 class="card-title aboutTitle ">About</h5>
-                        <p class="card-text m-0 aboutDes ">Enjoy the Taste of Authentic Telangana Cuisine:</p>
-                        <p class="card-text aboutContent ">Ankapur Village Military Hotel brings the rich culinary
-                            heritage of Telangana to the heart of Hyderabad. Renowned for our signature Ankapur chicken
-                            and other traditional dishes, we offer a unique dining experience that captures
-                            the essence of Telangana cuisine.</p>
+                        <p class="card-text m-0 aboutDes ">Kanchi Café, nestled in the heart of Hyderabad's Hi-Tech City, offers an immersive journey into South India's rich culinary heritage. Drawing inspiration from the revered temples of Kanchipuram, our café combines traditional flavors with contemporary dining. Established by the founders of Tea Time, a renowned chai chain with over 3,800 outlets across India, Kanchi Café brings together authentic vegetarian dishes from Tamil Nadu, Andhra Pradesh, Telangana, Kerala, and Karnataka under one roof. From the soft, ghee-laden Thatte Idli to the aromatic Temple Pulihora, each dish is crafted with care and devotion. Our ambiance, reminiscent of Kanchipuram's temple architecture, enhances the dining experience, making every meal a spiritual and gastronomic delight.</p>
                     </div>
                 </div>
             </div>
@@ -489,7 +485,7 @@
                 <div class="card border-0 ">
                     <div class="card-body bg-footer ">
                         <p class="card-text mb-2 powerby ">Powered By</p>
-                        <img src="assets/images/hyperapps.png " alt="hyperapps " class="d-block hyperImage ">
+                        <img src="../../../assets/images/hyperapps.png" alt="hyperapps " class="d-block hyperImage ">
                         <p class="card-text float-end powerby ">www.hyperapps.in</p>
                     </div>
                 </div>
@@ -500,14 +496,14 @@
     <!-- Floating Menu -->
     <div class="floating-menu" [ngClass]="{'cart-active': foodBasket.length > 0}">
         <button class="menuBtn " data-bs-toggle="offcanvas" data-bs-target="#foodMenu">
-            <img src="assets/images/icons/foodMenu.png ">
+            <img src="../../../assets/images/icons/foodMenu.png">
             Menu
         </button>
     </div>
     @if(showTracking){
         <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
             <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
-                <img src="assets/images/icons/outForDelivery.png"> </button>
+                <img src="../../../assets/images/icons/outForDelivery.png"> </button>
         </div>
     }
    

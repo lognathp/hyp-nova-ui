@@ -3133,7 +3133,7 @@ input[type="radio"] {
     display: inline-block;
     width: 25px;
     height: 25px;
-    background: url('../images/icons/preparingFood.png') no-repeat center;
+    background: url('/assets/images/icons/preparingFood.png') no-repeat center;
     background-size: contain;
     margin-left: -30px;
     /* margin-right: 30px; */
