@@ -10,6 +10,7 @@ on:
       - chaitanya-food-court
       - kanchi-cafe
       - wacky-wok
+      - mandar
 
 jobs:
   build:
@@ -42,13 +43,8 @@ jobs:
     - name: Docker Build and Push
       run: |
         docker build --build-arg ENV=production -t hyp-nova-ui -f ./Dockerfile .
-<<<<<<< HEAD
-        docker tag hyp-nova-ui lognathp/hyp-nova-ui:hrls
-        docker push lognathp/hyp-nova-ui:hrls
-=======
-        docker tag hyp-nova-ui lognathp/hyp-nova-ui:wck
-        docker push lognathp/hyp-nova-ui:wck
->>>>>>> 9496313 (Onboard Wacky-Wok)
+        docker tag hyp-nova-ui lognathp/hyp-nova-ui:mr
+        docker push lognathp/hyp-nova-ui:mr
 
   deploy:
     runs-on: ubuntu-latest
@@ -65,9 +61,9 @@ jobs:
         echo "${{ secrets.PRODUCTION_VPS_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.PRODUCTION_VPS_USER }}@${{ secrets.PRODUCTION_VPS_HOST }} << 'EOF'
-          docker stop $(docker ps -q --filter ancestor=lognathp/hyp-nova-ui:wck)
-          docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:wck)
-          docker rmi lognathp/hyp-nova-ui:wck
-          docker pull lognathp/hyp-nova-ui:wck
-          docker run -d -p 4226:80 lognathp/hyp-nova-ui:wck
+          docker stop $(docker ps -q --filter ancestor=lognathp/hyp-nova-ui:mr)
+          docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:mr)
+          docker rmi lognathp/hyp-nova-ui:mr
+          docker pull lognathp/hyp-nova-ui:mr
+          docker run -d -p 4225:80 lognathp/hyp-nova-ui:mr
         EOF
