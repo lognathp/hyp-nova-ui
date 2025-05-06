@@ -383,8 +383,8 @@
             <div class="col-md-12 ">
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
-                        <h5 class="card-title aboutTitle ">📍 About Us</h5>
-                        <p class="card-text m-0 aboutDes ">The Nawaabs Restaurant in Gachibowli, Hyderabad, offers a regal dining experience, blending traditional Hyderabadi, Mughlai, and North Indian cuisines. Known for its royal ambiance and attentive service, it's a preferred destination for food enthusiasts seeking authentic flavors. Signature dishes like the Zafraani Mutton Dum Biryani and Mutton Ghee Roast Mandi have garnered acclaim, making it a must-visit for those craving rich, flavorful meals.</p>
+                        <h5 class="card-title aboutTitle ">About</h5>
+                        <p class="card-text m-0 aboutDes ">Kanchi Café, nestled in the heart of Hyderabad's Hi-Tech City, offers an immersive journey into South India's rich culinary heritage. Drawing inspiration from the revered temples of Kanchipuram, our café combines traditional flavors with contemporary dining. Established by the founders of Tea Time, a renowned chai chain with over 3,800 outlets across India, Kanchi Café brings together authentic vegetarian dishes from Tamil Nadu, Andhra Pradesh, Telangana, Kerala, and Karnataka under one roof. From the soft, ghee-laden Thatte Idli to the aromatic Temple Pulihora, each dish is crafted with care and devotion. Our ambiance, reminiscent of Kanchipuram's temple architecture, enhances the dining experience, making every meal a spiritual and gastronomic delight.</p>
                     </div>
                 </div>
             </div>
@@ -477,7 +477,7 @@
                 <div class="card border-0 ">
                     <div class="card-body bg-footer ">
                         <p class="card-text mb-2 powerby ">Powered By</p>
-                        <img src="assets/images/hyperapps.png " alt="hyperapps " class="d-block hyperImage ">
+                        <img src="../../../assets/images/hyperapps.png" alt="hyperapps " class="d-block hyperImage ">
                         <p class="card-text float-end powerby ">www.hyperapps.in</p>
                     </div>
                 </div>
@@ -488,16 +488,16 @@
     <!-- Floating Menu -->
     <div class="floating-menu" [ngClass]="{'cart-active': foodBasket.length > 0}">
         <button class="menuBtn " data-bs-toggle="offcanvas" data-bs-target="#foodMenu">
-            <img src="assets/images/icons/foodMenu.png ">
+            <img src="../../../assets/images/icons/foodMenu.png">
             Menu
         </button>
     </div>
-  
-    <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
-        <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
-            <img src="assets/images/icons/outForDelivery.png"> </button>
-    </div>
-    
+    @if(showTracking){
+        <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+            <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
+                <img src="../../../assets/images/icons/outForDelivery.png"> </button>
+        </div>
+    }
    
     <!-- VIEW CART -->
     @if(foodBasket?.length > 0){
