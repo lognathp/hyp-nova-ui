@@ -24,7 +24,4 @@ export const environment = {
         applicable:false,
         offsetValue:199,
     }
-    flatDiscountpercentage : 0,
-    deliveryDiscount : 0,
-    googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw'
 };
