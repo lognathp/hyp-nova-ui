@@ -6,7 +6,7 @@ export const environment = {
     production: true,
     razorPayKey:'rzp_live_q2vhcACR4RokpK',
     title:'Shah Ghouse',
-    contactRestaurant:"9700150828",
+    contactRestaurant:"8483884639",
     contactHyperapps:"8885026686",
     flatDiscountpercentage : 0,
     deliveryDiscount : 0,
