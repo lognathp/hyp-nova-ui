@@ -1,0 +1,9 @@
+<div class="toggle-container">
+    <input type="checkbox" id="toggle" [(ngModel)]="isDelivery" [checked]="isDelivery" (change)="onToggleChange($event.target)"/>
+    <label for="toggle" class="toggle-switch">
+      <span class="option pickup" [class.active]="isDelivery">Delivery</span>
+      <span class="slider"></span>
+      <span class="option delivery" [class.active]="!isDelivery">Pickup</span>
+    </label>
+  </div>
+  

@@ -12,11 +12,12 @@ import { QuoteLoaderComponent } from "../../components/loaders/quote-loader/quot
 import { SomethingWentWrongComponent } from "../../components/errors/something-went-wrong/something-went-wrong.component";
 import { WebSocketService } from '../../core/services/websocket.service';
 import { RestaurentClosedComponent } from "../../components/errors/restaurent-closed/restaurent-closed.component";
+import { SliderSwitchComponent } from "../../components/slider-switch/slider-switch.component";
 
 @Component({
     selector: 'app-cart',
     standalone: true,
-    imports: [CommonModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent],
+    imports: [CommonModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss'
 })
@@ -526,7 +527,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     // localStorage.setItem('quoteData',JSON.stringify(reponse))
                     this.sharedData.sendDeliveryQuotedata({ reponse, addressId });
                     // this.assignQuoteData(addressId, reponse);
-                    
+                    // this.getdeliveryQuoteshareddata();
+                    this.prepareOrderItems();
                     // this.orderPriceDetails['deliveryCharge'] = 25;
                     // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
 
@@ -597,6 +599,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // this.deliveryDetails['networkId'] = 18;
         this.deliveryDetails['networkId'] = quoteData.data[0].network_id;
         // console.log(this.orderPriceDetails, quoteData, this.deliveryDetails);
+
+        
     }
 
 
@@ -895,6 +899,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     }
     selectAddress() {
         this.router.navigate(['/address']);
+        this.sharedData.sendDeliveryQuotedata({});
     }
 
     /**

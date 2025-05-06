@@ -1,9 +1,9 @@
 
 export const environment = {
     //baseUrl:'https://aardvark-notable-terminally.ngrok-free.app/api/v2',
-    //baseWsUrl:'ws://aardvark-notable-terminally.ngrok-free.app/api/v2/ws',
-    baseUrl:'https://api.hyperapps.cloud/api/v2',
-    baseWsUrl:'ws://api.hyperapps.cloud/api/v2/ws',
+    //baseWsUrl:'ws://aardvark-notable-terminally.ngrok-free.app/api/v2/ws',  https://api.hyperapps.digital/api/v2/order?sortField=id&customerId_eq=100006
+    baseUrl:'https://api.hyperapps.digital/api/v2',
+    baseWsUrl:'ws://api.hyperapps.digital/api/v2/ws',
     restId:'14490',
     partnerId:'ju8tCXSeun',
     production: false,
