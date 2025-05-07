@@ -516,14 +516,14 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // console.log(times);
         times++;
 
-        const tQuoteData = {"data":[{"service":"flash","manifest":false,"quote":{"price":72.33,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":72.33,"total_gst_amount":0.0,"additional_charges":[]}},"error":null,"token":null,"network_id":60,"network_name":"Flash by Shadowfax","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
+        // const tQuoteData = {"data":[{"service":"flash","manifest":false,"quote":{"price":72.33,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":72.33,"total_gst_amount":0.0,"additional_charges":[]}},"error":null,"token":null,"network_id":60,"network_name":"Flash by Shadowfax","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
 
         if (this.quoteLoading) {
             this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
                 next: (reponse: any) => {
                     // console.log("delivery/quote", reponse);
                     this.quoteLoading = false;
-                    reponse = tQuoteData;
+                    // reponse = tQuoteData;
                     this.quoteData = reponse;
                     // localStorage.setItem('quoteData',JSON.stringify(reponse))
                     this.sharedData.sendDeliveryQuotedata({ reponse, addressId });
