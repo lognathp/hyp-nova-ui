@@ -10,5 +10,7 @@ export const environment = {
     contactHyperapps:"8885026686",
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
+    itemdiscountValue : 0,
+    itempackagingCharge: 10,
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw'
 };
