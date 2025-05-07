@@ -49,6 +49,7 @@ export class OrderComponent implements OnInit, DoCheck {
   flatDiscountpercentage: number = environment.flatDiscountpercentage;
   contactHyperapps: string = environment.contactHyperapps;
 
+
   offcanvasInstance: any;
   selectedLocationData: any;
 

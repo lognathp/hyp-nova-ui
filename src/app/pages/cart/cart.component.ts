@@ -260,7 +260,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
     prepareOrderItems(): void {
         this.orderItems = [];
-        const itemdiscountValue = 0; // Discount value kept static as of now
+        const itemdiscountValue = environment.itemdiscountValue; // Discount value kept static as of now
+        const itempackagingCharge = environment.itempackagingCharge; // Discount value kept static as of now
         this.foodBasket?.forEach((element: any, index: number) => {
             // console.log(element, index);
 
@@ -269,7 +270,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 description: element.item.itemDescription,
                 itemDiscount: itemdiscountValue,   //Kept static since no discount as of now
                 price: parseFloat(element.item.price).toFixed(2),
-                finalPrice: parseFloat(element.item.price) - itemdiscountValue,  // price - itemDiscount (0 used since no discount as of now)
+                finalPrice: parseFloat(element.item.price) - itemdiscountValue + itempackagingCharge,  // price - itemDiscount (0 used since no discount as of now)
                 quantity: element.item.quantity,
                 orderItemTax: [],
                 orderAddonItems: []
@@ -335,7 +336,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     item['variationName'] = element.addonVariation.varients.name,
                     item['variationId'] = element.addonVariation.varients.variationId,
                     item.price = (itemWithVariationPrice + addonSumPrice).toFixed(2),
-                    item.finalPrice = ((itemWithVariationPrice - itemdiscountValue) + addonSumPrice).toFixed(2), // added for discount on discout value
+                    item.finalPrice = ((itemWithVariationPrice - itemdiscountValue + itempackagingCharge) + addonSumPrice).toFixed(2), // added for discount on discout value
 
                     item.orderItemTax.forEach((varientItemTax: any, taxIndex: number) => {
                         // console.log(varientItemTax);
