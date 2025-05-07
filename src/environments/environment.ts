@@ -1,4 +1,3 @@
-
 export const environment = {
     //baseUrl:'https://aardvark-notable-terminally.ngrok-free.app/api/v2',
     //baseWsUrl:'ws://aardvark-notable-terminally.ngrok-free.app/api/v2/ws',  https://api.hyperapps.digital/api/v2/order?sortField=id&customerId_eq=100006
