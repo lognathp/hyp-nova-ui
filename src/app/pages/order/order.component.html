@@ -107,7 +107,7 @@
 
                             <div class="carousel-item ">
                                 <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">25% Off on all items</h2>
+                                    <h2 class="wwdTitle ">15% Off on all items</h2>
                                     <span class="wwdDes ">Don’t miss out!</span>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                             <div class="carousel-item ">
                                 <div class="exo bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
-                                    <span class="wwdDes ">USE HYPERDEAL</span>
+                                    <!-- <span class="wwdDes ">USE HYPERDEAL</span> -->
                                 </div>
                             </div>
                         </div>
@@ -392,11 +392,7 @@
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
                         <h5 class="card-title aboutTitle ">About</h5>
-                        <p class="card-text m-0 aboutDes ">Enjoy the Taste of Authentic Telangana Cuisine:</p>
-                        <p class="card-text aboutContent ">Ankapur Village Military Hotel brings the rich culinary
-                            heritage of Telangana to the heart of Hyderabad. Renowned for our signature Ankapur chicken
-                            and other traditional dishes, we offer a unique dining experience that captures
-                            the essence of Telangana cuisine.</p>
+                        <p class="card-text m-0 aboutDes ">At Palle Vindu, we bring the rich culinary heritage of Telugu cuisine to the heart of Hyderabad. Our commitment is to serve authentic, home-style meals crafted from traditional recipes and pure ingredients, ensuring every dish reflects the true flavors of Andhra and Telangana. Whether you're craving a hearty non-vegetarian feast or a comforting vegetarian thali, our menu offers a diverse range of options to satisfy your palate. Experience the warmth of our hospitality and the taste of tradition with every order.</p>
                     </div>
                 </div>
             </div>
@@ -412,11 +408,15 @@
                     <div class="card-body p-0 ">
                         <h5 class="card-title galleryTitle ">Gallery</h5>
                         <div class="gallery-slider ">
-                            <img src="assets/images/image1.jpg " />
-                            <img src="assets/images/image1.jpg " />
-                            <img src="assets/images/image1.jpg " />
-                            <img src="assets/images/image1.jpg " />
-                            <img src="assets/images/image1.jpg " />
+                                <img src="../../../assets/images/image1.jpg" />
+                                <img src="../../../assets/images/image2.jpg" />
+                                <img src="../../../assets/images/image3.jpg" />
+                                <img src="../../../assets/images/image4.jpg" />
+                                <img src="../../../assets/images/image5.jpg" />
+                                <img src="../../../assets/images/image6.jpg" />
+                                <img src="../../../assets/images/image7.jpg" />
+                                <img src="../../../assets/images/image8.jpg" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -432,9 +432,9 @@
                 <div class="card border-0 ">
                     <div class="card-body p-1 ">
                         <h5 class="card-title contactTitle ">Contact</h5>
-                        <p class="card-text m-0 contactHeading ">{{partnerData?.name | titlecase}}</p>
+                        <p class="card-text m-2 contactHeading ">{{partnerData?.name | titlecase}}</p>
                         @if (restaurentId != null || restaurentId != undefined) {
-                        <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p>
+                        <!-- <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p> -->
 
                         <ul class="m-0 p-0 ">
                             <li class="contact-info ">
@@ -467,10 +467,14 @@
                 <div class="card p-0 ">
                     <div class="card-body p-0 mapCont ">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30468.04554232425!2d78.565699!3d17.339383!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3427bf787ad%3A0xd353a7d2d429feb!2sAnkapur%20Village%20-%20A%20Military%20Hotel%20(Vanasthalipuram)!5e0!3m2!1sen!2sin!4v1739698519949!5m2!1sen!2sin "
-                            width="100% " style="border:0; " allowfullscreen=" " loading="lazy "
-                            referrerpolicy="no-referrer-when-downgrade "></iframe>
-                    </div>
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.2604028654714!2d78.35919347462828!3d17.447246201079025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb936064d2fcf5%3A0x5eaf3349d2c26453!2sPalle%20vindu!5e0!3m2!1sen!2sin!4v1746598903732!5m2!1sen!2sin"
+                            width="100%" 
+                            height="400"
+                            style="border:0;" 
+                            allowfullscreen 
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                 </div>
             </div>
         </div>
