@@ -26,5 +26,7 @@ export const environment = {
     }
     flatDiscountpercentage : 0,
     deliveryDiscount : 0,
+    itemdiscountValue : 0,
+    itempackagingCharge: 0,
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw'
 };
