@@ -6,7 +6,7 @@ export const environment = {
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Ideal Kitchen',
-    contactRestaurant:"7997550055",
+    contactRestaurant:"9642887733",
     contactHyperapps:"8885026686",
     flatDiscountpercentage : 0,
     deliveryDiscount : 0,
