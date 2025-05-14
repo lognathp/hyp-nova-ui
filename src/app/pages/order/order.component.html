@@ -146,6 +146,12 @@
                                     <span class="wwdDes ">Delivery within 30-40 mins</span>
                                 </div>
                             </div>
+                            <div class="carousel-item ">
+                                <div class="exo bg-transparent text-dark ">
+                                    <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
+                                    <!-- <span class="wwdDes ">USE HYPERDEAL</span> -->
+                                </div>
+                            </div>
                         </div>
 
 
@@ -418,8 +424,9 @@
             <div class="col-md-12 ">
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
-                        <h5 class="card-title aboutTitle ">📍 About Us</h5>
-                        <p class="card-text m-0 aboutDes ">At Saharsh Udupi Grand, Kondapur, we serve up a delightful vegetarian fusion of South Indian, North Indian, and Chinese cuisines in a clean, welcoming setting close to HITEC City and Shilparamam. Our friendly and attentive staff deliver prompt takeaway and dine‑in service. Whether you’re ordering online or dining in, you can trust us for fresh, flavourful meals at great value.</p>
+                        <h5 class="card-title aboutTitle ">About</h5>
+                        <p class="card-text m-0 aboutDes ">Enjoy the Taste of Authentic Telangana Cuisine:</p>
+                        <p class="card-text aboutContent ">At Terrai : Neo Telangana Kitchen & Bar, we celebrate the rich culinary heritage of Telangana by blending traditional flavors with contemporary flair. Founded by Rohit Kasuganti and Anisha Deevakonda, Terrai is more than just a dining destination; it's a tribute to the region's diverse culture and sustainable farming practices. Our menu, crafted by Chef Rizwan Khader, showcases native grains, millets, and heirloom recipes, all served in a thoughtfully designed space that reflects Telangana's vibrant traditions. Join us in Hitech City, Hyderabad, for an authentic and innovative gastronomic journey.</p>
                     </div>
                 </div>
             </div>
@@ -435,6 +442,14 @@
                     <div class="card-body p-0 ">
                         <h5 class="card-title galleryTitle ">Gallery</h5>
                         <div class="gallery-slider ">
+                                <img src="../../../assets/images/image1.jpg" />
+                                <img src="../../../assets/images/image2.jpg" />
+                                <img src="../../../assets/images/image3.jpg" />
+                                <img src="../../../assets/images/image4.jpg" />
+                                <img src="../../../assets/images/image5.jpg" />
+                                <img src="../../../assets/images/image6.jpg" />
+                                <img src="../../../assets/images/image7.jpg" />
+                                <img src="../../../assets/images/image8.jpg" />
                                 <img src="../../../assets/images/image1.jpg" />
                                 <img src="../../../assets/images/image2.jpg" />
                                 <img src="../../../assets/images/image3.jpg" />
@@ -459,7 +474,9 @@
                     <div class="card-body p-1 ">
                         <h5 class="card-title contactTitle ">Contact</h5>
                         <p class="card-text m-2 contactHeading ">{{partnerData?.name | titlecase}}</p>
+                        <p class="card-text m-2 contactHeading ">{{partnerData?.name | titlecase}}</p>
                         @if (restaurentId != null || restaurentId != undefined) {
+                        <!-- <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p> -->
                         <!-- <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p> -->
 
                         <ul class="m-0 p-0 ">
@@ -492,12 +509,15 @@
             <div class="col-md-12 ">
                 <div class="card p-0 ">
                     <div class="card-body p-0 mapCont ">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.031530951347!2d78.36364657516656!3d17.458204883441113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93c856fab201%3A0xfb4b2d545f1c3795!2sSaharsh%20udupi%20grand!5e0!3m2!1sen!2sin!4v1754031983463!5m2!1sen!2sin" width="100%" 
+                          <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15498135.22115979!2d85.88907718169972!3d18.496137943990753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93d021063119%3A0x5438c00658d04b3f!2sTerrai%20-%20Neo%20Telangana%20Kitchen%20and%20Bar!5e0!3m2!1sen!2sin!4v1747211716167!5m2!1sen!2sin"
+                        width="100%" 
                         height="400"
                         style="border:0;" 
                         allowfullscreen 
                         loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
                     </div>
                 </div>
             </div>
