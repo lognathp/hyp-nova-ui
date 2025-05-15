@@ -8,7 +8,7 @@ export const environment = {
     title:'Udipis Upahar',
     contactRestaurant:"9701988200",
     contactHyperapps:"8885025585",
-    flatDiscountpercentage : 25,
+    flatDiscountpercentage : 0,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
