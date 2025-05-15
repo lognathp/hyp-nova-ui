@@ -9,7 +9,7 @@ export const environment = {
     contactRestaurant:"9642887733",
     contactHyperapps:"8885026686",
     flatDiscountpercentage : 25,
-    deliveryDiscount : 30,
+    deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw'
