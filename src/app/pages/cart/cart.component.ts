@@ -74,20 +74,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     unKnownError: boolean = false;
     restaurentClosed: boolean = false;
 
-    deliveryDiscount : any;
-
-    orderOptions = environment.deliveryOptions;
-    orderOptionsType = environment.deliveryOptions[0].value;
-    orderOptionsSelectedIndex = environment.deliveryOptions[0].index;
-
-    itempackagingCharge = environment.itempackagingCharge;
-    packingTaxPercentage = environment.packingTaxPercentage;
-
-    deliveryWaiver = environment.deliveryWaiver;
-
-
-    totalPackingCharge = 0;
-
+    deliveryDiscount = 0;
     isMakePaymentEnabled: boolean = false;
 
     restaurentActive: boolean = false; // Initialize with a default value

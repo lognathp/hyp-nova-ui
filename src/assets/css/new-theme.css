@@ -2670,7 +2670,7 @@ input[type="radio"] {
 }
 
 .resLogo {
-    height: 80px;
+    height: 100px;
     width: auto;
 }
 
@@ -2828,6 +2828,7 @@ input[type="radio"] {
 }
 
 .landing .whatsapp {
+    margin-left: 10px;
     display: block;
     color: #525252;
     font-weight: 400;
@@ -2835,6 +2836,7 @@ input[type="radio"] {
 }
 
 .landing .email {
+    margin-left: 10px;
     display: block;
     color: #525252;
     font-weight: 400;
