@@ -1,15 +1,15 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'404935',
-    partnerId:'XyB67gIF44',
+    restId:'906071',
+    partnerId:'n8lHm07CEI',
     production: true,
-    razorPayKey:'rzp_test_dUt1jZJm3Whtxk',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
-    contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
+    title:'Vasireddy Swagruha Foods',
+    contactRestaurant:"+91-4048569738",
+    contactHyperapps:"8885026686",
+    flatDiscountpercentage : 25,
+    deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
