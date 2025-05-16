@@ -68,7 +68,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     unKnownError: boolean = false;
     restaurentClosed: boolean = false;
 
-    deliveryDiscount = 30;
+    deliveryDiscount = 0;
     isMakePaymentEnabled: boolean = false;
 
     restaurentActive: boolean = true;
