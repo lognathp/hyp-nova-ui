@@ -29,7 +29,7 @@
 
 
 
-    <div class="container  cartOffer">
+    <div class="container  cartOffer" *ngIf="orderPriceDetails.discount">
         <p>You saved ₹{{orderPriceDetails.discount | number:'1.2-2'}} on this order
             @if ((orderPriceDetails.deliveryCharge == 0 && deliveryWaiver.applicable == true) ) {
                 and Free Delivery
@@ -124,8 +124,8 @@
                     <li>
                         <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
                     </li>
-                    <li>
-                        <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount | number:'1.2-2'}}</span></p>
+                    <li *ngIf="orderPriceDetails.discount">
+                        <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount |  number:'1.2-2'}}</span></p>
                     </li>
                     <li>
                         <p class="cartVal">CGST<span>₹ {{orderPriceDetails.tax.CGST | number:'1.2-2'}}</span></p>

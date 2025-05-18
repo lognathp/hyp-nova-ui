@@ -120,8 +120,8 @@
                                 <!-- <li>
                                     <p class="cartVal disc">Coupon applied (HYPERDEAL)<span>-₹ 150</span></p>
                                 </li> -->
-                                <li>
-                                    <p class="cartVal disc">Discounted Value<span>-₹ {{currentOrder?.data[0].discountAmount}} </span></p>
+                                <li *ngIf="currentOrder?.data[0].discountAmount">
+                                    <p class="cartVal disc">Discounted Value<span>-₹ {{currentOrder?.data[0].discountAmount}}</span></p>
                                 </li>
                                 <li>
                                     <p class="cartValCategory">Grand Total<span>₹  {{currentOrder?.data[0].grandTotalAmount}} </span></p>
