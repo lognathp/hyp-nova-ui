@@ -15,6 +15,7 @@ export class SharedService {
   private restaurantDetails = new BehaviorSubject<any>({});
   private vendorDetails = new BehaviorSubject<any>({});
   private sharedDeliveryQuotedata = new BehaviorSubject<any>({});
+  private orderTypeData = new BehaviorSubject<any>({});
 
 
 sendBasketData(data:any){
@@ -40,6 +41,14 @@ sendDeliveryQuotedata(data:any){
 
 getDeliveryQuotedata(){
 return  this.sharedDeliveryQuotedata.asObservable();
+}
+
+sendorderTypeDatadata(data:any){
+  this.orderTypeData.next(data);
+}
+
+getorderTypeDatadata(){
+return  this.orderTypeData.asObservable();
 }
 
 SelecetdAddress(data:any){

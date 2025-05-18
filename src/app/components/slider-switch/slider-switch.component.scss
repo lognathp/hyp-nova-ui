@@ -1,74 +1,49 @@
+
 .toggle-container {
-    width: 100%;
-    max-width: 400px;
-    margin: auto;
-  }
-  
-  .toggle-switch {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #D20500;
-    border-radius: 12px;
-    height: 50px;
-    position: relative;
-    padding: 0 10px;
-    box-sizing: border-box;
-    width: 100%;
-    color: #ffffff;
-    font-weight: bold;
-    font-family: sans-serif;
-    cursor: pointer;
-    overflow: hidden;
-  }
-  
-  .toggle-switch .option {
-    flex: 1;
-    text-align: center;
-    z-index: 2;
-    line-height: 50px;
-    color: #ffffff;
-    transition: color 0.3s ease;
-  }
-  
-  .toggle-switch .slider {
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    background-color: #ffffff;
-    border-radius: 12px;
-    top: 0;
-    left: 0;
-    transform: translateX(0%);
-    transition: transform 0.3s ease;
-    z-index: 1;
-  }
-  
-  input[type="checkbox"] {
-    display: none;
-  }
-  
-  input[type="checkbox"]:checked + .toggle-switch .slider {
-    transform: translateX(100%);
-  }
-  
-  input[type="checkbox"]:checked + .toggle-switch .pickup {
-    color: #ffffff;
-  }
-  
-  input[type="checkbox"]:checked + .toggle-switch .delivery {
-    color: #D20500;
-  }
-  
-  .toggle-switch .pickup {
-    color: #D20500;
-  }
-  
-  input[type="checkbox"]:not(:checked) + .toggle-switch .pickup {
-    color: #D20500;
-  }
-  
-  input[type="checkbox"]:not(:checked) + .toggle-switch .delivery {
-    color: #ffffff;
-  }
-  
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+
+
+.toggle-switch {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 360px;
+  height: 50px;
+  border-radius: 12px;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: #D20500;
+  border-radius: 12px;
+  transition: left 0.3s ease, width 0.3s ease;
+  z-index: 1;
+}
+
+.option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  cursor: pointer;
+  color: #000;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.option.active {
+  color: #FFFFFF;
+}

@@ -275,8 +275,10 @@
                 (click)="vegNonvegFilter('1')"> Veg</button>
             <button class="btn btn-transparent filterBtn nonVegIcon" [ngClass]="{'active':itemFilterType == '2'}"
                 (click)="vegNonvegFilter('2')"> Non Veg</button>
+
+                <!-- Best seller Filter 
             <button class="btn btn-transparent filterBtn" [ngClass]="{'active':itemFilterType == '99'}"
-                (click)="vegNonvegFilter('99')"> Best seller</button>
+                (click)="vegNonvegFilter('99')"> Best seller</button> -->
         </div>
     </div>
     <div class="container mt-4 ">
@@ -298,7 +300,9 @@
                         <img src="assets/images/icons/non-veg.png " class="filterIcon ">
                         }
 
-                        <span class="badge bestSeller ">Bestseller</span>
+                        <!-- Best Seller Badge
+                        <span class="badge bestSeller ">Bestseller</span> -->
+
                         <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
                         <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
                         <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;

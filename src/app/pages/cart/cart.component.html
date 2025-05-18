@@ -30,8 +30,13 @@
 
 
     <div class="container  cartOffer">
-        <p>You saved ₹{{orderPriceDetails.discount | number:'1.2-2'}} on this order</p>
+        <p>You saved ₹{{orderPriceDetails.discount | number:'1.2-2'}} on this order
+            @if ((orderPriceDetails.deliveryCharge == 0 && deliveryWaiver.applicable == true) ) {
+                and Free Delivery
+            }.
+        </p>
     </div>
+    
 
     <div class="container  bg-transparent">
         <div class="card foodCard ">
@@ -62,10 +67,12 @@
                             <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                             </span>
                             } @else {
-                                <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'}} </span>
-                                <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice: flatDiscountpercentage }} </span>
-                                }
-                           
+                            <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'}}
+                            </span>
+                            <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice:
+                                flatDiscountpercentage }} </span>
+                            }
+
                             } @else {
 
                             <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
@@ -112,16 +119,13 @@
                 <ul class="cartCheckout">
 
                     <li>
-                        <p class="cartVal">Item Total<span>₹ {{orderPriceDetails.itemSubtotal +
-                                orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
+                        <p class="cartVal">Item Total<span>₹ {{orderPriceDetails.itemSubtotal + orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
                     </li>
                     <li>
-                        <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum |
-                                number:'1.2-2'}}</span></p>
+                        <p class="cartVal">Add-On Price<span>₹ {{orderPriceDetails.addOnPriceSum | number:'1.2-2'}}</span></p>
                     </li>
                     <li>
-                        <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount |
-                                number:'1.2-2'}}</span></p>
+                        <p class="cartVal disc">Discounted Value<span>-₹ {{orderPriceDetails.discount | number:'1.2-2'}}</span></p>
                     </li>
                     <li>
                         <p class="cartVal">CGST<span>₹ {{orderPriceDetails.tax.CGST | number:'1.2-2'}}</span></p>
@@ -130,10 +134,14 @@
                         <p class="cartVal">SGST<span>₹ {{orderPriceDetails.tax.SGST | number:'1.2-2'}}</span></p>
                     </li>
 
-                    @if (!showAddAddressButton){
+                    @if (!showAddAddressButton && orderOptionsType != "3"){
                     <li>
-                        <p class="cartVal">Delivery Fee<span>₹ {{orderPriceDetails.deliveryCharge |
-                                number:'1.2-2'}}</span></p>
+                        <p class="cartVal">Delivery Fee<span> ₹ {{ (orderPriceDetails.deliveryCharge == 0 && deliveryWaiver.applicable == true) ? 'Free' : orderPriceDetails.deliveryCharge |  number:'1.2-2'}}</span></p>
+                    </li>
+                    }
+                     @if (itempackagingCharge > 0){
+                    <li>
+                        <p class="cartVal">Packing Charge + Tax<span>₹ {{totalPackingCharge |  number:'1.2-2'}} + {{totalPackingCharge * (packingTaxPercentage/100)}} </span></p>
                     </li>
                     }
                     <li>
@@ -145,38 +153,43 @@
     </div>
 
     @if(showTracking){
-        <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
-            <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
-                <img src="assets/images/icons/outForDelivery.png"> </button>
-        </div>
+    <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+        <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()">
+            <img src="assets/images/icons/outForDelivery.png"> </button>
+    </div>
     }
 
     @if(!isMakePaymentEnabled && !showAddAddressButton && address){
-        <div class="container my-3 bg-transparent orderStatusCont">
-            <div class="row address-block">
-                <div class="col-md-12 addressDetails">
-                    <p>Delivery Address
-                        <button class="btn simpleBtn" (click)="selectAddress()">
-                            <img src="assets/images/icons/edit3.png">
-                        </button>
-                    </p>
-                    <span> {{address}} </span>
-                </div>
+    <div class="container my-3 bg-transparent orderStatusCont">
+        <div class="row address-block">
+            <div class="col-md-12 addressDetails">
+                <p>Delivery Address
+                    <button class="btn simpleBtn" (click)="selectAddress()">
+                        <img src="assets/images/icons/edit3.png">
+                    </button>
+                </p>
+                <span> {{address}} </span>
             </div>
         </div>
+    </div>
     }
-   
-    <!-- <div class="container my-3 bg-transparent ">
+
+    @if (orderOptions.length >1) {
+    <div class="container my-3 bg-transparent ">
         <div class="row">
             <div class="col-md-12">
-                <app-slider-switch></app-slider-switch>
+                <app-slider-switch [selectedValue]="orderOptionsType"
+                    (orderType)="getOrderType($event)"></app-slider-switch>
             </div>
         </div>
-    </div> -->
+    </div>
+    }
+
 
     <div class="container my-3 bg-transparent ">
         <div class="row ">
             <div class="col-md-12 ">
+                @if (orderOptionsType == "1") {
                 @if (showAddAddressButton){
                 <button class="btn cartAddressBtn" (click)="selectAddress()"> <span>Add / Select Address</span></button>
                 } @else if(!quoteLoading) {
@@ -184,6 +197,13 @@
                     (click)="onPrepareOrderClick()"> <span>Proceed to Payment </span></button>
                 <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
                 }
+                } @else if(orderOptionsType == "3") {
+                <button class="btn cartAddressBtn" (click)="checkLoginandProceed()"> 
+                    <span>Proceed to Payment</span>
+                </button>
+
+                }
+
             </div>
         </div>
     </div>
@@ -206,7 +226,7 @@
             </div>
         </div>
     </div>
-  
+
     <!-- Customer Support Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="contactSupport">
         <div class="offcanvas-header">

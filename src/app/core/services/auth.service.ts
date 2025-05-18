@@ -6,8 +6,22 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   isLoggedIn: boolean = false;
+
+  private returnUrl: string | null = null;
   constructor() { }
 
+  setReturnUrl(url: string) {
+    this.returnUrl = url;
+  }
+
+  getReturnUrl(): string | null {
+    return this.returnUrl;
+  }
+
+  clearReturnUrl() {
+    this.returnUrl = null;
+  }
+  
   login() {
     // Simulate login
     this.isLoggedIn = true;

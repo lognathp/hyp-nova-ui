@@ -1,9 +1,19 @@
 <div class="toggle-container">
-    <input type="checkbox" id="toggle" [(ngModel)]="isDelivery" [checked]="isDelivery" (change)="onToggleChange($event.target)"/>
-    <label for="toggle" class="toggle-switch">
-      <span class="option pickup" [class.active]="isDelivery">Delivery</span>
-      <span class="slider"></span>
-      <span class="option delivery" [class.active]="!isDelivery">Pickup</span>
-    </label>
+  <div class="toggle-switch">
+    <!-- Dynamic slider -->
+    <div 
+      class="slider" 
+      [style.width.%]="100 / deliveryOptions.length"
+      [style.left.%]="selectedIndex * (100 / deliveryOptions.length)">
+    </div>
+
+    <!-- Options -->
+    <div 
+      *ngFor="let option of deliveryOptions; let i = index"
+      class="option"
+      [class.active]="selectedIndex === i"
+      (click)="selectOption(i)">
+      {{ option.label }}
+    </div>
   </div>
-  
+</div>

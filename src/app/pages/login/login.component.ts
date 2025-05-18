@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { CountdownModule } from 'ngx-countdown';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent {
     private apiService: ApiService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private router: Router) {
 
   }
@@ -53,7 +55,16 @@ export class LoginComponent {
       // otp: new FormArray(Array(6).fill(0).map(() => new FormControl('')))
     });
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    console.log(this.route.snapshot.queryParams['returnUrl'],'dsfdsf', this.authService.getReturnUrl() );
+    //   const returnUrl = this.auth.getReturnUrl() || '/';
+    // this.auth.clearReturnUrl();
+    if(this.route.snapshot.queryParams['returnUrl'] == undefined){
+       this.returnUrl = this.authService.getReturnUrl() || '/';
+    } else {
+       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    }
+
+   
 
     let restId: any = localStorage.getItem("selectedRestId")
     this.restaurentId = parseInt(restId);

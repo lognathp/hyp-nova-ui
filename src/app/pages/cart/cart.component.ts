@@ -13,6 +13,7 @@ import { SomethingWentWrongComponent } from "../../components/errors/something-w
 import { WebSocketService } from '../../core/services/websocket.service';
 import { RestaurentClosedComponent } from "../../components/errors/restaurent-closed/restaurent-closed.component";
 import { SliderSwitchComponent } from "../../components/slider-switch/slider-switch.component";
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-cart',
@@ -68,10 +69,24 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     unKnownError: boolean = false;
     restaurentClosed: boolean = false;
 
-    deliveryDiscount = 30;
+    deliveryDiscount = environment.deliveryDiscount;
+
+    orderOptions = environment.deliveryOptions;
+    orderOptionsType = environment.deliveryOptions[0].value;
+    orderOptionsSelectedIndex = environment.deliveryOptions[0].index;
+
+    itempackagingCharge = environment.itempackagingCharge;
+    packingTaxPercentage = environment.packingTaxPercentage;
+
+    deliveryWaiver = environment.deliveryWaiver;
+
+
+    totalPackingCharge = 0;
+
     isMakePaymentEnabled: boolean = false;
 
     restaurentActive: boolean = true;
+
     private wsSubscription!: Subscription;
     workingHours: boolean = true;
 
@@ -83,6 +98,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         public apiService: ApiService,
         public sharedData: SharedService,
         private router: Router,
+        private authService: AuthService,
         // private messageService: MessageService,
         // private primengConfig: PrimeNGConfig,
         private wsService: WebSocketService,
@@ -126,8 +142,11 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         this.prepareOrderItems();
 
         let tempcustomDetails: any = localStorage.getItem('customerDetails');
+        // if (!tempcustomDetails) {
         this.customDetails = JSON.parse(tempcustomDetails);
-        this.mobile = this.customDetails.mobile
+        // }
+
+        // this.mobile = this.customDetails.mobile
 
         // console.log('md',this.menuData);
 
@@ -155,7 +174,16 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         //           this.showAddAddressButton = true;
         //       }
         //   });
-
+        this.sharedData.getorderTypeDatadata().subscribe((data: any) => {
+            console.log(data, 'getorderTypeDatadata', typeof data);
+            if (typeof data === 'string') {
+                this.orderOptionsType = data;
+                this.orderOptionsSelectedIndex = environment.deliveryOptions[0].index;
+            } else {
+                this.orderOptionsType = environment.deliveryOptions[0].value;
+                this.orderOptionsSelectedIndex = environment.deliveryOptions[0].index;
+            }
+        });
 
     }
     ngAfterViewInit(): void {
@@ -185,15 +213,16 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                 // this.workingHours ? this.getDeliveryQuote(data.id) : this.restaurentClosed = true;
                 // this.workingHours ? this.getdeliveryQuoteshareddata() : this.restaurentClosed = true;
+
+
+
                 let existingDeliveryQuoteData: any = [];
                 this.sharedData.getDeliveryQuotedata().subscribe((data: any) => {
                     // console.log(Object.entries(data).length);
-                    if(Object.entries(data).length){
+                    if (Object.entries(data).length) {
                         existingDeliveryQuoteData = data;
                     }
-                    
                 });
-
                 if (this.workingHours && Object.entries(existingDeliveryQuoteData).length > 0) {
                     this.getdeliveryQuoteshareddata();
                 } else if (this.workingHours && existingDeliveryQuoteData.response == undefined) {
@@ -248,6 +277,16 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         this.connectingGateway = true;
         this.prepareOrderSubject.next();
     }
+    checkLoginandProceed() {
+        // console.log(this.customDetails,this.customDetails.id);
+
+        if (this.customDetails?.id) {
+            this.onPrepareOrderClick();
+        } else {
+            this.authService.setReturnUrl(this.router.url);
+            this.router.navigate(['/login']);
+        }
+    }
 
     loadAddress() {
         const selectedLocation = localStorage.getItem('selectedLocation');
@@ -261,7 +300,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     prepareOrderItems(): void {
         this.orderItems = [];
         const itemdiscountValue = environment.itemdiscountValue; // Discount value kept static as of now
-        const itempackagingCharge = environment.itempackagingCharge; // Discount value kept static as of now
+
         this.foodBasket?.forEach((element: any, index: number) => {
             // console.log(element, index);
 
@@ -270,7 +309,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 description: element.item.itemDescription,
                 itemDiscount: itemdiscountValue,   //Kept static since no discount as of now
                 price: parseFloat(element.item.price).toFixed(2),
-                finalPrice: parseFloat(element.item.price) - itemdiscountValue + itempackagingCharge,  // price - itemDiscount (0 used since no discount as of now)
+                finalPrice: parseFloat(element.item.price) - itemdiscountValue,  // price - itemDiscount (0 used since no discount as of now)
                 quantity: element.item.quantity,
                 orderItemTax: [],
                 orderAddonItems: []
@@ -290,6 +329,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             // console.log(item);
 
             this.orderItems.push(item);
+
 
             if (element?.addonVariation?.varients != undefined) {  //|| element?.addonVariation?.addons != undefined 
                 // console.log(element.addonVariation);
@@ -336,13 +376,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     item['variationName'] = element.addonVariation.varients.name,
                     item['variationId'] = element.addonVariation.varients.variationId,
                     item.price = (itemWithVariationPrice + addonSumPrice).toFixed(2),
-                    item.finalPrice = ((itemWithVariationPrice - itemdiscountValue + itempackagingCharge) + addonSumPrice).toFixed(2), // added for discount on discout value
+                    item.finalPrice = ((itemWithVariationPrice - itemdiscountValue) + addonSumPrice).toFixed(2), // added for discount on discout value
 
                     item.orderItemTax.forEach((varientItemTax: any, taxIndex: number) => {
                         // console.log(varientItemTax);
                         if (parseFloat(varientItemTax.amount) == 0.00) {
                             varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2)
-                            // ((parseFloat(taxElement.tax) / 100 ) * parseFloat(element.item.price)).toFixed(2),
                         }
                     })
                 // console.log(item.price, 'item.price');
@@ -451,19 +490,20 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 totalTax: 0,
                 addOnPriceSum: 0
             };
+            this.totalPackingCharge = 0;
             this.prepareOrderPrice(this.orderItems);
             this.prepareOrderTax(JSON.stringify(this.orderItems));
-            if (!this.isMakePaymentEnabled) {
+            if (!this.isMakePaymentEnabled && this.orderOptionsType != "3") {
                 this.getdeliveryQuoteshareddata();
             }
         }
     }
 
     prepareOrderPrice(orderItems: any) {
-        // console.log(this.orderItems);
+        console.log(this.orderItems);
 
         orderItems.forEach((items: any) => {
-            // console.log(items);
+            console.log(items);
             items.orderItemTax.forEach((tax: any) => {
                 if (tax.name in this.orderPriceDetails.tax) {
                     this.orderPriceDetails.tax[tax.name] += (parseFloat(tax.amount) * items.quantity);
@@ -482,11 +522,13 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 });
             }
 
+            this.totalPackingCharge = this.totalPackingCharge + (this.itempackagingCharge * items.quantity);
+
             this.orderPriceDetails.itemSubtotal = (parseFloat(this.orderPriceDetails.itemSubtotal) + (parseFloat(items.price)) * items.quantity).toFixed(2)
             this.orderPriceDetails['discount'] = (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100));
-            this.orderPriceDetails.toPay = ((parseFloat(this.orderPriceDetails.itemSubtotal) - (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100))) + this.orderPriceDetails.totalTax + this.orderPriceDetails.addOnPriceSum).toFixed(2)
+            this.orderPriceDetails.toPay = ((parseFloat(this.orderPriceDetails.itemSubtotal) - (parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100))) + this.orderPriceDetails.totalTax + this.orderPriceDetails.addOnPriceSum + this.totalPackingCharge + (this.totalPackingCharge * (this.packingTaxPercentage / 100))).toFixed(2)
         });
-        console.log(this.orderPriceDetails, 'this.orderPriceDetails');
+        console.log(this.orderPriceDetails, 'this.orderPriceDetails', this.totalPackingCharge);
 
     }
 
@@ -517,7 +559,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         times++;
 
         // const tQuoteData = {"data":[{"service":"flash","manifest":false,"quote":{"price":72.33,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":72.33,"total_gst_amount":0.0,"additional_charges":[]}},"error":null,"token":null,"network_id":60,"network_name":"Flash by Shadowfax","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
-
+        // const tQuoteData = {"data":[{"service":"pidge-lbnp","manifest":false,"quote":{"price":51.92,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":40.6392,"total_gst_amount":8.9208,"additional_charges":[]}},"error":null,"token":null,"network_id":345,"network_name":"Ola ONDC","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
         if (this.quoteLoading) {
             this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
                 next: (reponse: any) => {
@@ -554,9 +596,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     this.unKnownError = true;
                     this.showAddAddressButton = true;
 
-                    // // this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
-
-
+                    //  this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 }
 
@@ -571,7 +611,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     getdeliveryQuoteshareddata() {
         this.sharedData.getDeliveryQuotedata().subscribe((data: any) => {
             // console.log(Object.entries(data).length);
-            if(Object.entries(data).length){
+            if (Object.entries(data).length) {
                 this.assignQuoteData(data.addressId, data.reponse)
             }
         });
@@ -583,25 +623,26 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      * @param quoteData Qelivery Quote value response
      */
     assignQuoteData(addressId: any, quoteData: any) {
-
-        this.orderPriceDetails['deliveryCharge'] = 0;
-        // this.orderPriceDetails['deliveryCharge'] = this.quoteData.data[0].quote.price;
-
-        this.orderPriceDetails['deliveryCharge'] = quoteData?.data[0].quote.price - (quoteData?.data[0].quote.price * (this.deliveryDiscount / 100));;
-        // this.orderPriceDetails['dcTaxAmount'] = 10;
+         this.orderPriceDetails['deliveryCharge'] = 0;
+        // console.log(this.deliveryWaiver.applicable, this.orderPriceDetails.itemSubtotal + this.orderPriceDetails.addOnPriceSum - this.orderPriceDetails.discount + this.orderPriceDetails.tax.CGST + this.orderPriceDetails.tax.SGST, this.deliveryWaiver.offsetValue,'deliveryWaiver');
+        if (this.deliveryWaiver.applicable == true && (this.orderPriceDetails.itemSubtotal + this.orderPriceDetails.addOnPriceSum - this.orderPriceDetails.discount + this.orderPriceDetails.tax.CGST + this.orderPriceDetails.tax.SGST > this.deliveryWaiver.offsetValue)) {
+            this.orderPriceDetails['deliveryCharge'] = 0;
+        } else {
+            this.orderPriceDetails['deliveryCharge'] = quoteData?.data[0].quote.price - (quoteData?.data[0].quote.price * (this.deliveryDiscount / 100));
+        }
 
         this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
-
         this.deliveryDetails['addressId'] = addressId;
         this.deliveryDetails['service'] = quoteData.data[0].service;
-        // this.deliveryDetails['service'] ='wefast';
         this.deliveryDetails['pickupNow'] = quoteData.data[0].pickup_now;
-        // this.deliveryDetails['pickupNow'] = true;
-        // this.deliveryDetails['networkId'] = 18;
         this.deliveryDetails['networkId'] = quoteData.data[0].network_id;
+
+        this.deliveryDetails['deliveryNetwork '] = quoteData;  // Data of delivery quote from the API response without adding discount and any operations
+
+
         // console.log(this.orderPriceDetails, quoteData, this.deliveryDetails);
 
-        
+
     }
 
 
@@ -620,10 +661,19 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         let flatDiscountAmount = parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100)
         const taxAmount: any = Object.values(this.orderPriceDetails.tax).reduce((acc: any, curr: any) => parseFloat(acc) + parseFloat(curr), 0);
 
+        if (this.orderOptionsType != "1") {
+            this.orderPriceDetails['deliveryCharge'] = 0
+            this.orderPriceDetails.toPay = (parseFloat(this.orderPriceDetails.toPay) + this.orderPriceDetails['deliveryCharge']).toFixed(2);
+            this.deliveryDetails['addressId'] = '';
+            this.deliveryDetails['service'] = '';
+            this.deliveryDetails['pickupNow'] = '';
+            this.deliveryDetails['networkId'] = '';
+            this.deliveryDetails['deliveryNetwork '] = '';
+        }
         const orderData = {
             restaurantId: this.restaurentId,
             customerId: this.customDetails.id,
-            orderType: "1",
+            orderType: this.orderOptionsType,
             paymentType: "ONLINE",
             description: "",
             orderItems: this.orderItems,
@@ -645,8 +695,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             // taxAmount: 29.4,
             deliveryCharge: this.orderPriceDetails.deliveryCharge,
             dcTaxAmount: this.orderPriceDetails.dcTaxAmount,
-            packagingCharge: 0,
-            pcTaxAmount: 0.0,
+            packagingCharge: this.totalPackingCharge,
+            pcTaxAmount: (this.totalPackingCharge * (this.packingTaxPercentage / 100)),
             serviceCharge: 0.0,
             scTaxAmount: 0.0,
             grandTotalAmount: parseFloat(this.orderPriceDetails.toPay)
@@ -895,7 +945,6 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      * To store food basket data in local storage so that on going back to menu-page data can be taken from local storage 
      */
     storefoodBasketData(): void {
-
         localStorage.setItem("foodBasket", JSON.stringify(this.foodBasket));
     }
     selectAddress() {
@@ -910,8 +959,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         this.router.navigate(['/order']);
     }
     /**
-  * To fetch order history
-  */
+     * To fetch order history
+     */
     getOrderHistory(): void {
         if (this.customDetails) {
             const orderStaus = ['PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP', 'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY']
@@ -928,7 +977,19 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             })
         }
     }
+
+    /**
+     * Order Track URL redirect
+     */
     orderTrack() {
         this.router.navigate(['/order-tracking']);
+    }
+
+    getOrderType(orderType: any) {
+        console.log('orderType', orderType);
+        this.orderOptionsType = orderType;
+        this.sharedData.sendorderTypeDatadata(orderType);
+
+        this.prepareOrderItems();
     }
 }
