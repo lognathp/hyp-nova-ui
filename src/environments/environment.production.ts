@@ -21,7 +21,7 @@ export const environment = {
         // { label: 'Dine In', value: '2', index: 2 }
     ],
     deliveryWaiver:{
-        applicable:false,
+        applicable:true,
         offsetValue:199,
     }
 };
