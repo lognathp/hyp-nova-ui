@@ -72,7 +72,7 @@
                             @if(basketitem?.addonVariation?.varients){
                             @if (basketitem?.addonVariation?.varients.price == "0") {
 
-                            <!-- <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span> -->
+                            <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
                             <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                             </span>
                             } @else {
@@ -84,7 +84,7 @@
 
                             } @else {
 
-                            <!-- <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span> -->
+                            <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
                             <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                             </span>
                             }
