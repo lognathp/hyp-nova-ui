@@ -318,7 +318,7 @@
                         <!-- <span class="badge bestSeller ">Bestseller</span> -->
                         <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
                         <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                        <!-- <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp; -->
+                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
                         <!-- <span class="offer "> {{flatDiscountpercentage}}% OFF</span> -->
                         <p class="card-text foodDes "> {{ item.itemDescription }}
                         </p>
@@ -648,13 +648,13 @@
                                                     </button>
                                                     <div class="price-wrapper">
                                                         @if(basketitem?.addonVariation?.varients){
-                                                        <!-- <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
+                                                        <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
                                                             }}
-                                                        </span> -->
+                                                        </span>
                                                         <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice:
                                                             flatDiscountpercentage }} </span>
                                                         } @else {
-                                                        <!-- <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span> -->
+                                                        <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
                                                         <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                                                         </span>
                                                         }
