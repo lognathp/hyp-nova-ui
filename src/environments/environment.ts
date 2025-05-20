@@ -1,8 +1,8 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'206207',
-    partnerId:'3Ze9YGDJpw',
+    restId:'59654',
+    partnerId:'37xELG0Ki2',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Saharsh Udupi Grand',
@@ -26,4 +26,5 @@ export const environment = {
         applicable:false,
         offsetValue:199,
     }
+   
 };
