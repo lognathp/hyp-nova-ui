@@ -1,13 +1,13 @@
 export const environment = {
-    baseUrl:'https://api.hyperapps.digital/api/v2',
-    baseWsUrl:'wss://api.hyperapps.digital/api/v2/ws',
-    restId:'345121',
-    partnerId:'ju8tCXSeun',
+    baseUrl:'https://api.hyperapps.in/api/v2',
+    baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
+    restId:'59654',
+    partnerId:'37xELG0Ki2',
     production: true,
-    razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
-    contactHyperapps:"7801057583",
+    razorPayKey:'rzp_live_q2vhcACR4RokpK',
+    title:'Shah Ghouse',
+    contactRestaurant:"8483884639",
+    contactHyperapps:"8885026686",
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
@@ -24,4 +24,5 @@ export const environment = {
         applicable:false,
         offsetValue:199,
     }
+   
 };
