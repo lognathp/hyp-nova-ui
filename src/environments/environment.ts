@@ -1,12 +1,12 @@
 export const environment = {
-    baseUrl:'https://api.hyperapps.digital/api/v2',
-    baseWsUrl:'wss://api.hyperapps.digital/api/v2/ws',
-    restId:'345121',
-    partnerId:'ju8tCXSeun',
+    baseUrl:'https://api.hyperapps.in/api/v2',
+    baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
+    restId:'446911',
+    partnerId:'YaFOOsEDvP',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
+    title:'OM Punjabi Dhaba',
+    contactRestaurant:"9876543210",
     contactHyperapps:"7801057583",
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
@@ -17,6 +17,7 @@ export const environment = {
     deliveryOptions: [
         // Un-comment to add options Comment to remove delivery options
         { label: 'Delivery', value: '1', index: 0 },   // Default type dont-touch
+        // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Dine In', value: '2', index: 2 }
     ],
