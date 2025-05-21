@@ -302,7 +302,7 @@
 
                         <!-- <span class="badge bestSeller ">Bestseller</span> -->
                         <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
-                        <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
+                        <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage | number:'1.0-0' }}</span>
                         <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
                         <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
                         <p class="card-text foodDes "> {{ item.itemDescription }}
@@ -389,8 +389,8 @@
             <div class="col-md-12 ">
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
-                        <h5 class="card-title aboutTitle ">About</h5>
-                        <p class="card-text m-0 aboutDes ">At Wacky Wok Hyderabad, we bring the vibrant flavors of Chinese cuisine to your doorstep. Our menu features a delightful array of dishes, from crispy momos and spicy seafood to hearty rice and noodle bowls, all crafted with fresh ingredients and authentic spices. Whether you're craving the fiery zest of Chilly Basil Chicken or the comforting taste of Veg Fried Rice, Wacky Wok promises a culinary experience that satisfies every palate. Order now and indulge in a fusion of taste and tradition!</p>
+                        <h5 class="card-title aboutTitle ">🧁 About Us</h5>
+                        <p class="card-text m-0 aboutDes ">Established in 1999, KS Bakers has blossomed from a humble beginning into Hyderabad's cherished bakery destination. With over 25 years of culinary excellence, we pride ourselves on crafting delectable treats that resonate with both tradition and innovation. Our extensive menu boasts over 500 delightful creations, including cakes, pastries, biscuits, breads, snacks, and beverages, all produced in-house to ensure unmatched freshness and quality. Serving over a million satisfied customers, KS Bakers continues to be the go-to choice for those seeking authentic flavors and heartfelt service.</p>
                     </div>
                 </div>
             </div>
@@ -464,7 +464,7 @@
                 <div class="card p-0 ">
                     <div class="card-body p-0 mapCont" style="pointer-events: auto;">
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.034154894196!2d78.36352267516659!3d17.4580792834412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb935dabdad9db%3A0xfd33ab191890d67d!2sWacky%20Wok!5e0!3m2!1sen!2sin!4v1745572900925!5m2!1sen!2sin"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d535.5723050308952!2d78.39014427545771!3d17.486961409059674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb918c1ba8163b%3A0x88eee1a18decd422!2sKS%20Bakers!5e0!3m2!1sen!2sin!4v1747812908571!5m2!1sen!2sin"
                             width="100%" 
                             height="400"
                             style="border:0;" 
