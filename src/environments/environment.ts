@@ -5,10 +5,23 @@ export const environment = {
     partnerId:'PKwxEF8exM',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Satti Babu Biryani',
-    contactRestaurant:"9492025490",
-    contactHyperapps:"8885025585",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
-    googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw'
+    title:'Satti Babu',
+    contactRestaurant:"9700002341",
+    contactHyperapps:"7801057583",
+    flatDiscountpercentage : 15,
+    deliveryDiscount : 30,
+    itemdiscountValue : 0,
+    itempackagingCharge: 0,  // Set Packing charge as applicable
+    packingTaxPercentage:0,  // Packing charge tax in percentage
+    googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',
+    deliveryOptions: [
+        // Un-comment to add options Comment to remove delivery options
+        { label: 'Delivery', value: '1', index: 0 },   // Default type dont-touch
+        // { label: 'Take Away', value: '3', index: 1 },
+        // { label: 'Dine In', value: '2', index: 2 }
+    ],
+    deliveryWaiver:{
+        applicable:true,
+        offsetValue:599,
+    }
 };
