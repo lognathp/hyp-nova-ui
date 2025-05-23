@@ -127,12 +127,6 @@
                         data-bs-interval="2000">
                         <div class="carousel-inner ">
                             <!-- Offer Slide -->
-                            <div class="carousel-item active ">
-                                <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">25% Off on all items</h2>
-                                    <span class="wwdDes ">Don’t miss out!</span>
-                                </div>
-                            </div>
                             <div class="carousel-item ">
                                 <div class="hc bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">No Hidden Charges</h2>
@@ -140,10 +134,23 @@
                                 </div>
                             </div>
 
+                            <div class="carousel-item active">
+                                <div class="off bg-transparent text-dark ">
+                                    <h2 class="wwdTitle ">25% Off on all items</h2>
+                                    <span class="wwdDes ">Don’t miss out!</span>
+                                </div>
+                            </div>
+
                             <div class="carousel-item ">
                                 <div class="otd bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">On Time Delivery</h2>
                                     <span class="wwdDes ">Delivery within 30-40 mins</span>
+                                </div>
+                            </div>
+                            <div class="carousel-item ">
+                                <div class="exo bg-transparent text-dark ">
+                                    <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
+                                    <!-- <span class="wwdDes ">USE HYPERDEAL</span> -->
                                 </div>
                             </div>
                         </div>
@@ -435,7 +442,7 @@
                     <div class="card-body p-0 ">
                         <h5 class="card-title galleryTitle ">Gallery</h5>
                         <div class="gallery-slider ">
-                                <img src="../../../assets/images/image1.jpg" />
+                            <img src="../../../assets/images/image1.jpg" />
                                 <img src="../../../assets/images/image2.jpg" />
                                 <img src="../../../assets/images/image3.jpg" />
                                 <img src="../../../assets/images/image4.jpg" />
@@ -459,7 +466,9 @@
                     <div class="card-body p-1 ">
                         <h5 class="card-title contactTitle ">Contact</h5>
                         <p class="card-text m-2 contactHeading ">{{partnerData?.name | titlecase}}</p>
+                        <p class="card-text m-2 contactHeading ">{{partnerData?.name | titlecase}}</p>
                         @if (restaurentId != null || restaurentId != undefined) {
+                        <!-- <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p> -->
                         <!-- <p class="card-text contactDes "> {{ branchData?.restaurantName }} </p> -->
 
                         <ul class="m-0 p-0 ">
@@ -492,12 +501,10 @@
             <div class="col-md-12 ">
                 <div class="card p-0 ">
                     <div class="card-body p-0 mapCont ">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.031530951347!2d78.36364657516656!3d17.458204883441113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93c856fab201%3A0xfb4b2d545f1c3795!2sSaharsh%20udupi%20grand!5e0!3m2!1sen!2sin!4v1754031983463!5m2!1sen!2sin" width="100%" 
-                        height="400"
-                        style="border:0;" 
-                        allowfullscreen 
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.45705525608!2d78.38583307462805!3d17.437824901351217!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb91591332f4a7%3A0xce543d4c1bf00c4a!2sANKAPUR%20VILLAGE%20A%20MILITARY%20HOTEL!5e0!3m2!1sen!2sin!4v1747995812705!5m2!1sen!2sin"
+                            width="100% " style="border:0; " allowfullscreen=" " loading="lazy "
+                            referrerpolicy="no-referrer-when-downgrade "></iframe>
                     </div>
                 </div>
             </div>
