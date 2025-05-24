@@ -5,14 +5,14 @@ export const environment = {
     partnerId:'iFtgqbYtdY',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Kanchi Cafe',
-    contactRestaurant:"7569263150",
+    title:'Moghuls Paradiez',
+    contactRestaurant:"9912306049",
     contactHyperapps:"8885025585",
     flatDiscountpercentage : 15,
     deliveryDiscount : 30,
     itemdiscountValue : 0,
-    itempackagingCharge: 10,  // Set Packing charge as applicable
-    packingTaxPercentage:5,  // Packing charge tax in percentage
+    itempackagingCharge: 0,  // Set Packing charge as applicable
+    packingTaxPercentage:0,  // Packing charge tax in percentage
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',
     deliveryOptions: [
         // Un-comment to add options Comment to remove delivery options

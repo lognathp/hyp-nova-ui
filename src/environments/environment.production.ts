@@ -11,8 +11,8 @@ export const environment = {
     flatDiscountpercentage : 15,
     deliveryDiscount : 30,
     itemdiscountValue : 0,
-    itempackagingCharge: 10,  // Set Packing charge as applicable
-    packingTaxPercentage:5,  // Packing charge tax in percentage
+    itempackagingCharge: 0,  // Set Packing charge as applicable
+    packingTaxPercentage:0,  // Packing charge tax in percentage
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',
     deliveryOptions: [
         // Un-comment to add options Comment to remove delivery options
