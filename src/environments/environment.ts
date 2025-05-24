@@ -1,15 +1,15 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'358659',
-    partnerId:'iFtgqbYtdY',
+    restId:'42085',
+    partnerId:'Ihu6ysX1eM',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Moghuls Paradiez',
-    contactRestaurant:"9912306049",
-    contactHyperapps:"8885025585",
-    flatDiscountpercentage : 15,
-    deliveryDiscount : 30,
+    title:'Sri Sai Darshini',
+    contactRestaurant:"7896966387",
+    contactHyperapps:"7801057583",
+    flatDiscountpercentage : 25,
+    deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
@@ -17,7 +17,7 @@ export const environment = {
     deliveryOptions: [
         // Un-comment to add options Comment to remove delivery options
         { label: 'Delivery', value: '1', index: 0 },   // Default type dont-touch
-        { label: 'Take Away', value: '3', index: 1 },
+        // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Dine In', value: '2', index: 2 }
     ],
     deliveryWaiver:{
