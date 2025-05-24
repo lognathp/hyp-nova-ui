@@ -8,10 +8,10 @@ export const environment = {
     title:'Ideal Kitchen',
     contactRestaurant:"9642887733",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 0,
-    deliveryDiscount : 0,
+    flatDiscountpercentage : 25,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
-    itempackagingCharge: 0,  // Set Packing charge as applicable
+    itempackagingCharge: 10,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',
     WHATSAPP_API_URL: 'https://graph.facebook.com/v22.0/112915418570784/messages',
