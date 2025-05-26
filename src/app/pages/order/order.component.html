@@ -39,14 +39,13 @@
                     <li><a (click)="scrollToSections('gallery')" class="gallery dropdown-item">Gallery</a></li>
                     <!-- <li><a class="contact dropdown-item" >Contact</a></li> -->
                 </ul>
-                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                <!-- <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
                     data-bs-target="#contactSupport">
                     <img src="assets/images/icons/support.png " class="headerIcon ">
                     @if(showTracking){
                         <img  src="assets/images/icons/preparingFood.png" title="Track Order" (click)="orderTrack()" class="headerIcon mx-2">
                     }
-                   
-                </button>
+                </button> -->
             </div>
         </nav>
 
@@ -498,12 +497,12 @@
             Menu
         </button>
     </div>
-    @if(showTracking){
-        <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
-            <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
-                <img src="assets/images/icons/outForDelivery.png"> </button>
-        </div>
-    }
+  
+    <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+        <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
+            <img src="assets/images/icons/outForDelivery.png"> </button>
+    </div>
+    
    
     <!-- VIEW CART -->
     @if(foodBasket?.length > 0){
