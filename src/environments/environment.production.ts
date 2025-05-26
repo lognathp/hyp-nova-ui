@@ -8,7 +8,7 @@ export const environment = {
     title:'Arugu Kitchen',
     contactRestaurant:"9032967788",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 25,
+    flatDiscountpercentage : 20,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
