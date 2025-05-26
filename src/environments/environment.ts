@@ -1,8 +1,8 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'206207',
-    partnerId:'3Ze9YGDJpw',
+    restId:'689537',
+    partnerId:'glEoSsiMOp',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Saharsh Udupi Grand',
@@ -19,6 +19,7 @@ export const environment = {
     deliveryOptions: [
         // Un-comment to add options Comment to remove delivery options
         { label: 'Delivery', value: '1', index: 0 },   // Default type dont-touch
+        // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Dine In', value: '2', index: 2 }
     ],
