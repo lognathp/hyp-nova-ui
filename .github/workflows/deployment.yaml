@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - moghuls-paradiez
 
 jobs:
   build:
@@ -36,8 +37,8 @@ jobs:
     - name: Docker Build and Push
       run: |
         docker build --build-arg ENV=staging -t hyp-nova-ui -f ./Dockerfile .
-        docker tag hyp-nova-ui lognathp/hyp-nova-ui:staging
-        docker push lognathp/hyp-nova-ui:staging
+        docker tag hyp-nova-ui lognathp/hyp-nova-ui:mgh
+        docker push lognathp/hyp-nova-ui:mgh
 
   deploy:
     runs-on: ubuntu-latest
@@ -54,9 +55,9 @@ jobs:
         echo "${{ secrets.STAGING_VPS_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.STAGING_VPS_USER }}@${{ secrets.STAGING_VPS_HOST }} << 'EOF'
-          docker stop $(docker ps -q --filter ancestor=lognathp/hyp-nova-ui:staging)
-          docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:staging)
-          docker rmi lognathp/hyp-nova-ui:staging
-          docker pull lognathp/hyp-nova-ui:staging
-          docker run -p 4200:80 -d lognathp/hyp-nova-ui:staging
+          docker stop $(docker ps -q --filter ancestor=lognathp/hyp-nova-ui:mgh)
+          docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:mgh)
+          docker rmi lognathp/hyp-nova-ui:mgh
+          docker pull lognathp/hyp-nova-ui:mgh
+          docker run -p 4206:80 -d lognathp/hyp-nova-ui:mgh
         EOF
