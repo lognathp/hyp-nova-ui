@@ -7,9 +7,9 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Chaitanya Food Court',
     contactRestaurant:"9182650986",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"8885025585",
     flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
