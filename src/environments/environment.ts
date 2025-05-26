@@ -1,4 +1,5 @@
 export const environment = {
+<<<<<<< HEAD
     baseUrl:'https://api.hyperapps.digital/api/v2',
     baseWsUrl:'wss://api.hyperapps.digital/api/v2/ws',
     restId:'345121',
@@ -10,6 +11,19 @@ export const environment = {
     contactHyperapps:"7801057583",
     flatDiscountpercentage : 25,
     deliveryDiscount : 25,
+=======
+    baseUrl:'https://api.hyperapps.in/api/v2',
+    baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
+    restId:'40401',
+    partnerId:'Z2e1RHnVyb',
+    production: true,
+    razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
+    title:'Sri Kanya',
+    contactRestaurant:"9963356633",
+    contactHyperapps:"8885026686",
+    flatDiscountpercentage : 25,
+    deliveryDiscount : 0,
+>>>>>>> 38ee6fc (hide, reorder and download invoice button from order history)
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
