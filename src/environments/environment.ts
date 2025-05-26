@@ -1,15 +1,15 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'206207',
-    partnerId:'3Ze9YGDJpw',
+    restId:'73680',
+    partnerId:'GtgBxICucn',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Saharsh Udupi Grand',
-    contactRestaurant:"9000901009",
-    contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    title:'Mandar Restaurant',
+    contactRestaurant:"9985544652",
+    contactHyperapps:"8885025585",
+    flatDiscountpercentage : 25,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
