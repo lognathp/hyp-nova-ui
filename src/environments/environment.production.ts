@@ -8,8 +8,8 @@ export const environment = {
     title:'Mandar Restaurant',
     contactRestaurant:"9985544652",
     contactHyperapps:"8885025585",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 30,
+    flatDiscountpercentage : 10,
+    deliveryDiscount : 20,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
