@@ -163,7 +163,7 @@
 }
 .trackBtn{
     bottom: 50px;
-    background: #D20500;
+    background: #d20500;
 }
 .menuBtn:hover {
     background: #171717;
@@ -178,14 +178,14 @@
 
 .trackBtn>img {
     width: 85%;
-    background-color: #D20500;
+    background-color: #d20500;
     text-align: center;
     margin: auto;
 
    
 }
 .trackBtn:hover{
-    background: #D20500;
+    background: #d20500;
 }
 /* Menu Items */
 
@@ -228,8 +228,7 @@
 .topSection {
     /* height: 100vh; */
     padding-bottom: 5px;
-    background: linear-gradient(0deg, #cbebf2, #f5d1d8  80%) no-repeat;
-    /* background: linear-gradient(0deg, #F6F6F6, #FFF0D2 80%) no-repeat; */
+    background: linear-gradient(0deg, #F6F6F6, #FFF0D2 80%) no-repeat;
     /* background: linear-gradient(0deg, #F6F6F6, #FFF4B8 80%) no-repeat; */
     color: #525252;
 }
@@ -1506,7 +1505,7 @@ float: right;
     html {
         border-left: solid 1px #ccc;
         border-right: solid 1px #ccc;
-        background-color: #cbebf2;
+        background-color: #fef1d7;
     }
     body {
         padding-right: 0px!important;
@@ -1514,7 +1513,7 @@ float: right;
 }
 
 html {
-    background-color: #cbebf2;
+    background-color: #fef1d7;
 }
 
 .addonBody .text1 {
@@ -2662,7 +2661,7 @@ input[type="radio"] {
 }
 
 .resLogo {
-    height: 50px;
+    height: 100px;
     width: auto;
 }
 
