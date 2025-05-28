@@ -572,17 +572,21 @@
 
    
     <!-- VIEW CART -->
-    @if(foodBasket?.length > 0){
+    @if (foodBasket?.length > 0) {
     <div class="container my-3 bg-footer-cart">
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
                     <div class="card-body bg-cart" [ngClass]="{'disable-block' : !restaurentActive || !serviceable}">
                         <p class="card-text cartItems">
-                            
-                            <!-- ₹{{cartItemPrice | discountPrice: flatDiscountpercentage}} -->
                             <span class="border-0">
-                                {{foodBasket?.length}} Item@if(foodBasket?.length > 2){s}
+                                {{foodBasket?.length}} Item@if (foodBasket?.length > 2) {s}
+                            </span>
+                            <span class="view-cart-btn" 
+                                  (click)="navigateCart()" 
+                                  gaEvent="view_cart" 
+                                  [gaParams]="{ item_count: foodBasket?.length }">
+                                View Cart
                             </span>
                             @if(serviceable){
                             <span class="view-cart-btn " [ngClass]="{'disable-block' : !restaurentActive || !serviceable}" (click)="navigateCart();">View Cart</span>
@@ -593,8 +597,7 @@
             </div>
         </div>
     </div>
-    }
-
+}
     <!-- VIEW CART -->
 
 
