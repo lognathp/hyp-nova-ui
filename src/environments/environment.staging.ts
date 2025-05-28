@@ -1,6 +1,6 @@
 export const environment = {
-    baseUrl: 'https://api.hyperapps.cloud/api/v2',
-    baseWsUrl: 'wss://api.hyperapps.cloud/api/v2/ws',
+    baseUrl: 'https://api.hyperapps.digital/api/v2',
+    baseWsUrl: 'wss://api.hyperapps.digital/api/v2/ws',
     restId: '14490',
     partnerId: 'ju8tCXSeun',
     production: false,
