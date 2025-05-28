@@ -325,30 +325,30 @@
                             <!-- Best Seller Badge
                             <span class="badge bestSeller ">Bestseller</span> -->
 
-                            <h5 class="card-title foodTitle "> {{item.itemName }} </h5>
-                            <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                            <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
-                            <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
-                            <p class="card-text foodDes "> {{ item.itemDescription }}
-                            </p>
-                            <!-- <span class="foodDesMore ">more</span> -->
-                        </div>
-                        <div class="col-5 col-md-5 food-item" [ngClass]="{
-                                   'foodItemImage': !!item.itemImageUrl,
-                                   'foodItemNoImage': !item.itemImageUrl
-                                 }">
-                            <!-- If item is inactive -->
-                            @if (item.active === '0') {
-                            @if (item.itemImageUrl) {
-                            <img [src]="item.itemImageUrl" class="card-img-top greyImage">
-                            }
-                            <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
-                            <span class="outOfStock">Out of Stock</span>
-                            }
-                            @else {
-                            @if (item.itemImageUrl) {
-                            <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
-                            }
+                        <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
+                        <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
+                        <!-- <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp; -->
+                        <!-- <span class="offer "> {{flatDiscountpercentage}}% OFF</span> -->
+                        <p class="card-text foodDes "> {{ item.itemDescription }}
+                        </p>
+                        <!-- <span class="foodDesMore ">more</span> -->
+                    </div>
+                    <div class="col-5 col-md-5 food-item" [ngClass]="{
+                               'foodItemImage': !!item.itemImageUrl,
+                               'foodItemNoImage': !item.itemImageUrl
+                             }">
+                        <!-- If item is inactive -->
+                        @if (item.active === '0') {
+                        @if (item.itemImageUrl) {
+                        <img [src]="item.itemImageUrl" class="card-img-top greyImage">
+                        }
+                        <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
+                        <span class="outOfStock">Out of Stock</span>
+                        }
+                        @else {
+                        @if (item.itemImageUrl) {
+                        <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
+                        }
 
                             @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
                             item.variation.length == 0) {
@@ -744,13 +744,13 @@
                                                     </button>
                                                     <div class="price-wrapper">
                                                         @if(basketitem?.addonVariation?.varients){
-                                                        <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
+                                                        <!-- <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
                                                             }}
-                                                        </span>
+                                                        </span> -->
                                                         <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice:
                                                             flatDiscountpercentage }} </span>
                                                         } @else {
-                                                        <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
+                                                        <!-- <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span> -->
                                                         <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                                                         </span>
                                                         }
