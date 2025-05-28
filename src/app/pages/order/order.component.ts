@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import moment from 'moment';
 import { RemoveSpecialCharacterPipe } from "../../core/pipes/remove-special-character.pipe";
-
 import { environment } from '../../../environments/environment'
 import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
 import { TimeformatPipe } from "../../core/pipes/timeformat.pipe";
@@ -18,6 +17,7 @@ import { BranchChangeComponent } from "../../components/alert-box/branch-change/
 import { WebSocketService } from '../../core/services/websocket.service';
 import { Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
+import { GaEventDirective } from '../../ga-event.directive';
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -39,7 +39,7 @@ declare var bootstrap: any; // Bootstrap is using from assets
     RouterLink,
     RouterModule,
     BranchChangeComponent,
-    SplitFirstCommaPipe
+    SplitFirstCommaPipe,CommonModule, GaEventDirective
 ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
