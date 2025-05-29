@@ -1,15 +1,15 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'71723',
-    partnerId:'5BBiPSqr3m',
+    restId:'28044',
+    partnerId:'YR75Icp1Gv',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'United Kitchen Of India',
-    contactRestaurant:"7702446611",
+    title:'Mummy Ki Rassoi',
+    contactRestaurant:"8019112034",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 15,
-    deliveryDiscount : 20,
+    flatDiscountpercentage : 30,
+    deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
