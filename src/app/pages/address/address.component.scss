@@ -5,3 +5,8 @@
 .selectedAddress{
     border: 1px solid #D20500;
 }
+
+.scrollable {
+  max-height: 400px;     
+  overflow-y: auto !important;
+}

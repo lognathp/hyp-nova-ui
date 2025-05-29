@@ -62,7 +62,22 @@ export class AddressComponent implements OnInit {
     private location: Location
   ) { }
 
+  ngAfterViewInit(): void {
+    // Give Bootstrap a tick to wire up its modal
+    setTimeout(() => {
+      const modal = document.getElementById('addressDelete');
+      if (!modal) return;
 
+      modal.addEventListener('hidden.bs.modal', () => {
+        // 1) unlock page scroll
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+
+        // 2) remove any leftover backdrop
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+      });
+    });
+  }
 
   /**
    * Back Button

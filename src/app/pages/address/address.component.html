@@ -25,7 +25,8 @@
     
         <div class="container my-3  ">
             <div class="row ">
-                <div class="col-md-12  scrollable">
+                <div class="col-md-12">
+  <div class="scrollable">
                     @for (item of address; let index =$index ;track item){
                         <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(index)">
                             <p class="" [ngClass]="{'home': item?.addressType == 'Home' , 'work' :  item?.addressType == 'Work', 'other' :  item?.addressType == 'Other' }" >
@@ -42,6 +43,7 @@
                                 <span>{{item.addressTwo}}</span>
                         </div>
                     }
+                    </div>
                     
                     <!-- <div class="addressTile">
                         <p class="work">Work
