@@ -8,8 +8,8 @@ export const environment = {
     title:'Kanchi Cafe',
     contactRestaurant:"7569263150",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 0,
-    deliveryDiscount : 0,
+    flatDiscountpercentage : 15,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
