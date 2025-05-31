@@ -221,14 +221,18 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     // console.log(Object.entries(data).length);
                     if (Object.entries(data).length) {
                         existingDeliveryQuoteData = data;
+
                     }
                 });
+                console.log(existingDeliveryQuoteData,'existingDeliveryQuoteData');
+                
                 if (this.workingHours && Object.entries(existingDeliveryQuoteData).length > 0) {
-                    this.getdeliveryQuoteshareddata();
+                    // this.getdeliveryQuoteshareddata();
+                    this.prepareOrderItems();
                 } else if (this.workingHours && existingDeliveryQuoteData.response == undefined) {
                     this.getDeliveryQuote(data.id)
                 } else {
-                    this.restaurentClosed = true
+                    this.restaurentClosed = true;
                 }
                 // this.getDeliveryQuote(data.id);
             } else {
