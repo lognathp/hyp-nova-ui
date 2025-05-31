@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { AddressFormComponent } from "../../components/address-form/address-form
   templateUrl: './address.component.html',
   styleUrl: './address.component.scss'
 })
-export class AddressComponent implements OnInit, AfterViewInit {
+export class AddressComponent implements OnInit {
 
 
 
@@ -62,9 +62,7 @@ export class AddressComponent implements OnInit, AfterViewInit {
     private location: Location
   ) { }
 
-  ngAfterViewInit(): void {
-    // throw new Error('Method not implemented.');
-  }
+
 
   /**
    * Back Button
@@ -84,11 +82,8 @@ export class AddressComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngDoCheck() {
 
-  }
-
-  getAddresssDetails() {
+  getAddresssDetails():void {
     console.log('method call getAddresssDetails');
 
     this.apiService.getMethod(`/address?customerId_eq=${this.customerDetails.id}`).subscribe({
