@@ -14,11 +14,12 @@ import { WebSocketService } from '../../core/services/websocket.service';
 import { RestaurentClosedComponent } from "../../components/errors/restaurent-closed/restaurent-closed.component";
 import { SliderSwitchComponent } from "../../components/slider-switch/slider-switch.component";
 import { AuthService } from '../../core/services/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-cart',
     standalone: true,
-    imports: [CommonModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
+    imports: [CommonModule,FormsModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss'
 })
@@ -93,6 +94,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     indexOfSameItemWithAddons: any = [];
     branchData: any;
     showTracking: boolean = false;
+    deliveryInstructions: string = "";
 
     constructor(
         public apiService: ApiService,
@@ -683,7 +685,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             orderItems: this.orderItems,
             orderTax: JSON.parse(this.orderTax),
             deliveryDetails: this.deliveryDetails,
-            specialInstructions: "Please deliver before 7 PM",
+            specialInstructions: this.deliveryInstructions == "" ? 'N/A' : this.deliveryInstructions,
             orderTime: currentTime,
             expectedDeliveryTime: "",
             // totalAmount: 691,

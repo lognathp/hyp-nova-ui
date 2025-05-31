@@ -193,11 +193,13 @@
                 @if (showAddAddressButton){
                 <button class="btn cartAddressBtn" (click)="selectAddress()"> <span>Add / Select Address</span></button>
                 } @else if(!quoteLoading) {
+                <input type="text " class="form-control my-3"  [(ngModel)]="deliveryInstructions" placeholder="Delivery Instructions">
                 <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled"
                     (click)="onPrepareOrderClick()"> <span>Proceed to Payment </span></button>
                 <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
                 }
                 } @else if(orderOptionsType == "3") {
+                <input type="text " class="form-control my-3"  [(ngModel)]="deliveryInstructions" placeholder="Delivery Instructions">
                 <button class="btn cartAddressBtn" (click)="checkLoginandProceed()"> 
                     <span>Proceed to Payment</span>
                 </button>
