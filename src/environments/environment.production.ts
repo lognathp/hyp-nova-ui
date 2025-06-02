@@ -8,8 +8,8 @@ export const environment = {
     title:'Pallavi Restaurant',
     contactRestaurant:"9885033369",
     contactHyperapps:"8885025585",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
+    flatDiscountpercentage : 15,
+    deliveryDiscount : 20,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
