@@ -21,9 +21,14 @@ export const environment = {
     title:'Sri Kanya',
     contactRestaurant:"9963356633",
     contactHyperapps:"8885026686",
+<<<<<<< HEAD
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
 >>>>>>> 38ee6fc (hide, reorder and download invoice button from order history)
+=======
+    flatDiscountpercentage : 15,
+    deliveryDiscount : 20,
+>>>>>>> 9ae74b6 (modiefied config)
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
@@ -37,7 +42,7 @@ export const environment = {
         // { label: 'Dine In', value: '2', index: 2 }
     ],
     deliveryWaiver:{
-        applicable:false,
-        offsetValue:199,
+        applicable:true,
+        offsetValue:599,
     }
 };

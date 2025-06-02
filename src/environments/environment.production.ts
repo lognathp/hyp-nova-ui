@@ -8,8 +8,8 @@ export const environment = {
     title:'Sri Kanya',
     contactRestaurant:"9963356633",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
+    flatDiscountpercentage : 15,
+    deliveryDiscount : 20,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
@@ -23,7 +23,7 @@ export const environment = {
         // { label: 'Dine In', value: '2', index: 2 }
     ],
     deliveryWaiver:{
-        applicable:false,
-        offsetValue:199,
+        applicable:true,
+        offsetValue:599,
     }
 };
