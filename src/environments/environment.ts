@@ -6,7 +6,7 @@ export const environment = {
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Kanchi Cafe',
-    contactRestaurant:"7569263150",
+    contactRestaurant:"9395959292",
     contactHyperapps:"8885026686",
     flatDiscountpercentage : 15,
     deliveryDiscount : 30,
