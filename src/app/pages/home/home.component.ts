@@ -28,7 +28,7 @@ export class HomeComponent {
     let domain = new URL(url).origin;
     console.log('isDevMode', isDevMode());
     if (isDevMode()) {
-      domain = "https://yumyumtree.hyperapps.in"
+      domain = "https://yummybee.hyperapps.in"
     }
     this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
       next: (response) => {

@@ -1553,7 +1553,7 @@ html {
     list-style: none;
     border-bottom: 1.5px dashed #E9E9E9;
     background-color: #fff;
-    height: 41px;
+    /* height: 41px; */
     padding: 7px 9px;
 }
 
