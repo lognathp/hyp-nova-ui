@@ -4,12 +4,12 @@ export const environment = {
     restId:'358659',
     partnerId:'iFtgqbYtdY',
     production: true,
-    razorPayKey:'rzp_test_dUt1jZJm3Whtxk',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
+    razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
+    title:'Moghuls Paradiez',
+    contactRestaurant:"9912306049",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    flatDiscountpercentage : 15,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
