@@ -5,11 +5,11 @@ export const environment = {
     partnerId:'iFtgqbYtdY',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Saharsh Udupi Grand',
-    contactRestaurant:"9000901009",
+    title:'Moghuls Paradiez',
+    contactRestaurant:"9912306049",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    flatDiscountpercentage : 15,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
