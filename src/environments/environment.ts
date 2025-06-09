@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'The Nawaabs Restaurant',
     contactRestaurant:"8179644836",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
