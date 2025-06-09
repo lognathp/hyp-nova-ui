@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Moghuls Paradiez',
     contactRestaurant:"9912306049",
-    contactHyperapps:"8885025585",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 15,
     deliveryDiscount : 30,
     itemdiscountValue : 0,
