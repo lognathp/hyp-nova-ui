@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Udipis Upahar',
     contactRestaurant:"9701988200",
-    contactHyperapps:"8885025585",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 0,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
