@@ -8,7 +8,7 @@ export const environment = {
     title:'G Pulla Reddy',
     contactRestaurant:"7416095959",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 25,
+    flatDiscountpercentage : 0,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
