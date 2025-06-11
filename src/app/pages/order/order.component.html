@@ -115,13 +115,13 @@
                         data-bs-interval="2000">
                         <div class="carousel-inner ">
                             <!-- Offer Slide -->
-                            <div class="carousel-item active ">
-                                <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">20% Off on all items</h2>
-                                    <span class="wwdDes ">Don’t miss out!</span>
+                            <!-- <div class="carousel-item active" >
+                                <div class="otd bg-transparent text-dark">
+                                  <h2 class="wwdTitle" style="white-space: nowrap;">Order at restaurant Price</h2>
+                                  <span class="wwdDes">Save up to 25%</span>
                                 </div>
-                            </div>
-                            <div class="carousel-item ">
+                            </div> -->
+                            <div class="carousel-item active ">
                                 <div class="hc bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">No Hidden Charges</h2>
                                     <span class="wwdDes ">We take that seriously!</span>
@@ -143,8 +143,8 @@
                                 aria-label="Slide 1 "></button>
                             <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="1"
                                 aria-label="Slide 2 "></button>
-                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="2"
-                                aria-label="Slide 3 "></button>
+                            <!-- <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="2"
+                                aria-label="Slide 3 "></button> -->
                             <!-- <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="3"
                                 aria-label="Slide 4 "></button> -->
                         </div>
@@ -315,8 +315,8 @@
 
                         <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
                         <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
-                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
+                        <!-- <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp; -->
+                        <!-- <span class="offer "> {{flatDiscountpercentage}}% OFF</span> -->
                         <p class="card-text foodDes "> {{ item.itemDescription }}
                         </p>
                         <!-- <span class="foodDesMore ">more</span> -->
@@ -688,13 +688,13 @@
                                                     </button>
                                                     <div class="price-wrapper">
                                                         @if(basketitem?.addonVariation?.varients){
-                                                        <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
+                                                        <!-- <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'
                                                             }}
-                                                        </span>
+                                                        </span> -->
                                                         <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice:
                                                             flatDiscountpercentage }} </span>
                                                         } @else {
-                                                        <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
+                                                        <!-- <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span> -->
                                                         <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                                                         </span>
                                                         }

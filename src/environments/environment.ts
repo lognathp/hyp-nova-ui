@@ -10,6 +10,8 @@ export const environment = {
     contactHyperapps:"7801057583",
     // flatDiscountpercentage : 25,
     // deliveryDiscount : 25,
+    flatDiscountpercentage : 0,
+    deliveryDiscount : 50,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
