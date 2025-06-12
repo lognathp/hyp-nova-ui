@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Hotel Vishnu Sri',
     contactRestaurant:"9637588999",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 20,
     deliveryDiscount : 20,
     itemdiscountValue : 0,
