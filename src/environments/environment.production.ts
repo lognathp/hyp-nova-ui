@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Sree Harsha Delux Mess',
     contactRestaurant:"7799810105",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
