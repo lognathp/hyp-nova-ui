@@ -7,12 +7,10 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Skandas Kitchen',
     contactRestaurant:"8639105939",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
-    itempackagingCharge: 0,  // Set Packing charge as applicable
-    packingTaxPercentage:0,  // Packing charge tax in percentage
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',
