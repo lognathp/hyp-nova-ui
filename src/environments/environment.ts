@@ -5,15 +5,9 @@ export const environment = {
     partnerId:'ACUDTttX1H',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-<<<<<<< HEAD
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
-    contactHyperapps:"7801057583",
-=======
     title:'Chaitanya Food Court',
-    contactRestaurant:"9182650986",
-    contactHyperapps:"8885025585",
->>>>>>> 8d4f985 (hide, reorder and download invoice button from order history)
+    contactRestaurant:"7801057583",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 25,
     deliveryDiscount : 30,
     itemdiscountValue : 0,
