@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Pallavi Restaurant',
     contactRestaurant:"9885033369",
-    contactHyperapps:"8885025585",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 15,
     deliveryDiscount : 20,
     itemdiscountValue : 0,
