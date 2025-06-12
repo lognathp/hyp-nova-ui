@@ -7,8 +7,8 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Palle Vindu',
     contactRestaurant:"7799997883",
-    contactHyperapps:"8885026686",
-    flatDiscountpercentage : 0,
+    contactHyperapps:"7801057583",
+    flatDiscountpercentage : 15,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
