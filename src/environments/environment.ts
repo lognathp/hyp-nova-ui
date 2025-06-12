@@ -5,9 +5,8 @@ export const environment = {
     partnerId:'ACUDTttX1H',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-<<<<<<< HEAD
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
+    title:'Chaitanya Food Court',
+    contactRestaurant:"7801057583",
     contactHyperapps:"7801057583",
     // flatDiscountpercentage : 25,
     // deliveryDiscount : 25,
