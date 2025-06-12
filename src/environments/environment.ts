@@ -5,14 +5,12 @@ export const environment = {
     partnerId:'a8UuPbV7Er',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Yum Yum Tree',
-    contactRestaurant:"8179644836",
+    title:'Anandam',
+    contactRestaurant:"9246528935",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    flatDiscountpercentage : 25,
+    deliveryDiscount : 25,
     itemdiscountValue : 0,
-    itempackagingCharge: 0,  // Set Packing charge as applicable
-    packingTaxPercentage:0,  // Packing charge tax in percentage
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',

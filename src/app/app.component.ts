@@ -1,37 +1,27 @@
-
-import { Component, isDevMode, OnInit } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { Component, isDevMode } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { ApiService } from './core/services/api.service';
-import { AnalyticsService } from './analytics.service';
+
 import { GoogleMapsModule } from '@angular/google-maps';
-import { MenuLoaderComponent } from './components/loaders/menu-loader/menu-loader.component';
-import { filter } from 'rxjs/operators';
+import { MenuLoaderComponent } from "./components/loaders/menu-loader/menu-loader.component";
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, GoogleMapsModule, MenuLoaderComponent],
+  imports: [RouterOutlet, GoogleMapsModule, MenuLoaderComponent, ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'hyperapps';
-  loading: boolean = true;
+  loading:boolean = true;
 
   constructor(
-    public apiService: ApiService,
-    private router: Router,
-    private analytics: AnalyticsService
-  ) { }
+     public apiService: ApiService) { }
 
   ngOnInit(): void {
-    // Track page views on route changes
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.analytics.sendPageView(event.urlAfterRedirects);
-    });
-
+    
     let url = window.location.href;
     let domain = new URL(url).origin;
     console.log('isDevMode',isDevMode());
@@ -42,14 +32,14 @@ export class AppComponent implements OnInit {
       // domain ="https://31.178.75.55:9090"
     }
     // console.log(window.location.href, domain);
-     this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
+    this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
       next: (response) => {
-        console.log('/partner?', response.data);
+        console.log('/partner?',response.data);
         this.loading = false;
         // this.sharedData.sendbranchData(response.data[0]);
-        localStorage.setItem('vendorData', JSON.stringify(response.data[0]));
+        localStorage.setItem('vendorData',JSON.stringify(response.data[0]));
       },
       error: (error) => { console.log(error) }
-    });
+    })
   }
 }

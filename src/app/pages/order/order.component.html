@@ -117,7 +117,7 @@
                             <!-- Offer Slide -->
                             <div class="carousel-item active ">
                                 <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">20% Off on all items</h2>
+                                    <h2 class="wwdTitle ">25% Off on all items</h2>
                                     <span class="wwdDes ">Don’t miss out!</span>
                                 </div>
                             </div>
@@ -128,23 +128,10 @@
                                 </div>
                             </div>
 
-                            <div class="carousel-item active ">
-                                <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">25% Off on all items</h2>
-                                    <span class="wwdDes ">Don’t miss out!</span>
-                                </div>
-                            </div>
-
                             <div class="carousel-item ">
                                 <div class="otd bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">On Time Delivery</h2>
                                     <span class="wwdDes ">Delivery within 30-40 mins</span>
-                                </div>
-                            </div>
-                            <div class="carousel-item ">
-                                <div class="exo bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
-                                    <!-- <span class="wwdDes ">USE HYPERDEAL</span> -->
                                 </div>
                             </div>
                         </div>
@@ -415,7 +402,7 @@
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
                         <h5 class="card-title aboutTitle ">📍 About Us</h5>
-                        <p class="card-text m-0 aboutDes ">At Yum Yum Tree Hyderabad, we’re passionate about delivering scrumptious meals that spark joy in every bite. Rooted in Hyderabad’s vibrant food culture, we craft our dishes using the freshest, locally sourced ingredients and time‑tested recipes. Whether you’re craving comforting classics or daring fusion flavors, our menu promises consistent quality, on‑time delivery, and flavors that feel like home—because every meal should be an experience worth savoring.</p>
+                        <p class="card-text m-0 aboutDes ">At Anandam Gachibowli, we take pride in serving authentic North Indian and Rajasthani vegetarian cuisine that delights the senses. Our menu features beloved classics like Palak Paneer, Jeera Rice, Parathas, Lassi, and wholesome Thalis, all prepared with the freshest ingredients and traditional recipes. Whether you're dining in or ordering online, we are committed to providing a hygienic, flavorful, and satisfying experience every time. Our dedication to timely service and consistent quality has made us a favorite among locals and visitors alike.</p>
                     </div>
                 </div>
             </div>
@@ -572,32 +559,27 @@
 
    
     <!-- VIEW CART -->
-    @if (foodBasket?.length > 0) {
+    @if(foodBasket?.length > 0){
     <div class="container my-3 bg-footer-cart">
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
-                    <div class="card-body bg-cart" [ngClass]="{'disable-block' : !restaurentActive || !serviceable}">
+                    <div class="card-body bg-cart" [ngClass]="{'disable-block' : restaurentActive == false}">
                         <p class="card-text cartItems">
+                            
+                            <!-- ₹{{cartItemPrice | discountPrice: flatDiscountpercentage}} -->
                             <span class="border-0">
-                                {{foodBasket?.length}} Item@if (foodBasket?.length > 2) {s}
+                                {{foodBasket?.length}} Item@if(foodBasket?.length > 2){s}
                             </span>
-                            <span class="view-cart-btn" 
-                                  (click)="navigateCart()" 
-                                  gaEvent="view_cart" 
-                                  [gaParams]="{ item_count: foodBasket?.length }">
-                                View Cart
-                            </span>
-                            @if(serviceable){
-                            <span class="view-cart-btn " [ngClass]="{'disable-block' : !restaurentActive || !serviceable}" (click)="navigateCart();">View Cart</span>
-                            }
+                            <span class="view-cart-btn " (click)="navigateCart();">View Cart</span>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-}
+    }
+
     <!-- VIEW CART -->
 
 
