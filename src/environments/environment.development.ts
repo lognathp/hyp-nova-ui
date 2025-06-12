@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey: 'rzp_test_dUt1jZJm3Whtxk',
     title: 'Hyperapps',
     contactRestaurant: "9642887733",
-    contactHyperapps: "8885026686",
+    contactHyperapps: "7801057583",
     flatDiscountpercentage: 25,
     deliveryDiscount: 30,
     itemdiscountValue: 0,
