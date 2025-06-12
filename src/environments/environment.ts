@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Konaseema Ghumaghumalu',
     contactRestaurant:"7674800999",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 25,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
