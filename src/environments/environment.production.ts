@@ -7,12 +7,10 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Hi Tech Bawarchi Food Court',
     contactRestaurant:"9618291465",
-    contactHyperapps:"8885026686",
-    flatDiscountpercentage : 30,
-    deliveryDiscount : 20,
+    contactHyperapps:"7801057583",
+    flatDiscountpercentage : 40,
+    deliveryDiscount : 25,
     itemdiscountValue : 0,
-    itempackagingCharge: 0,  // Set Packing charge as applicable
-    packingTaxPercentage:0,  // Packing charge tax in percentage
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',
