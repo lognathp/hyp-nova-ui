@@ -5,10 +5,6 @@ on:
     branches:
       - main
       - chaitanya-food-court
-      - kanchi-cafe
-      - wacky-wok
-      - moghuls-paradiez
-      - chaitanya-food-court
 
 jobs:
   build:
@@ -41,8 +37,8 @@ jobs:
     - name: Docker Build and Push
       run: |
         docker build --build-arg ENV=production -t hyp-nova-ui -f ./Dockerfile .
-        docker tag hyp-nova-ui lognathp/hyp-nova-ui:chaitanya-food
-        docker push lognathp/hyp-nova-ui:chaitanya-food
+        docker tag hyp-nova-ui lognathp/hyp-nova-ui:cfc
+        docker push lognathp/hyp-nova-ui:cfc
 
   deploy:
     runs-on: ubuntu-latest
@@ -59,9 +55,9 @@ jobs:
         echo "${{ secrets.PRODUCTION_VPS_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.PRODUCTION_VPS_USER }}@${{ secrets.PRODUCTION_VPS_HOST }} << 'EOF'
-          docker stop $(docker ps -q --filter ancestor=lognathp/hyp-nova-ui:chaitanya-food)
-          docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:chaitanya-food)
-          docker rmi lognathp/hyp-nova-ui:chaitanya-food
-          docker pull lognathp/hyp-nova-ui:chaitanya-food
-          docker run -d -p 4212:80 lognathp/hyp-nova-ui:chaitanya-food
+          docker stop $(docker ps -q --filter ancestor=lognathp/hyp-nova-ui:cfc)
+          docker rm $(docker ps -a -q --filter ancestor=lognathp/hyp-nova-ui:cfc)
+          docker rmi lognathp/hyp-nova-ui:cfc
+          docker pull lognathp/hyp-nova-ui:cfc
+          docker run -d -p 4212:80 lognathp/hyp-nova-ui:cfc
         EOF
