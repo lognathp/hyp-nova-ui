@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Mummy Ki Rassoi',
     contactRestaurant:"8019112034",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 30,
     deliveryDiscount : 0,
     itemdiscountValue : 0,
