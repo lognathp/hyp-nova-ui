@@ -130,6 +130,7 @@
                             <div class="carousel-item active ">
                                 <div class="off bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">25% Off on all items</h2>
+                                    <h2 class="wwdTitle ">25% Off on all items</h2>
                                     <span class="wwdDes ">Don’t miss out!</span>
                                 </div>
                             </div>
@@ -140,23 +141,10 @@
                                 </div>
                             </div>
 
-                            <div class="carousel-item active ">
-                                <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">25% Off on all items</h2>
-                                    <span class="wwdDes ">Don’t miss out!</span>
-                                </div>
-                            </div>
-
                             <div class="carousel-item ">
                                 <div class="otd bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">On Time Delivery</h2>
                                     <span class="wwdDes ">Delivery within 30-40 mins</span>
-                                </div>
-                            </div>
-                            <div class="carousel-item ">
-                                <div class="exo bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">Get an Extra ₹30 Off </h2>
-                                    <!-- <span class="wwdDes ">USE HYPERDEAL</span> -->
                                 </div>
                             </div>
                         </div>
@@ -589,32 +577,27 @@
 
    
     <!-- VIEW CART -->
-    @if (foodBasket?.length > 0) {
+    @if(foodBasket?.length > 0){
     <div class="container my-3 bg-footer-cart">
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
-                    <div class="card-body bg-cart" [ngClass]="{'disable-block' : !restaurentActive || !serviceable}">
+                    <div class="card-body bg-cart" [ngClass]="{'disable-block' : restaurentActive == false}">
                         <p class="card-text cartItems">
+                            
+                            <!-- ₹{{cartItemPrice | discountPrice: flatDiscountpercentage}} -->
                             <span class="border-0">
-                                {{foodBasket?.length}} Item@if (foodBasket?.length > 2) {s}
+                                {{foodBasket?.length}} Item@if(foodBasket?.length > 2){s}
                             </span>
-                            <span class="view-cart-btn" 
-                                  (click)="navigateCart()" 
-                                  gaEvent="view_cart" 
-                                  [gaParams]="{ item_count: foodBasket?.length }">
-                                View Cart
-                            </span>
-                            @if(serviceable){
-                            <span class="view-cart-btn " [ngClass]="{'disable-block' : !restaurentActive || !serviceable}" (click)="navigateCart();">View Cart</span>
-                            }
+                            <span class="view-cart-btn " (click)="navigateCart();">View Cart</span>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-}
+    }
+
     <!-- VIEW CART -->
 
 
