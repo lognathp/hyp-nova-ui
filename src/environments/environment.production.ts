@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Mandar Restaurant',
     contactRestaurant:"9985544652",
-    contactHyperapps:"8885025585",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 10,
     deliveryDiscount : 20,
     itemdiscountValue : 0,
