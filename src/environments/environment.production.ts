@@ -7,9 +7,9 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Wacky-wok',
     contactRestaurant:"6301100915",
-    contactHyperapps:"8885025585",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
+    contactHyperapps:"7801057583",
+    flatDiscountpercentage : 33,
+    deliveryDiscount : 25,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
@@ -21,7 +21,7 @@ export const environment = {
         // { label: 'Dine In', value: '2', index: 2 }
     ],
     deliveryWaiver:{
-        applicable:false,
-        offsetValue:199,
+        applicable:true,
+        offsetValue:399,
     }
 };
