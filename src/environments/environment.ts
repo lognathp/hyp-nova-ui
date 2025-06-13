@@ -7,7 +7,7 @@ export const environment = {
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Sri Kanya',
     contactRestaurant:"9963356633",
-    contactHyperapps:"8885026686",
+    contactHyperapps:"7801057583",
     flatDiscountpercentage : 15,
     deliveryDiscount : 20,
     itemdiscountValue : 0,
