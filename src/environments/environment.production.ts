@@ -4,12 +4,12 @@ export const environment = {
     restId:'59654',
     partnerId:'37xELG0Ki2',
     production: true,
-    razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
+    razorPayKey:'rzp_live_q2vhcACR4RokpK',
+    title:'Shah Ghouse',
+    contactRestaurant:"8483884639",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    flatDiscountpercentage : 0,
+    deliveryDiscount : 20,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
