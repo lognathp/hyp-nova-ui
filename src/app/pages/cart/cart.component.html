@@ -29,13 +29,18 @@
 
 
 
-    <div class="container  cartOffer" *ngIf="orderPriceDetails.discount">
+    <!-- <div class="container  cartOffer" *ngIf="orderPriceDetails.discount">
         <p>You saved ₹{{orderPriceDetails.discount | number:'1.2-2'}} on this order
             @if ((orderPriceDetails.deliveryCharge == 0 && deliveryWaiver.applicable == true) ) {
                 and Free Delivery
             }.
         </p>
+    </div> -->
+     @if ((orderPriceDetails.deliveryCharge == 0 && deliveryWaiver.applicable == true)) {
+  <div class="container  cartOffer">
+        <p>Enjoy free delivery on this order</p>
     </div>
+}
     
 
     <div class="container  bg-transparent">
