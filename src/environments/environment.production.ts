@@ -20,6 +20,7 @@ export const environment = {
         // Un-comment to add options Comment to remove delivery options
         { label: 'Delivery', value: '1', index: 0 },   // Default type dont-touch
         // { label: 'Take Away', value: '3', index: 1 },
+        // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Dine In', value: '2', index: 2 }
     ],
     deliveryWaiver:{
