@@ -1,15 +1,15 @@
 export const environment = {
-    baseUrl:'https://api.hyperapps.digital/api/v2',
-    baseWsUrl:'wss://api.hyperapps.digital/api/v2/ws',
-    restId:'345121',
-    partnerId:'ju8tCXSeun',
+    baseUrl:'https://api.hyperapps.in/api/v2',
+    baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
+    restId:'156431',
+    partnerId:'rc0gfaewvz',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
+    title:'The bhadrachalam-cafe',
+    contactRestaurant:"7569933141",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
+    flatDiscountpercentage : 20,
+    deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
