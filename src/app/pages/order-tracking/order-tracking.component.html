@@ -55,7 +55,7 @@
                 <div class="col-md-12 orderDetails ">
                     <p>Order Details</p>
                     <span class="septor">{{ orderStatus?.orderItems?.length }} Item@if(orderStatus?.orderItems?.length > 2){s} </span> |
-                    <span>Paid ₹{{ orderStatus?.grandTotalAmount }}</span>
+                    <span>Paid ₹{{ orderStatus?.grandTotalAmount | number:'1.2-2'}}</span>
                     <span class="order">Order # {{orderStatus?.id}}
                         <br><span >{{orderStatus?.orderTime | date:'h:mm a'}}</span>
                     </span>
@@ -76,9 +76,9 @@
                                     <div class="col-12 col-md-12 food-item veg ">
                                         <h5 class="card-title cartFoodTitle nonVeg">{{item.name}}</h5>
                                         <span class="addon">{{item?.variationName}}</span>
-                                        <span class="price mx-2">₹ {{item.quantity * item?.price}}</span>
+                                        <span class="price mx-2">₹ {{item.quantity * item?.price | number:'1.2-2'}}</span>
                                         <!-- <span class="priceStrike ">₹ 300</span> -->
-                                        <span class="qty ">{{item.quantity}} X ₹{{item?.price}}</span>
+                                        <span class="qty ">{{item.quantity}} X ₹{{item?.price | number:'1.2-2'}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -98,18 +98,18 @@
                         <div class="col-md-12 ">
                             <ul class="cartCheckout">
                                 <li>
-                                    <p class="cartVal">Item Total<span>₹ {{currentOrder?.data[0].totalAmount + currentOrder?.data[0].discountAmount}}</span></p>
+                                    <p class="cartVal">Item Total<span>₹ {{currentOrder?.data[0].totalAmount + currentOrder?.data[0].discountAmount | number:'1.2-2'}}</span></p>
                                 </li>
                                 @if (currentOrder?.data[0]?.addonPrice) {
                                     <li>
-                                        <p class="cartVal">Add-On Price<span>₹ {{currentOrder?.data[0]?.addonPrice}}</span></p>
+                                        <p class="cartVal">Add-On Price<span>₹ {{currentOrder?.data[0]?.addonPrice | number:'1.2-2'}}</span></p>
                                     </li>
                                 }
                                 <li>
-                                    <p class="cartVal">Delivery Fee<span>₹ {{currentOrder?.data[0].deliveryCharge}}</span></p>
+                                    <p class="cartVal">Delivery Fee<span>₹ {{currentOrder?.data[0].deliveryCharge | number:'1.2-2'}}</span></p>
                                 </li>
                                 <li>
-                                    <p class="cartVal">TAX Value<span>₹ {{currentOrder?.data[0].taxAmount}} </span></p>
+                                    <p class="cartVal">TAX Value<span>₹ {{currentOrder?.data[0].taxAmount | number:'1.2-2'}} </span></p>
                                 </li>
                                 <!-- <li>
                                     <p class="cartVal">CGST<span>₹ 5</span></p>
@@ -121,10 +121,10 @@
                                     <p class="cartVal disc">Coupon applied (HYPERDEAL)<span>-₹ 150</span></p>
                                 </li> -->
                                 <li *ngIf="currentOrder?.data[0].discountAmount">
-                                    <p class="cartVal disc">Discounted Value<span>-₹ {{currentOrder?.data[0].discountAmount}}</span></p>
+                                    <p class="cartVal disc">Discounted Value<span>-₹ {{currentOrder?.data[0].discountAmount | number:'1.2-2'}}</span></p>
                                 </li>
                                 <li>
-                                    <p class="cartValCategory">Grand Total<span>₹  {{currentOrder?.data[0].grandTotalAmount}} </span></p>
+                                    <p class="cartValCategory">Grand Total<span>₹  {{currentOrder?.data[0].grandTotalAmount | number:'1.2-2'}} </span></p>
                                 </li>
                             </ul>
                         </div>
