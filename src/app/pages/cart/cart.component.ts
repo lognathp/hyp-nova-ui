@@ -14,11 +14,12 @@ import { WebSocketService } from '../../core/services/websocket.service';
 import { RestaurentClosedComponent } from "../../components/errors/restaurent-closed/restaurent-closed.component";
 import { SliderSwitchComponent } from "../../components/slider-switch/slider-switch.component";
 import { AuthService } from '../../core/services/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-cart',
     standalone: true,
-    imports: [CommonModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
+    imports: [CommonModule,FormsModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss'
 })
@@ -65,11 +66,11 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     quoteLoading: boolean = false;
     connectingGateway: boolean = false;
 
-    flatDiscountpercentage = environment.flatDiscountpercentage;
+    flatDiscountpercentage: any;
     unKnownError: boolean = false;
     restaurentClosed: boolean = false;
 
-    deliveryDiscount = environment.deliveryDiscount;
+    deliveryDiscount : any;
 
     orderOptions = environment.deliveryOptions;
     orderOptionsType = environment.deliveryOptions[0].value;
@@ -93,6 +94,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     indexOfSameItemWithAddons: any = [];
     branchData: any;
     showTracking: boolean = false;
+    deliveryInstructions: string = "";
 
     constructor(
         public apiService: ApiService,
@@ -112,22 +114,55 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
         const branchdata: any = localStorage.getItem("currentBranch")
         this.branchData = JSON.parse(branchdata)
-        //   console.log('restaurentId', this.restaurentId);
-        // window.addEventListener('storage', (event: StorageEvent) => {
-        //     if (event.key === 'selectedRestId') {
-        //       let restId:any = localStorage.getItem("selectedRestId")
-        //       this.restaurentId = parseInt(restId);
-        //       console.log(this.restaurentId);
-        //     }
-        //   });
+
+        // item-level discount
+       const branchJson = localStorage.getItem("currentBranch");
+            try {
+            if (branchJson) {
+                this.branchData = JSON.parse(branchJson);
+                const percentage = this.branchData.discountPercentage;
+
+                this.flatDiscountpercentage = typeof percentage === 'number'
+                ? percentage
+                : (percentage !== undefined ? Number(percentage) : 0);
+            } else {
+                this.branchData = {};
+                this.flatDiscountpercentage = 0;
+            }
+            } catch (e) {
+            console.error("Failed to parse currentBranch from localStorage", e);
+            this.branchData = {};
+            this.flatDiscountpercentage = 0;
+            }
+
+            // delivery share 
+            const branch = localStorage.getItem("currentBranch");
+            try {
+            if (branchJson) {
+                this.branchData = JSON.parse(branchJson);
+                const deliveryDiscount = this.branchData.totalDeliverySharePercentage;
+
+                this.deliveryDiscount = typeof deliveryDiscount === 'number'
+                ? deliveryDiscount
+                : (deliveryDiscount !== undefined ? Number(deliveryDiscount) : 0);
+            } else {
+                this.branchData = {};
+                this.deliveryDiscount = 0;
+            }
+            } catch (e) {
+            console.error("Failed to parse currentBranch from localStorage", e);
+            this.branchData = {};
+            this.deliveryDiscount = 0;
+            }
+
+      // console.log("flatDiscountpercentage =", this.flatDiscountpercentage);
+
+
+       
         this.checkWorkingHours();
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
         });
-
-
-
-
         const foodItem: any = localStorage.getItem("foodBasket");
         const menuData: any = localStorage.getItem("menu");
         this.foodBasket = JSON.parse(foodItem);
@@ -221,14 +256,18 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     // console.log(Object.entries(data).length);
                     if (Object.entries(data).length) {
                         existingDeliveryQuoteData = data;
+
                     }
                 });
+                console.log(existingDeliveryQuoteData,'existingDeliveryQuoteData');
+                
                 if (this.workingHours && Object.entries(existingDeliveryQuoteData).length > 0) {
-                    this.getdeliveryQuoteshareddata();
+                    // this.getdeliveryQuoteshareddata();
+                    this.prepareOrderItems();
                 } else if (this.workingHours && existingDeliveryQuoteData.response == undefined) {
                     this.getDeliveryQuote(data.id)
                 } else {
-                    this.restaurentClosed = true
+                    this.restaurentClosed = true;
                 }
                 // this.getDeliveryQuote(data.id);
             } else {
@@ -679,7 +718,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             orderItems: this.orderItems,
             orderTax: JSON.parse(this.orderTax),
             deliveryDetails: this.deliveryDetails,
-            specialInstructions: "Please deliver before 7 PM",
+            specialInstructions: this.deliveryInstructions == "" ? 'N/A' : this.deliveryInstructions,
             orderTime: currentTime,
             expectedDeliveryTime: "",
             // totalAmount: 691,
