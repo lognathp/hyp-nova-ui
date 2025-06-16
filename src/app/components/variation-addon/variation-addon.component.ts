@@ -18,7 +18,7 @@ import { ToastModule } from 'primeng/toast';
 export class VariationAddonComponent  implements OnInit {
 
   
- flatDiscountpercentage: any;
+  flatDiscountpercentage: any;
 
   @Input() menuItem: any;
   @Input() variations: any = {};
