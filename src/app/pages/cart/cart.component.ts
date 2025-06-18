@@ -693,7 +693,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         if (this.deliveryWaiver.applicable == true && (this.orderPriceDetails.itemSubtotal + this.orderPriceDetails.addOnPriceSum - this.orderPriceDetails.discount + this.orderPriceDetails.tax.CGST + this.orderPriceDetails.tax.SGST > this.deliveryWaiver.offsetValue)) {
             this.orderPriceDetails['deliveryCharge'] = 0;
         } else {
-           const rawDeliveryCharge = quoteData?.data[0].quote.price - 
+            const rawDeliveryCharge = quoteData?.data[0].quote.price - 
                               (quoteData?.data[0].quote.price * (this.deliveryDiscount / 100));
     
             this.orderPriceDetails['deliveryCharge'] = parseFloat(rawDeliveryCharge.toFixed(2));
