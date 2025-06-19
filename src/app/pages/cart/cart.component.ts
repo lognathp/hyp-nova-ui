@@ -386,18 +386,26 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     item.finalPrice = ((itemWithVariationPrice - itemdiscountValue) + addonSumPrice).toFixed(2), // added for discount on discout value
 
                     item.orderItemTax.forEach((varientItemTax: any, taxIndex: number) => {
-                        // console.log(varientItemTax,'varientItemTax',(this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price));
-                        // if (parseFloat(varientItemTax.amount) == 0.00) {
-                        //     varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2);
-                        // }
-                        // console.log(item.orderItemTax[taxIndex].amount, 'item.price',parseFloat(varientItemTax.price),element.addonVariation.varients.price);
-                        item.orderItemTax[taxIndex].amount =  ((parseFloat(varientItemTax.price) / 100) * (element.addonVariation.varients.price - itemdiscountValue - (this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price))).toFixed(2);
-                        // console.log(element.addonVariation.varients.price - itemdiscountValue, itemdiscountValue)
-                    })
-                // console.log(item, 'item.price');
+                        let selectedPrice = parseFloat(element.addonVariation.varients.price);
+
+                        if (selectedPrice === 0) {
+                            selectedPrice = parseFloat(item.price) || 0; // we are using here for  base item price
+                        }
+
+                        const ratePercent = parseFloat(varientItemTax.price) / 100;
+                        const flatDiscPct = (this.flatDiscountpercentage || 0) / 100;
+                        const itemDisc = itemdiscountValue || 0;
+
+                        const discountedPrice = selectedPrice - itemDisc - (flatDiscPct * selectedPrice);
+                        const finalAmount = (ratePercent * discountedPrice).toFixed(2);
+
+                        item.orderItemTax[taxIndex].amount = finalAmount;
+                        });
+
+                // console.log(item.price, 'item.price');
 
 
-            } else {
+                 } else {
                 // console.log('add-on price caluculation');
 
                 if (element?.addonVariation?.addons?.data.length > 0) {
