@@ -321,7 +321,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 orderAddonItems: []
             }
             element.item.taxes.forEach((taxElement: any) => {
-                // console.log(taxElement, 'taxElement', element.item.price, parseFloat(element.item.price) - ((this.flatDiscountpercentage / 100) * parseFloat(element.item.price)));
+                // console.log(taxElement, 'taxElement',element);
                 let itemPricePostDiscount = parseFloat(element.item.price) - ((this.flatDiscountpercentage / 100) * parseFloat(element.item.price));
                 const taxFormat: any = {
                     id: taxElement.id,
@@ -360,7 +360,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                             }
                             item.orderAddonItems.push(detail);
-
+                            
+                            //  item.orderItemTax[index].amount =  element.item.taxes
                         }
                     });
                 });
@@ -385,12 +386,15 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     item.finalPrice = ((itemWithVariationPrice - itemdiscountValue) + addonSumPrice).toFixed(2), // added for discount on discout value
 
                     item.orderItemTax.forEach((varientItemTax: any, taxIndex: number) => {
-                        // console.log(varientItemTax);
-                        if (parseFloat(varientItemTax.amount) == 0.00) {
-                            varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2)
-                        }
+                        // console.log(varientItemTax,'varientItemTax',(this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price));
+                        // if (parseFloat(varientItemTax.amount) == 0.00) {
+                        //     varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2);
+                        // }
+                        // console.log(item.orderItemTax[taxIndex].amount, 'item.price',parseFloat(varientItemTax.price),element.addonVariation.varients.price);
+                        item.orderItemTax[taxIndex].amount =  ((parseFloat(varientItemTax.price) / 100) * (element.addonVariation.varients.price - itemdiscountValue - (this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price))).toFixed(2);
+                        // console.log(element.addonVariation.varients.price - itemdiscountValue, itemdiscountValue)
                     })
-                // console.log(item.price, 'item.price');
+                // console.log(item, 'item.price');
 
 
             } else {

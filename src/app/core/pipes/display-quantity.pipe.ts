@@ -23,7 +23,7 @@ export class DisplayQuantityPipe implements PipeTransform {
       });
 
     }
-    console.log(quantity);
+    // console.log(quantity);
     
     return quantity;
   }

@@ -127,7 +127,7 @@ export class AddressComponent implements OnInit {
    * @param selectedAddress 
    */
   editAddress(selectedAddress:any){
-    console.log(selectedAddress);
+    // console.log(selectedAddress);
     this.addressToEdit = JSON.parse(JSON.stringify(selectedAddress));
     this.addNew = true;
   }
@@ -152,7 +152,7 @@ export class AddressComponent implements OnInit {
         if (reponse.status == 200) {
           this.deleteAddressIndex = '';
           // this.messageService.add({ severity: 'success', detail: 'Address Deleted.' });
-          console.log("Address DEleted");
+          // console.log("Address DEleted");
           this.getAddresssDetails();
         }
 
