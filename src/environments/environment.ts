@@ -1,8 +1,8 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'9334',
-    partnerId:'a8UuPbV7Er',
+    restId:'366470',
+    partnerId:'yeitZgUUS9',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Yum Yum Tree',
