@@ -114,16 +114,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 250px;
+    width: 265px;
 }
 
 .carousel-inner {
+    overflow: visible;
     display: flex;
     align-items: center;
   }
 .carousel-item {
     flex: 0 0 auto;
-    width: 250px;
+    width: 265px;
     height: 60px;
     background: transparent; 
     border-radius: 12px;
