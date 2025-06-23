@@ -16,12 +16,16 @@ import { SliderSwitchComponent } from "../../components/slider-switch/slider-swi
 import { AuthService } from '../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 
+import { MessageService, PrimeNGConfig } from 'primeng/api';
+
+
 @Component({
     selector: 'app-cart',
     standalone: true,
-    imports: [CommonModule,FormsModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
+    imports: [CommonModule, FormsModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
     templateUrl: './cart.component.html',
-    styleUrl: './cart.component.scss'
+    styleUrl: './cart.component.scss',
+    providers: [MessageService]
 })
 export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
@@ -96,12 +100,14 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     showTracking: boolean = false;
     deliveryInstructions: string = "";
 
+    unServiceableValue: boolean = false;
+
     constructor(
         public apiService: ApiService,
         public sharedData: SharedService,
         private router: Router,
         private authService: AuthService,
-        // private messageService: MessageService,
+        private messageService: MessageService,
         // private primengConfig: PrimeNGConfig,
         private wsService: WebSocketService,
     ) { }
@@ -226,8 +232,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                     }
                 });
-                console.log(existingDeliveryQuoteData,'existingDeliveryQuoteData');
-                
+                console.log(existingDeliveryQuoteData, 'existingDeliveryQuoteData');
+
                 if (this.workingHours && Object.entries(existingDeliveryQuoteData).length > 0) {
                     // this.getdeliveryQuoteshareddata();
                     this.prepareOrderItems();
@@ -360,7 +366,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                             }
                             item.orderAddonItems.push(detail);
-                            
+
                             //  item.orderItemTax[index].amount =  element.item.taxes
                         }
                     });
@@ -387,11 +393,13 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                     item.orderItemTax.forEach((varientItemTax: any, taxIndex: number) => {
                         // console.log(varientItemTax,'varientItemTax',(this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price));
-                        // if (parseFloat(varientItemTax.amount) == 0.00) {
-                        //     varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2);
-                        // }
+                        if (parseFloat(varientItemTax.amount) == 0.00) {
+                            varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2);
+                        }
+                        if (parseFloat(varientItemTax.amount) != 0.00) {
+                            item.orderItemTax[taxIndex].amount = ((parseFloat(varientItemTax.price) / 100) * (element.addonVariation.varients.price - itemdiscountValue - (this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price))).toFixed(2);
+                        }
                         // console.log(item.orderItemTax[taxIndex].amount, 'item.price',parseFloat(varientItemTax.price),element.addonVariation.varients.price);
-                        item.orderItemTax[taxIndex].amount =  ((parseFloat(varientItemTax.price) / 100) * (element.addonVariation.varients.price - itemdiscountValue - (this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price))).toFixed(2);
                         // console.log(element.addonVariation.varients.price - itemdiscountValue, itemdiscountValue)
                     })
                 // console.log(item, 'item.price');
@@ -601,10 +609,19 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                 },
                 error: (error: { error: string; }) => {
-                    console.log('getQuote ' + error.error);
+                    console.log('getQuote ' + JSON.parse(JSON.stringify(error.error)).message);
                     this.quoteLoading = false;
-                    this.unKnownError = true;
                     this.showAddAddressButton = true;
+                    if (JSON.parse(JSON.stringify(error.error)).message == "The location is not deliverable.") {
+                        this.router.navigate(['/address'], {
+                            state: { message:  JSON.parse(JSON.stringify(error.error)).message}
+                        });
+                        
+                    } else {
+                        this.unKnownError = true;
+                    }
+
+
 
                     //  this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
@@ -633,7 +650,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      * @param quoteData Qelivery Quote value response
      */
     assignQuoteData(addressId: any, quoteData: any) {
-         this.orderPriceDetails['deliveryCharge'] = 0;
+        this.orderPriceDetails['deliveryCharge'] = 0;
         // console.log(this.deliveryWaiver.applicable, this.orderPriceDetails.itemSubtotal + this.orderPriceDetails.addOnPriceSum - this.orderPriceDetails.discount + this.orderPriceDetails.tax.CGST + this.orderPriceDetails.tax.SGST, this.deliveryWaiver.offsetValue,'deliveryWaiver');
         if (this.deliveryWaiver.applicable == true && (this.orderPriceDetails.itemSubtotal + this.orderPriceDetails.addOnPriceSum - this.orderPriceDetails.discount + this.orderPriceDetails.tax.CGST + this.orderPriceDetails.tax.SGST > this.deliveryWaiver.offsetValue)) {
             this.orderPriceDetails['deliveryCharge'] = 0;
@@ -958,7 +975,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         localStorage.setItem("foodBasket", JSON.stringify(this.foodBasket));
     }
     selectAddress() {
-        this.router.navigate(['/address']);
+        this.router.navigate(['/address'],{});
         this.sharedData.sendDeliveryQuotedata({});
     }
 
@@ -1002,4 +1019,6 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
         this.prepareOrderItems();
     }
+
+
 }
