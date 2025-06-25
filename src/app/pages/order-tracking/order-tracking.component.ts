@@ -7,11 +7,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UsToIstPipe } from '../../core/pipes/us-to-ist.pipe';
 
 @Component({
   selector: 'app-order-tracking',
   standalone: true,
-  imports: [DatePipe, CommonModule],
+  imports: [DatePipe, CommonModule, UsToIstPipe],
   templateUrl: './order-tracking.component.html',
   styleUrl: './order-tracking.component.scss'
 })

@@ -57,7 +57,7 @@
                     <span class="septor">{{ orderStatus?.orderItems?.length }} Item@if(orderStatus?.orderItems?.length > 2){s} </span> |
                     <span>Paid ₹{{ orderStatus?.grandTotalAmount | number:'1.2-2'}}</span>
                     <span class="order">Order # {{orderStatus?.id}}
-                        <br><span >{{orderStatus?.orderTime | date:'h:mm a'}}</span>
+                        <br><span >{{orderStatus?.orderTime | usToIst:'EST':'h:mm a'}}</span>
                     </span>
                    
                     @if(!viewSummary){
