@@ -952,10 +952,8 @@ export class OrderComponent implements OnInit, DoCheck {
    * To fetch live order
    */
   fetchOrders() {
-    this.apiService.getMethod(`/order?customerId_eq=${this.customerDetails.id}`).subscribe({
+    this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
       next: (response) => {
-        // Your existing logic for handling response
-        // Example: this.orderHistory = response.data;
         this.liveOrderId = this.getCurrentLiveOrderIds(response.data);
         console.log('Live Order ID:', this.liveOrderId); // Debug: see if it's set
       },
