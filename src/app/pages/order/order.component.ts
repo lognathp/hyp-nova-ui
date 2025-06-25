@@ -84,7 +84,7 @@ export class OrderComponent implements OnInit, DoCheck {
   customerDetails: any;
   showTracking: boolean = false;
   addOnBackdrop: boolean = false;
-  liveOrderId: any = [];
+  liveOrderId: number[] = [];
   showLiveOrderId: boolean = false;
 
 
@@ -983,9 +983,13 @@ export class OrderComponent implements OnInit, DoCheck {
       'PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP',
       'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY'
     ];
-    // Filter all orders with a live status and map to their IDs
+    const today = new Date();
+    // Filter all orders with a live status for today and map to their IDs
     return orders
-      .filter(order => liveStatuses.includes(order.status))
+      .filter(order => {
+        const orderDate = new Date(order.createdAt);
+        return liveStatuses.includes(order.status) && orderDate.getDate() === today.getDate();
+      })
       .map(order => order.id);
   }
 }

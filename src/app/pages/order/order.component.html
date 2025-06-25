@@ -507,7 +507,7 @@
     </div> -->
 
     <!-- Show only when liveOrderId exists -->
-    <div *ngIf="liveOrderId" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+    <!-- <div *ngIf="liveOrderId" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
         <button class="menuBtn trackBtn"
                 title="Track Order"
                 (click)="goToTodayList()">
@@ -518,8 +518,25 @@
             (click)="orderTrack($event, id)">
             OrderId: {{ id }}
           </span>        </button>
-    </div>
+    </div> -->
     
+    <!-- Show only when liveOrderId exists -->
+<div *ngIf="liveOrderId.length > 0" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+    <div class="live-orders-pills">
+        <span
+            class="live-order-pill"
+            *ngFor="let id of liveOrderId | slice:0:3"
+            (click)="orderTrack($event, id)">
+            OrderId : {{ id }}
+        </span>
+        <span *ngIf="liveOrderId.length > 3" class="more-pill">
+            +{{ liveOrderId.length - 3 }} more
+        </span>
+    </div>
+    <button class="menuBtn trackBtn" title="Track Order" (click)="goToTodayList()">
+        <img src="assets/images/icons/outForDelivery.png" alt="Track Order">
+    </button>
+</div>
    
     <!-- VIEW CART -->
     @if(foodBasket?.length > 0){

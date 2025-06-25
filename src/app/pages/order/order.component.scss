@@ -40,29 +40,34 @@
     display: none;
 }
 
-// .live-order-tooltip {
-//   position: absolute;
-//   top: -20px;
-//   left: 0;
-//   background: #222;
-//   color: #fff;
-//   padding: 4px 4px;
-//   border-radius: 4px;
-//   font-size: 10px;
-//   z-index: 100;
-// }
+.floating-menu.track {
 
-.live-order-pill {
-  display: inline-block;
-  margin-left: 8px;
-  margin-top: -105px;
-  padding: 2px 6px;
-  background: #007bff;
-  color: #fff;
-  border-radius: 999px;
-  font-size: 8px;
-  font-weight: 600;
-  vertical-align: middle;
+  .live-orders-pills {
+      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
+      margin-left: -32px;
+  }
+
+  .live-order-pill, .more-pill {
+      background: red;
+      color: white;
+      border-radius: 14px;
+      padding: 4px 4px;
+      font-size: 8px;
+      // margin-left: -44px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      transition: background 0.15s;
+      user-select: none;
+  }
+
+  .live-order-pill:hover {
+      background: #e3f2fd;
+  }
+
 }
 
 .offerCarousel{
