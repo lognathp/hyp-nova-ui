@@ -4,13 +4,13 @@ import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-order-history',
+  selector: 'app-order-today-history',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './order-history.component.html',
-  styleUrl: './order-history.component.scss'
+  templateUrl: './order-today-history.component.html',
+  styleUrl: './order-today-history.component.scss'
 })
-export class OrderHistoryComponent {
+export class OrderTodayHistoryComponent {
   viewSummary:boolean = false
   customerDetails: any;
   orderHistory: any;
@@ -97,4 +97,19 @@ export class OrderHistoryComponent {
       error: (error) => { console.log(error) }
     });
   }
+
+    /**
+ * Returns orders placed on the current day
+ */
+getCurrentDayOrders(): any[] {
+  if (!this.orderHistory) return [];
+  const today = new Date();
+  return this.orderHistory.filter((order: any) => {
+    // Use order.createdAt or order.orderTime, depending on your data
+    const orderDate = new Date(order.createdAt || order.orderTime);
+    return orderDate.getFullYear() === today.getFullYear() &&
+           orderDate.getMonth() === today.getMonth() &&
+           orderDate.getDate() === today.getDate();
+  });
+}
 }

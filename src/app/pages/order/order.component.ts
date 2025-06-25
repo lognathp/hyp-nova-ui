@@ -84,6 +84,9 @@ export class OrderComponent implements OnInit, DoCheck {
   customerDetails: any;
   showTracking: boolean = false;
   addOnBackdrop: boolean = false;
+  liveOrderId: any = [];
+  showLiveOrderId: boolean = false;
+
 
   constructor(
     public apiService: ApiService,
@@ -142,6 +145,8 @@ export class OrderComponent implements OnInit, DoCheck {
     this.wsSubscription = this.wsService.getItemStatusUpdates().subscribe((webSocketResponse: any) => {
       this.updateItemStock(webSocketResponse);
     });
+
+    this.fetchOrders();
 
   }
 
@@ -942,7 +947,45 @@ export class OrderComponent implements OnInit, DoCheck {
       })
     }
   }
-  orderTrack() {
-    this.router.navigate(['/order-tracking']);
+
+  /**
+   * To fetch live order
+   */
+  fetchOrders() {
+    this.apiService.getMethod(`/order?customerId_eq=${this.customerDetails.id}`).subscribe({
+      next: (response) => {
+        // Your existing logic for handling response
+        // Example: this.orderHistory = response.data;
+        this.liveOrderId = this.getCurrentLiveOrderIds(response.data);
+        console.log('Live Order ID:', this.liveOrderId); // Debug: see if it's set
+      },
+      error: (error) => { console.log(error) }
+    });
+  }
+
+  goToTodayList() {
+    this.router.navigate(['/order-today-history']);
+  }
+  
+  orderTrack(event: MouseEvent, id: number) {
+    event.stopPropagation(); // Prevents the button's click event
+    if (this.liveOrderId && this.liveOrderId != null && this.liveOrderId.length > 0) {
+      this.router.navigate(['/order-tracking'], { queryParams: { id: id } })
+        .catch((err) => {
+          console.error('Navigation failed:', err);
+          this.router.navigate(['/order-today-history']);
+        });
+    }
+  }
+
+  getCurrentLiveOrderIds(orders: any[]): number[] {
+    const liveStatuses = [
+      'PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP',
+      'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY'
+    ];
+    // Filter all orders with a live status and map to their IDs
+    return orders
+      .filter(order => liveStatuses.includes(order.status))
+      .map(order => order.id);
   }
 }

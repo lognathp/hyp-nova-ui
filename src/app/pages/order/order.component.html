@@ -493,9 +493,31 @@
         </button>
     </div>
   
-    <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
-        <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()" >
-            <img src="assets/images/icons/outForDelivery.png"> </button>
+    <!-- <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+        <button class="menuBtn trackBtn"
+                title="Track Order"
+                (mouseenter)="showLiveOrderId = true"
+                (mouseleave)="showLiveOrderId = false"
+                (click)="orderTrack()">
+            <img src="assets/images/icons/outForDelivery.png">
+        </button>
+        <div *ngIf="showLiveOrderId && liveOrderId" class="live-order-tooltip">
+            Live Order ID: {{ liveOrderId }}
+        </div>
+    </div> -->
+
+    <!-- Show only when liveOrderId exists -->
+    <div *ngIf="liveOrderId" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+        <button class="menuBtn trackBtn"
+                title="Track Order"
+                (click)="goToTodayList()">
+            <img src="assets/images/icons/outForDelivery.png">
+            <span
+            class="live-order-pill"
+            *ngFor="let id of liveOrderId"
+            (click)="orderTrack($event, id)">
+            OrderId: {{ id }}
+          </span>        </button>
     </div>
     
    

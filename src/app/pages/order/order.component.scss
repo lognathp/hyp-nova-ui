@@ -40,6 +40,30 @@
     display: none;
 }
 
+// .live-order-tooltip {
+//   position: absolute;
+//   top: -20px;
+//   left: 0;
+//   background: #222;
+//   color: #fff;
+//   padding: 4px 4px;
+//   border-radius: 4px;
+//   font-size: 10px;
+//   z-index: 100;
+// }
+
+.live-order-pill {
+  display: inline-block;
+  margin-left: 8px;
+  margin-top: -105px;
+  padding: 2px 6px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 8px;
+  font-weight: 600;
+  vertical-align: middle;
+}
 
 .offerCarousel{
     display: flex;

@@ -18,7 +18,7 @@
 
     <div class="container my-3 bg-transparent ">
         <div class="row ">
-            @for (order of orderHistory; track $index){
+            @for (order of getCurrentDayOrders(); track $index){
                     <div class="col-md-12 orderContainer">
                         <div class="block1">
                             <!-- <span class="orderDelivered"> Order Delivered</span>   Nood to check the status showing format -->
