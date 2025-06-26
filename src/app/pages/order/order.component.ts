@@ -60,7 +60,7 @@ export class OrderComponent implements OnInit, DoCheck {
   partnerId: any;
   branchData: any | null;
   workingHours: any;
-  restaurentActive: boolean | null=null;
+  restaurentActive: any;
   menuCategoryData: any;
   menuResponseFiltered: any;
   selectedCategoryIndex: number = 0;
@@ -90,6 +90,9 @@ export class OrderComponent implements OnInit, DoCheck {
   showLiveOrderId: boolean = false;
 
   loading = true;
+  serviceable: any;
+  weatherAlert: string | null = null;
+  customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
 
 
   constructor(
@@ -332,6 +335,9 @@ export class OrderComponent implements OnInit, DoCheck {
 
         const restaurantDetails: any = response.data[0];
         this.restaurentActive = restaurantDetails.active;
+        this.serviceable = restaurantDetails.serviceable;
+        this.weatherAlert = restaurantDetails.serviceableMessage;
+        // this.customerMessage = restaurantDetails.customerMessage;
         // this.restaurentActive = false;
         const workingHoursData = restaurantDetails.deliveryHours;
         const format = 'H:mm';
