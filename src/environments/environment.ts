@@ -1,15 +1,15 @@
 export const environment = {
     baseUrl:'https://api.hyperapps.in/api/v2',
     baseWsUrl:'wss://api.hyperapps.in/api/v2/ws',
-    restId:'9334',
-    partnerId:'a8UuPbV7Er',
+    restId:'348320',
+    partnerId:'vFxG8LbWtq',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Yum Yum Tree',
-    contactRestaurant:"8179644836",
+    title:'Rokali',
+    contactRestaurant:"8143595374",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    flatDiscountpercentage : 0,
+    deliveryDiscount : 55,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
@@ -21,7 +21,7 @@ export const environment = {
         // { label: 'Dine In', value: '2', index: 2 }
     ],
     deliveryWaiver:{
-        applicable:false,
-        offsetValue:199,
+        applicable:true,
+        offsetValue:299,
     }
 };

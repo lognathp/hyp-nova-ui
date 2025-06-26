@@ -117,8 +117,8 @@
                             <!-- Offer Slide -->
                             <div class="carousel-item active ">
                                 <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">20% Off on all items</h2>
-                                    <span class="wwdDes ">Don’t miss out!</span>
+                                    <h2 class="wwdTitle ">Free Delivery ₹299+</h2>
+                                    <span class="wwdDes ">Order now & save!</span>
                                 </div>
                             </div>
                             <div class="carousel-item ">
@@ -283,8 +283,8 @@
         <div class="text-left mb-3 ">
             <button class="btn btn-transparent filterBtn vegIcon" [ngClass]="{'active':itemFilterType == '1'}"
                 (click)="vegNonvegFilter('1')"> Veg</button>
-            <button class="btn btn-transparent filterBtn nonVegIcon" [ngClass]="{'active':itemFilterType == '2'}"
-                (click)="vegNonvegFilter('2')"> Non Veg</button>
+            <!-- <button class="btn btn-transparent filterBtn nonVegIcon" [ngClass]="{'active':itemFilterType == '2'}"
+                (click)="vegNonvegFilter('2')"> Non Veg</button> -->
 
                 <!-- Best seller Filter 
             <button class="btn btn-transparent filterBtn" [ngClass]="{'active':itemFilterType == '99'}"
@@ -315,8 +315,8 @@
 
                         <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
                         <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
-                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
+                        <!-- <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
+                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span> -->
                         <p class="card-text foodDes "> {{ item.itemDescription }}
                         </p>
                         <!-- <span class="foodDesMore ">more</span> -->
@@ -402,7 +402,7 @@
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
                         <h5 class="card-title aboutTitle ">📍 About Us</h5>
-                        <p class="card-text m-0 aboutDes ">At Yum Yum Tree Hyderabad, we’re passionate about delivering scrumptious meals that spark joy in every bite. Rooted in Hyderabad’s vibrant food culture, we craft our dishes using the freshest, locally sourced ingredients and time‑tested recipes. Whether you’re craving comforting classics or daring fusion flavors, our menu promises consistent quality, on‑time delivery, and flavors that feel like home—because every meal should be an experience worth savoring.</p>
+                        <p class="card-text m-0 aboutDes ">Welcome to Rokali – where authentic South Indian flavors meet nostalgia in the heart of Hyderabad! Nestled in Miyapur, we're passionate about serving freshly wood‑fired dosas, soft idlis, zesty chutneys, and refreshing cold‑pressed juices—all crafted with high-quality ingredients and eco-friendly packaging. Whether you're kicking off your morning or craving a wholesome snack, our menu brings a taste of tradition to your table. Experience the warmth of genuine service, fast delivery, and a vegetarian-only, family‑friendly vibe. Enjoy every bite; feel right at home!</p>
                     </div>
                 </div>
             </div>
@@ -475,7 +475,7 @@
             <div class="col-md-12 ">
                 <div class="card p-0 ">
                     <div class="card-body p-0 mapCont ">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.6081721091964!2d78.32190437516584!3d17.430581783464017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb936f8238cc77%3A0x170954685a40fb08!2sYum%20Yum%20Tree%20Arabian%20Food%20Court%20gachibowli!5e0!3m2!1sen!2sin!4v1750687672266!5m2!1sen!2sin" width="100%" 
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.350181712867!2d78.35080187516733!3d17.490789383414107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb930064378c79%3A0xb6cd239d35c27a5a!2sRokali!5e0!3m2!1sen!2sin!4v1750932236030!5m2!1sen!2sin" width="100%" 
                         height="400"
                         style="border:0;" 
                         allowfullscreen 
