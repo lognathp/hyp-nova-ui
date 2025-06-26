@@ -5,6 +5,10 @@
     cursor: pointer;
 }
 
+[ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 .unavailableStore {
 
     color: #b7b7b7;

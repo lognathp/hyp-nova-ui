@@ -50,7 +50,7 @@
         </nav>
 
         @if(!restaurentActive){
-        <div class="container my-2 bg-transparent outletclosedContainer">
+        <div class="container my-2 bg-transparent outletclosedContainer" *ngIf="restaurentActive == false">
             <div class="outletClosed">
                 <div class="row p-0">
                     <div class="col-3 p-0">

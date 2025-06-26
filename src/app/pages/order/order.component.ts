@@ -18,6 +18,7 @@ import { BranchChangeComponent } from "../../components/alert-box/branch-change/
 import { WebSocketService } from '../../core/services/websocket.service';
 import { Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
+import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -39,7 +40,8 @@ declare var bootstrap: any; // Bootstrap is using from assets
     RouterLink,
     RouterModule,
     BranchChangeComponent,
-    SplitFirstCommaPipe
+    SplitFirstCommaPipe,
+    MenuLoaderComponent
 ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
@@ -58,7 +60,7 @@ export class OrderComponent implements OnInit, DoCheck {
   partnerId: any;
   branchData: any | null;
   workingHours: any;
-  restaurentActive: any;
+  restaurentActive: boolean | null=null;
   menuCategoryData: any;
   menuResponseFiltered: any;
   selectedCategoryIndex: number = 0;
@@ -87,6 +89,8 @@ export class OrderComponent implements OnInit, DoCheck {
   liveOrderId: number[] = [];
   showLiveOrderId: boolean = false;
 
+  loading = true;
+
 
   constructor(
     public apiService: ApiService,
@@ -102,6 +106,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
 
   ngOnInit(): void {
+    this.loading = true;
 
     const selectedLocation = localStorage.getItem('selectedLocation');
 
@@ -151,7 +156,7 @@ export class OrderComponent implements OnInit, DoCheck {
   }
 
   ngAfterViewInit(): void {
-
+    this.loading = false;
     if (this.restaurentId != undefined && !isNaN(this.restaurentId)) {
 
       if (!isNaN(this.restaurentId)) {
@@ -193,7 +198,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
 
   ngDoCheck() {
-
+    this.loading = false;
     this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
       this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
       // this.restaurentActive = false;

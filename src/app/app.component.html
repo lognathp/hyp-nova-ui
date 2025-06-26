@@ -1,6 +1,8 @@
 @if (loading) {
-    <app-menu-loader></app-menu-loader>
+    <div class="loader-overlay">
+        <app-menu-loader></app-menu-loader>
+        <p>Loading, please wait...</p>
+    </div>
 } @else {
     <router-outlet></router-outlet>
 }
-

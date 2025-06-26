@@ -7,12 +7,11 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UsToIstPipe } from '../../core/pipes/us-to-ist.pipe';
 
 @Component({
   selector: 'app-order-tracking',
   standalone: true,
-  imports: [DatePipe, CommonModule, UsToIstPipe],
+  imports: [DatePipe, CommonModule],
   templateUrl: './order-tracking.component.html',
   styleUrl: './order-tracking.component.scss'
 })
@@ -30,13 +29,19 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
   viewSummary: boolean = false;
   cancelled: boolean = false;
 
+//   weatherAlert: string | null = "Heavy rain in your area. Deliveries may be delayed.";
+// customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
+
+weatherAlert: string | null = null;
+  customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
+
   constructor(
     public sharedData: SharedService,
     public apiService: ApiService,
     private wsService: WebSocketService,
     private location: Location,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   async ngOnInit(): Promise<void> {
