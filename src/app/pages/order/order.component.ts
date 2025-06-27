@@ -86,8 +86,12 @@ export class OrderComponent implements OnInit, DoCheck {
   customerDetails: any;
   showTracking: boolean = false;
   addOnBackdrop: boolean = false;
+  private orderUpdateSubscription!: Subscription;
+  liveOrders: any[] = []; // To store live orders
   liveOrderId: number[] = [];
   showLiveOrderId: boolean = false;
+  showLiveOrders: boolean = false; // To control visibility of live orders panel
+
 
   loading = true;
   serviceable: any;
@@ -959,33 +963,112 @@ export class OrderComponent implements OnInit, DoCheck {
     }
   }
 
+
+
+// Add this method to handle order updates
+private setupOrderUpdates() {
+  this.orderUpdateSubscription = this.wsService.getOrderStatusUpdates().subscribe((orderUpdate: any) => {
+    this.ngZone.run(() => {
+      // Update the live orders list
+      this.updateLiveOrders([orderUpdate]);
+      console.log(this.liveOrders, 'ws orderss');
+      this.cdr.detectChanges();
+    });
+  });
+}
+
+// Update the fetchOrders method to handle initial load
+fetchOrders() {
+  this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails?.id}`).subscribe({
+    next: (response) => {
+      this.updateLiveOrders(response.data);
+      // If we don't have a WebSocket subscription yet, set it up
+      if (!this.orderUpdateSubscription) {
+        this.setupOrderUpdates();
+      }
+    },
+    error: (error) => { 
+      console.error('Error fetching orders:', error);
+      // Still try to set up WebSocket in case of error
+      if (!this.orderUpdateSubscription) {
+        this.setupOrderUpdates();
+      }
+    }
+  });
+}
+
+// Helper method to update live orders
+private updateLiveOrders(orders: any[]) {
+  const liveStatuses = [
+    'PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP',
+    'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY'
+  ];
+  
+  const today = new Date();
+  this.liveOrders = orders
+    .filter(order => {
+      const orderDate = new Date(order.createdAt);
+      return liveStatuses.includes(order.status) && 
+             orderDate.getDate() === today.getDate() &&
+             orderDate.getMonth() === today.getMonth() &&
+             orderDate.getFullYear() === today.getFullYear();
+    })
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  
+  this.showLiveOrders = this.liveOrders.length > 0;
+}
+
+// Update the orderTrack method to handle navigation better
+orderTrack(event: MouseEvent, order: any) {
+  event.stopPropagation();
+  if (order?.id) {
+    this.router.navigate(['/order-tracking'], { 
+      queryParams: { id: order.id },
+      state: { orderData: order } // Pass order data for immediate display
+    }).catch((err) => {
+      console.error('Navigation failed:', err);
+      this.router.navigate(['/order-today-history']);
+    });
+  }
+}
+
+// Add to ngOnDestroy to clean up subscriptions
+ngOnDestroy() {
+  if (this.wsSubscription) {
+    this.wsSubscription.unsubscribe();
+  }
+  if (this.orderUpdateSubscription) {
+    this.orderUpdateSubscription.unsubscribe();
+  }
+}
+
   /**
    * To fetch live order
    */
-  fetchOrders() {
-    this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
-      next: (response) => {
-        this.liveOrderId = this.getCurrentLiveOrderIds(response.data);
-        console.log('Live Order ID:', this.liveOrderId); // Debug: see if it's set
-      },
-      error: (error) => { console.log(error) }
-    });
-  }
+  // fetchOrders() {
+  //   this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
+  //     next: (response) => {
+  //       this.liveOrderId = this.getCurrentLiveOrderIds(response.data);
+  //       console.log('Live Order ID:', this.liveOrderId); // Debug: see if it's set
+  //     },
+  //     error: (error) => { console.log(error) }
+  //   });
+  // }
 
   goToTodayList() {
     this.router.navigate(['/order-today-history']);
   }
   
-  orderTrack(event: MouseEvent, id: number) {
-    event.stopPropagation(); // Prevents the button's click event
-    if (this.liveOrderId && this.liveOrderId != null && this.liveOrderId.length > 0) {
-      this.router.navigate(['/order-tracking'], { queryParams: { id: id } })
-        .catch((err) => {
-          console.error('Navigation failed:', err);
-          this.router.navigate(['/order-today-history']);
-        });
-    }
-  }
+  // orderTrack(event: MouseEvent, id: number) {
+  //   event.stopPropagation(); // Prevents the button's click event
+  //   if (this.liveOrderId && this.liveOrderId != null && this.liveOrderId.length > 0) {
+  //     this.router.navigate(['/order-tracking'], { queryParams: { id: id } })
+  //       .catch((err) => {
+  //         console.error('Navigation failed:', err);
+  //         this.router.navigate(['/order-today-history']);
+  //       });
+  //   }
+  // }
 
   getCurrentLiveOrderIds(orders: any[]): number[] {
     const liveStatuses = [

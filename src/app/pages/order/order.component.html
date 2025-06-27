@@ -537,16 +537,16 @@
     </div> -->
     
     <!-- Show only when liveOrderId exists -->
-<div *ngIf="liveOrderId.length > 0 && restaurentActive == true" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+<div *ngIf="showLiveOrders" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
     <div class="live-orders-pills">
         <span
             class="live-order-pill fa-bounce"
-            *ngFor="let id of liveOrderId | slice:0:3"
-            (click)="orderTrack($event, id)">
-            OrderId : {{ id }}
+            *ngFor="let order of liveOrders"
+            (click)="orderTrack($event, order)">
+            OrderId : {{ order.id }}
         </span>
-        <span *ngIf="liveOrderId.length > 3" class="more-pill">
-            +{{ liveOrderId.length - 3 }} more
+        <span *ngIf="liveOrders.length > 3" class="more-pill">
+            +{{ liveOrders.length - 3 }} more
         </span>
     </div>
     <button class="menuBtn trackBtn" title="Track Order" (click)="goToTodayList()">

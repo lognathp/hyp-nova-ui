@@ -279,6 +279,30 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
     });
   }
 
+  public getMyCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+          
+          console.log(location);
+          // Use the existing checkServiceable method to handle the location
+          this.checkServiceable(location);
+        },
+        (error) => {
+          console.error('Error getting current location:', error);
+          // Optionally show an error message to the user
+          this.unServiceable();
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      this.unServiceable();
+    }
+  }
 
   // getMyCurrentLocation() {
   //   if (navigator.geolocation) {
