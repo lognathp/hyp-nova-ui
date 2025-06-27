@@ -63,19 +63,19 @@
                             @if(basketitem?.addonVariation?.varients){
                             @if (basketitem?.addonVariation?.varients.price == "0") {
 
-                            <!-- <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span> -->
+                            <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
                             <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                             </span>
                             } @else {
-                            <!-- <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'}}
-                            </span> -->
+                            <span class="priceStrike ">₹ {{basketitem?.addonVariation?.varients.price | number:'1.0-0'}}
+                            </span>
                             <span class="price ">₹ {{basketitem?.addonVariation?.varients.price | discountPrice:
                                 flatDiscountpercentage }} </span>
                             }
 
                             } @else {
 
-                            <!-- <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span> -->
+                            <span class="priceStrike">₹ {{basketitem.item.price | number:'1.0-0' }} </span>
                             <span class="price">₹ {{basketitem.item.price | discountPrice: flatDiscountpercentage }}
                             </span>
                             }
@@ -152,10 +152,11 @@
         </div>
     </div>
 
-
+   
     <!-- <div class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
         <button class="menuBtn trackBtn" title="Track Order" (click)="orderTrack()">
             <img src="assets/images/icons/outForDelivery.png"> </button>
+    </div> -->
     </div> -->
     
 
