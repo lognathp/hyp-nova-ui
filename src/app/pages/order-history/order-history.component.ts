@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
+import { TimeformatPipe } from "../../core/pipes/timeformat.pipe";
 
 @Component({
   selector: 'app-order-history',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TimeformatPipe],
   templateUrl: './order-history.component.html',
   styleUrl: './order-history.component.scss'
 })
@@ -16,6 +17,7 @@ export class OrderHistoryComponent {
   orderHistory: any;
   selectedOrderSummary: any;
   restaurentId: number | undefined;
+  loading: boolean = false;
 
 
   constructor(
@@ -71,6 +73,7 @@ export class OrderHistoryComponent {
   getOrderHistory():void {
     this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
       next: (reponse) => {
+        this.loading = false;
         this.orderHistory = reponse.data;
         // let SNo:number = 1;
         // this.orderHistory.map((ele:any) => {
@@ -91,6 +94,7 @@ export class OrderHistoryComponent {
     const addressId:number = parseInt(addressIdarg);
     this.apiService.getMethod(`/address/${addressId}`).subscribe({
       next: (reponse) => {
+        this.loading = false;
         // console.log(reponse);
         this.selectedOrderSummary.deliveryDetails['address'] = reponse.data[0];
       },

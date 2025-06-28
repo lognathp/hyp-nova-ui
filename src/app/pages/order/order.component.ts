@@ -16,7 +16,7 @@ import { SearchFilterPipe } from "../../core/pipes/search-filter.pipe";
 import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
 import { BranchChangeComponent } from "../../components/alert-box/branch-change/branch-change.component";
 import { WebSocketService } from '../../core/services/websocket.service';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
 import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
 
@@ -91,6 +91,7 @@ export class OrderComponent implements OnInit, DoCheck {
   liveOrderId: number[] = [];
   showLiveOrderId: boolean = false;
   showLiveOrders: boolean = false; // To control visibility of live orders panel
+  orderPollingSubscription!: Subscription;
 
 
   loading = true;
@@ -108,9 +109,28 @@ export class OrderComponent implements OnInit, DoCheck {
     private elementRef: ElementRef,
     private renderer: Renderer2
   ) {
-
+   // Initialize polling when component is created
+   this.startOrderPolling();
   }
 
+    // Add these new methods
+    private startOrderPolling(): void {
+      // Initial fetch
+      this.fetchOrders();
+      
+      // Set up polling every 5 seconds
+      this.orderPollingSubscription = interval(4000).subscribe(() => {
+        if (this.customerDetails?.id) {
+          this.fetchOrders();
+        }
+      });
+    }
+  
+    private stopOrderPolling(): void {
+      if (this.orderPollingSubscription) {
+        this.orderPollingSubscription.unsubscribe();
+      }
+    }
 
   ngOnInit(): void {
     this.loading = true;
@@ -221,7 +241,14 @@ export class OrderComponent implements OnInit, DoCheck {
       this.foodBasket.forEach((ele: any) => { this.seletedItemId.push(ele.item.id) });
       this.calculateCartPrice();
     }
-
+    
+    this.orderUpdateSubscription = this.wsService.getOrderStatusUpdates().subscribe((orderUpdate: any) => {
+      this.ngZone.run(() => {
+        // Update the live orders list
+        this.updateLiveOrders([orderUpdate]);
+        this.cdr.detectChanges();
+      });
+    });
   }
 
   /**
@@ -966,12 +993,11 @@ export class OrderComponent implements OnInit, DoCheck {
 
 
 // Add this method to handle order updates
-private setupOrderUpdates() {
+setupOrderUpdates() {
   this.orderUpdateSubscription = this.wsService.getOrderStatusUpdates().subscribe((orderUpdate: any) => {
     this.ngZone.run(() => {
       // Update the live orders list
       this.updateLiveOrders([orderUpdate]);
-      console.log(this.liveOrders, 'ws orderss');
       this.cdr.detectChanges();
     });
   });
@@ -979,6 +1005,8 @@ private setupOrderUpdates() {
 
 // Update the fetchOrders method to handle initial load
 fetchOrders() {
+  if (!this.customerDetails?.id) return;
+
   this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails?.id}`).subscribe({
     next: (response) => {
       this.updateLiveOrders(response.data);
@@ -1040,6 +1068,7 @@ ngOnDestroy() {
   if (this.orderUpdateSubscription) {
     this.orderUpdateSubscription.unsubscribe();
   }
+  this.stopOrderPolling(); // Clean up polling subscription
 }
 
   /**

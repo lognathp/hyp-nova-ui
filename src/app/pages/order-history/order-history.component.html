@@ -1,3 +1,7 @@
+@if (loading) {
+    <div class="loader-overlay">
+    </div>
+} @else {
 <div class="cartBody">
     @if (!viewSummary) {
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -40,7 +44,7 @@
                             <!-- <p class="vegIcon">Veg Biryani <span>x 1</span><span class="addon">Full</span></p> -->
                         </div>
                         <div class="block3">
-                            <span class="orderTD">Order placed on {{ order.orderTime | date:'d MMM y, h:mm a':'IST'}}</span>
+                            <span class="orderTD">Order placed on {{ order.orderTime | date:'d MMM y, h:mm a':'+1100' }}</span>
                             <span class="orderRate">₹ {{ order.totalAmount | number:'1.2-2' }}</span>
                             <span class="orderVD" (click)="viewOrderSummary(order)">View Details</span>
                            
@@ -119,7 +123,7 @@
                 <label>Order Status</label><span class="orderDelivered"> {{selectedOrderSummary.status}} </span>
             </div>
             <div class="col-7">
-                <label>Order Placed</label> <span> {{selectedOrderSummary.orderTime | date:'d MMM y, h:mm a':'IST'}} </span>
+                <label>Order Placed</label> <span> {{selectedOrderSummary.orderTime | date:'d MMM y, h:mm a':'+1100'}} </span>
                 <label>Payment</label> <span>Paid via  {{selectedOrderSummary.paymentType}} </span>
             </div>
 
@@ -208,3 +212,4 @@
     }
 
 </div>
+}
