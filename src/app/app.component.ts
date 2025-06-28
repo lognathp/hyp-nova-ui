@@ -27,7 +27,7 @@ export class AppComponent {
     console.log('isDevMode',isDevMode());
     if(isDevMode()){
       // domain ="https://chaitanyafoodcourt.hyperapps.in"
-      domain ="https://rasyumm.hyperapps.cloud"
+      domain ="https://myvillagerecipes.in"
       // domain ="https://order.madhapurbawarchi.com"
       // domain ="https://31.178.75.55:9090"
     }
