@@ -2,22 +2,20 @@ import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
-import { TimeformatPipe } from "../../core/pipes/timeformat.pipe";
 
 @Component({
-  selector: 'app-order-history',
+  selector: 'app-order-today-history',
   standalone: true,
-  imports: [CommonModule, TimeformatPipe],
-  templateUrl: './order-history.component.html',
-  styleUrl: './order-history.component.scss'
+  imports: [CommonModule],
+  templateUrl: './order-today-history.component.html',
+  styleUrl: './order-today-history.component.scss'
 })
-export class OrderHistoryComponent {
+export class OrderTodayHistoryComponent {
   viewSummary:boolean = false
   customerDetails: any;
   orderHistory: any;
   selectedOrderSummary: any;
   restaurentId: number | undefined;
-  loading: boolean = false;
 
 
   constructor(
@@ -73,7 +71,6 @@ export class OrderHistoryComponent {
   getOrderHistory():void {
     this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
       next: (reponse) => {
-        this.loading = false;
         this.orderHistory = reponse.data;
         // let SNo:number = 1;
         // this.orderHistory.map((ele:any) => {
@@ -94,11 +91,25 @@ export class OrderHistoryComponent {
     const addressId:number = parseInt(addressIdarg);
     this.apiService.getMethod(`/address/${addressId}`).subscribe({
       next: (reponse) => {
-        this.loading = false;
         // console.log(reponse);
         this.selectedOrderSummary.deliveryDetails['address'] = reponse.data[0];
       },
       error: (error) => { console.log(error) }
     });
   }
+
+    /**
+ * Returns orders placed on the current day
+ */
+getCurrentDayOrders(): any[] {
+  if (!this.orderHistory) return [];
+  const today = new Date();
+  return this.orderHistory.filter((order: any) => {
+    // Use order.createdAt or order.orderTime, depending on your data
+    const orderDate = new Date(order.createdAt || order.orderTime);
+    return orderDate.getFullYear() === today.getFullYear() &&
+           orderDate.getMonth() === today.getMonth() &&
+           orderDate.getDate() === today.getDate();
+  });
+}
 }

@@ -1009,7 +1009,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      * Order Track URL redirect
      */
     orderTrack() {
-        this.router.navigate(['/order-tracking']);
+        this.router.navigate(['/order-today-history']);
     }
 
     getOrderType(orderType: any) {
