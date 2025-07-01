@@ -70,9 +70,10 @@
             </div>
             <div *ngIf="!serviceable" class="container my-3 bg-transparent orderStatusCont">
                 <!-- Zomato-style banners -->
-                <div *ngIf="weatherAlert" class="bg-danger fa-bounce rounded p-2">
-                  <span>🌧️</span>
-                  <span class="text-white">{{ weatherAlert }}</span>
+                <div *ngIf="weatherAlert" class="rounded p-2 overflow-hidden">
+                  <marquee behavior="scroll" direction="left" scrollamount="3" class="text-red text-decoration-bold">
+                    {{ weatherAlert }}
+                  </marquee>
                 </div>
                 <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
                   <span class="zomato-icon">📞</span>

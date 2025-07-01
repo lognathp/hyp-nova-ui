@@ -8,7 +8,6 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
 declare const google: any;
-
 @Component({
   selector: 'app-location-picker',
   standalone: true,
