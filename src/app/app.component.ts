@@ -21,6 +21,7 @@ export class AppComponent {
      public apiService: ApiService) { }
 
   ngOnInit(): void {
+    this.loading = true; // Start loader
     
     let url = window.location.href;
     let domain = new URL(url).origin;
