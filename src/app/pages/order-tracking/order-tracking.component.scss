@@ -31,3 +31,31 @@
         }
     }
 }
+
+.zomato-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .zomato-weather {
+    background-color: #f0f0f0;
+    color: #212529;
+  }
+
+  .zomato-comm {
+    background-color: #e9ecef;
+    color: #212529;
+  }
+
+  .zomato-icon {
+    font-size: 20px;
+  }
+
+  .zomato-text {
+    font-size: 14px;
+    font-weight: 500;
+  }

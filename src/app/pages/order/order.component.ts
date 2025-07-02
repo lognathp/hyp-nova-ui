@@ -16,8 +16,9 @@ import { SearchFilterPipe } from "../../core/pipes/search-filter.pipe";
 import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
 import { BranchChangeComponent } from "../../components/alert-box/branch-change/branch-change.component";
 import { WebSocketService } from '../../core/services/websocket.service';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
+import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -39,7 +40,8 @@ declare var bootstrap: any; // Bootstrap is using from assets
     RouterLink,
     RouterModule,
     BranchChangeComponent,
-    SplitFirstCommaPipe
+    SplitFirstCommaPipe,
+    MenuLoaderComponent
 ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
@@ -84,6 +86,19 @@ export class OrderComponent implements OnInit, DoCheck {
   customerDetails: any;
   showTracking: boolean = false;
   addOnBackdrop: boolean = false;
+  private orderUpdateSubscription!: Subscription;
+  liveOrders: any[] = []; // To store live orders
+  liveOrderId: number[] = [];
+  showLiveOrderId: boolean = false;
+  showLiveOrders: boolean = false; // To control visibility of live orders panel
+  orderPollingSubscription!: Subscription;
+
+
+  loading = true;
+  serviceable: any;
+  weatherAlert: string | null = null;
+  customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
+
 
   constructor(
     public apiService: ApiService,
@@ -94,11 +109,31 @@ export class OrderComponent implements OnInit, DoCheck {
     private elementRef: ElementRef,
     private renderer: Renderer2
   ) {
-
+   // Initialize polling when component is created
+  //  this.startOrderPolling();
   }
 
+    // Add these new methods
+    // private startOrderPolling(): void {
+    //   // Initial fetch
+    //   // this.fetchOrders();
+      
+    //   // Subscribe to WebSocket for order updates
+    //   this.orderPollingSubscription = this.wsService.getOrderStatusUpdates().subscribe((message: any) => {
+    //     if (message && this.customerDetails?.id) {
+    //       // When we receive a WebSocket message, fetch fresh orders
+    //     }
+    //   });
+    // }
+  
+    // private stopOrderPolling(): void {
+    //   if (this.orderPollingSubscription) {
+    //     this.orderPollingSubscription.unsubscribe();
+    //   }
+    // }
 
   ngOnInit(): void {
+    this.loading = true;
 
     const selectedLocation = localStorage.getItem('selectedLocation');
 
@@ -143,10 +178,12 @@ export class OrderComponent implements OnInit, DoCheck {
       this.updateItemStock(webSocketResponse);
     });
 
+    this.fetchOrders();
+
   }
 
   ngAfterViewInit(): void {
-
+    this.loading = false;
     if (this.restaurentId != undefined && !isNaN(this.restaurentId)) {
 
       if (!isNaN(this.restaurentId)) {
@@ -188,7 +225,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
 
   ngDoCheck() {
-
+    this.loading = false;
     this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
       this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
       // this.restaurentActive = false;
@@ -204,7 +241,14 @@ export class OrderComponent implements OnInit, DoCheck {
       this.foodBasket.forEach((ele: any) => { this.seletedItemId.push(ele.item.id) });
       this.calculateCartPrice();
     }
-
+    
+    this.orderUpdateSubscription = this.wsService.getOrderStatusUpdates().subscribe((orderUpdate: any) => {
+      this.ngZone.run(() => {
+        // Update the live orders list
+        this.updateLiveOrders([orderUpdate]);
+        this.cdr.detectChanges();
+      });
+    });
   }
 
   /**
@@ -322,6 +366,9 @@ export class OrderComponent implements OnInit, DoCheck {
 
         const restaurantDetails: any = response.data[0];
         this.restaurentActive = restaurantDetails.active;
+        this.serviceable = restaurantDetails.serviceable;
+        this.weatherAlert = restaurantDetails.serviceableMessage;
+        // this.customerMessage = restaurantDetails.customerMessage;
         // this.restaurentActive = false;
         const workingHoursData = restaurantDetails.deliveryHours;
         const format = 'H:mm';
@@ -376,7 +423,7 @@ export class OrderComponent implements OnInit, DoCheck {
   /**
      * To add item into foodBasket array on clicking Add button 
      * If there is no variation / Addon it will be added else it will call respective API
-     * @param item : Selected Item value
+     * @param item : Selected Item value 
      */
   public selectItem(item: any): void {
 
@@ -942,7 +989,136 @@ export class OrderComponent implements OnInit, DoCheck {
       })
     }
   }
-  orderTrack() {
-    this.router.navigate(['/order-tracking']);
+
+
+
+// Add this method to handle order updates
+setupOrderUpdates() {
+  this.orderUpdateSubscription = this.wsService.getOrderStatusUpdates().subscribe((orderUpdate: any) => {
+    this.ngZone.run(() => {
+      // Update the live orders list
+      this.updateLiveOrders([orderUpdate]);
+      this.cdr.detectChanges();
+    });
+  });
+}
+
+// Update the fetchOrders method to handle initial load
+fetchOrders() {
+  if (!this.customerDetails?.id) return;
+
+  this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails?.id}`).subscribe({
+    next: (response) => {
+      this.updateLiveOrders(response.data);
+      // If we don't have a WebSocket subscription yet, set it up
+      if (!this.orderUpdateSubscription) {
+        this.setupOrderUpdates();
+      }
+    },
+    error: (error) => { 
+      console.error('Error fetching orders:', error);
+      // Still try to set up WebSocket in case of error
+      if (!this.orderUpdateSubscription) {
+        this.setupOrderUpdates();
+      }
+    }
+  });
+}
+
+// Helper method to update live orders
+private updateLiveOrders(orders: any[]) {
+  const liveStatuses = [
+    'PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP',
+    'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY'
+  ];
+  
+  const today = new Date();
+  this.liveOrders = orders
+    .filter(order => {
+      const orderDate = new Date(order.createdAt);
+      return liveStatuses.includes(order.status) && 
+             orderDate.getDate() === today.getDate() &&
+             orderDate.getMonth() === today.getMonth() &&
+             orderDate.getFullYear() === today.getFullYear();
+    })
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  
+  this.showLiveOrders = this.liveOrders.length > 0;
+}
+
+// Update the orderTrack method to handle navigation better
+orderTrack(event: MouseEvent, order: any) {
+  event.stopPropagation();
+  if (order?.id) {
+    this.router.navigate(['/order-tracking'], { 
+      queryParams: { id: order.id },
+      state: { orderData: order } // Pass order data for immediate display
+    }).catch((err) => {
+      console.error('Navigation failed:', err);
+      this.router.navigate(['/order-today-history']);
+    });
+  }
+}
+
+// Add to ngOnDestroy to clean up subscriptions
+ngOnDestroy() {
+  if (this.wsSubscription) {
+    this.wsSubscription.unsubscribe();
+  }
+  if (this.orderUpdateSubscription) {
+    this.orderUpdateSubscription.unsubscribe();
+  }
+  // this.stopOrderPolling(); // Clean up polling subscription
+}
+
+  /**
+   * To fetch live order
+   */
+  // fetchOrders() {
+  //   this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
+  //     next: (response) => {
+  //       this.liveOrderId = this.getCurrentLiveOrderIds(response.data);
+  //       console.log('Live Order ID:', this.liveOrderId); // Debug: see if it's set
+  //     },
+  //     error: (error) => { console.log(error) }
+  //   });
+  // }
+
+  goToTodayList() {
+    if (this.liveOrders) {
+      this.router.navigate(['/order-tracking'], { 
+        queryParams: { id: this.liveOrders[0].id },
+        state: { orderData: this.liveOrders } // Pass order data for immediate display
+      }).catch((err) => {
+        console.error('Navigation failed:', err);
+        this.router.navigate(['/order-today-history']);
+      });
+    }
+  }
+  
+  // orderTrack(event: MouseEvent, id: number) {
+  //   event.stopPropagation(); // Prevents the button's click event
+  //   if (this.liveOrderId && this.liveOrderId != null && this.liveOrderId.length > 0) {
+  //     this.router.navigate(['/order-tracking'], { queryParams: { id: id } })
+  //       .catch((err) => {
+  //         console.error('Navigation failed:', err);
+  //         this.router.navigate(['/order-today-history']);
+  //       });
+  //   }
+  // }
+
+  getCurrentLiveOrderIds(orders: any[]): number[] {
+    const liveStatuses = [
+      'PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP',
+      'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY'
+    ];
+    const today = new Date();
+    // Filter all orders with a live status for today and map to their IDs
+    return orders
+      .filter(order => {
+        const orderDate = new Date(order.createdAt);
+        return liveStatuses.includes(order.status) && orderDate.getDate() === today.getDate();
+      })
+      .map(order => order.id);
   }
 }

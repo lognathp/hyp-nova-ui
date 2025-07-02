@@ -1,7 +1,3 @@
-@if (loading) {
-    <div class="loader-overlay">
-    </div>
-} @else {
 <div class="cartBody">
     @if (!viewSummary) {
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -22,7 +18,7 @@
 
     <div class="container my-3 bg-transparent ">
         <div class="row ">
-            @for (order of orderHistory; track $index){
+            @for (order of getCurrentDayOrders(); track $index){
                     <div class="col-md-12 orderContainer">
                         <div class="block1">
                             <!-- <span class="orderDelivered"> Order Delivered</span>   Nood to check the status showing format -->
@@ -44,7 +40,7 @@
                             <!-- <p class="vegIcon">Veg Biryani <span>x 1</span><span class="addon">Full</span></p> -->
                         </div>
                         <div class="block3">
-                            <span class="orderTD">Order placed on {{ order.orderTime | date:'d MMM y, h:mm a':'+1100' }}</span>
+                            <span class="orderTD">Order placed on {{ order.orderTime | date:'d MMM y, h:mm a':'+1100'}}</span>
                             <span class="orderRate">₹ {{ order.totalAmount | number:'1.2-2' }}</span>
                             <span class="orderVD" (click)="viewOrderSummary(order)">View Details</span>
                            
@@ -212,4 +208,3 @@
     }
 
 </div>
-}
