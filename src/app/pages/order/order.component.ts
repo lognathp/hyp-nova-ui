@@ -110,27 +110,27 @@ export class OrderComponent implements OnInit, DoCheck {
     private renderer: Renderer2
   ) {
    // Initialize polling when component is created
-   this.startOrderPolling();
+  //  this.startOrderPolling();
   }
 
     // Add these new methods
-    private startOrderPolling(): void {
-      // Initial fetch
-      this.fetchOrders();
+    // private startOrderPolling(): void {
+    //   // Initial fetch
+    //   // this.fetchOrders();
       
-      // Set up polling every 5 seconds
-      this.orderPollingSubscription = interval(4000).subscribe(() => {
-        if (this.customerDetails?.id) {
-          this.fetchOrders();
-        }
-      });
-    }
+    //   // Subscribe to WebSocket for order updates
+    //   this.orderPollingSubscription = this.wsService.getOrderStatusUpdates().subscribe((message: any) => {
+    //     if (message && this.customerDetails?.id) {
+    //       // When we receive a WebSocket message, fetch fresh orders
+    //     }
+    //   });
+    // }
   
-    private stopOrderPolling(): void {
-      if (this.orderPollingSubscription) {
-        this.orderPollingSubscription.unsubscribe();
-      }
-    }
+    // private stopOrderPolling(): void {
+    //   if (this.orderPollingSubscription) {
+    //     this.orderPollingSubscription.unsubscribe();
+    //   }
+    // }
 
   ngOnInit(): void {
     this.loading = true;
@@ -423,7 +423,7 @@ export class OrderComponent implements OnInit, DoCheck {
   /**
      * To add item into foodBasket array on clicking Add button 
      * If there is no variation / Addon it will be added else it will call respective API
-     * @param item : Selected Item value
+     * @param item : Selected Item value 
      */
   public selectItem(item: any): void {
 
@@ -1068,7 +1068,7 @@ ngOnDestroy() {
   if (this.orderUpdateSubscription) {
     this.orderUpdateSubscription.unsubscribe();
   }
-  this.stopOrderPolling(); // Clean up polling subscription
+  // this.stopOrderPolling(); // Clean up polling subscription
 }
 
   /**
@@ -1085,7 +1085,15 @@ ngOnDestroy() {
   // }
 
   goToTodayList() {
-    this.router.navigate(['/order-today-history']);
+    if (this.liveOrders) {
+      this.router.navigate(['/order-tracking'], { 
+        queryParams: { id: this.liveOrders[0].id },
+        state: { orderData: this.liveOrders } // Pass order data for immediate display
+      }).catch((err) => {
+        console.error('Navigation failed:', err);
+        this.router.navigate(['/order-today-history']);
+      });
+    }
   }
   
   // orderTrack(event: MouseEvent, id: number) {

@@ -20,13 +20,13 @@
                 (input)="search($event)">
         </div>
     </div>
-    <p class="btmCurLoc cursor-pointer" (click)="getMyCurrentLocation()">Use my current location</p>
     <div class="container">
         <div class="row addressDetailPageContainer">
             @if (editLocationValue && searchResults.length == 0) {
             <div class="col-md-12 p-0 mapAddress" style="height: 400px;">
                 <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30468.04554232425!2d78.565699!3d17.339383!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba3427bf787ad%3A0xd353a7d2d429feb!2sAnkapur%20Village%20-%20A%20Military%20Hotel%20(Vanasthalipuram)!5e0!3m2!1sen!2sin!4v1739698519949!5m2!1sen!2sin "
                     width="100% " allowfullscreen=" " loading="lazy " referrerpolicy="no-referrer-when-downgrade "></iframe> -->
+                        
                         <app-location-picker class="appLocationPicker" style="height: 100%; width: 100%; display: block;"  [editLocationData]="editLocationValue" (selectedLocation)="getSelectedLocation($event)"></app-location-picker>
                  
                    
@@ -39,6 +39,8 @@
             <!-- </div> -->
         </div>
     </div>
+    <!-- <p class="btmCurLoc cursor-pointer">Use my current location</p> -->
+    <!-- (click)="getMyCurrentLocation()" -->
 
     <ul class="locationBtm">
         <ng-container *ngFor="let result of searchResults">

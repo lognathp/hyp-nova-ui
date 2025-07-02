@@ -135,6 +135,19 @@
     margin-left: 10px;
   }
 
+  @media (max-width: 380px) {
+    .carousel-item {
+        width: 202px;
+        margin-left: 4px;
+        height: 73px;
+    }
+    .wwdTitle {
+        font-size: 12px;
+    }
+    .wwdDes {
+        font-size: 10px;
+    }
+  }
   #offerCarousel {
     max-width: 100%;
   }
