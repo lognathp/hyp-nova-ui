@@ -1055,7 +1055,7 @@ orderTrack(event: MouseEvent, order: any) {
       state: { orderData: order } // Pass order data for immediate display
     }).catch((err) => {
       console.error('Navigation failed:', err);
-      this.router.navigate(['/order-today-history']);
+      this.router.navigate(['/order']);
     });
   }
 }
@@ -1091,7 +1091,7 @@ ngOnDestroy() {
         state: { orderData: this.liveOrders } // Pass order data for immediate display
       }).catch((err) => {
         console.error('Navigation failed:', err);
-        this.router.navigate(['/order-today-history']);
+        this.router.navigate(['/order']);
       });
     }
   }

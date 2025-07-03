@@ -14,7 +14,7 @@ export class UserAccountComponent {
   customerDetails: any = {};
 
   constructor(
-    private location: Location,
+    // private location: Location,
     private router: Router,
   ) { }
 
@@ -22,7 +22,8 @@ export class UserAccountComponent {
    * Back Button
    */
   goBack(): void {
-    this.location.back(); // Moves to the previous route
+    // this.location.back(); // Moves to the previous route
+    this.router.navigate(['/order']); // Navigate to the order page
   }
 
   ngOnInit(): void {
