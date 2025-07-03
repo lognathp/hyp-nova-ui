@@ -16,16 +16,12 @@ import { SliderSwitchComponent } from "../../components/slider-switch/slider-swi
 import { AuthService } from '../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 
-import { MessageService, PrimeNGConfig } from 'primeng/api';
-
-
 @Component({
     selector: 'app-cart',
     standalone: true,
-    imports: [CommonModule, FormsModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
+    imports: [CommonModule,FormsModule, DiscountPricePipe, QuoteLoaderComponent, SomethingWentWrongComponent, RestaurentClosedComponent, SliderSwitchComponent],
     templateUrl: './cart.component.html',
-    styleUrl: './cart.component.scss',
-    providers: [MessageService]
+    styleUrl: './cart.component.scss'
 })
 export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
@@ -70,11 +66,11 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     quoteLoading: boolean = false;
     connectingGateway: boolean = false;
 
-    flatDiscountpercentage = environment.flatDiscountpercentage;
+    flatDiscountpercentage: any;
     unKnownError: boolean = false;
     restaurentClosed: boolean = false;
 
-    deliveryDiscount = environment.deliveryDiscount;
+    deliveryDiscount : any;
 
     orderOptions = environment.deliveryOptions;
     orderOptionsType = environment.deliveryOptions[0].value;
@@ -100,14 +96,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     showTracking: boolean = false;
     deliveryInstructions: string = "";
 
-    unServiceableValue: boolean = false;
-
     constructor(
         public apiService: ApiService,
         public sharedData: SharedService,
         private router: Router,
         private authService: AuthService,
-        private messageService: MessageService,
+        // private messageService: MessageService,
         // private primengConfig: PrimeNGConfig,
         private wsService: WebSocketService,
     ) { }
@@ -120,22 +114,55 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
         const branchdata: any = localStorage.getItem("currentBranch")
         this.branchData = JSON.parse(branchdata)
-        //   console.log('restaurentId', this.restaurentId);
-        // window.addEventListener('storage', (event: StorageEvent) => {
-        //     if (event.key === 'selectedRestId') {
-        //       let restId:any = localStorage.getItem("selectedRestId")
-        //       this.restaurentId = parseInt(restId);
-        //       console.log(this.restaurentId);
-        //     }
-        //   });
+
+        // item-level discount
+       const branchJson = localStorage.getItem("currentBranch");
+            try {
+            if (branchJson) {
+                this.branchData = JSON.parse(branchJson);
+                const percentage = this.branchData.discountPercentage;
+
+                this.flatDiscountpercentage = typeof percentage === 'number'
+                ? percentage
+                : (percentage !== undefined ? Number(percentage) : 0);
+            } else {
+                this.branchData = {};
+                this.flatDiscountpercentage = 0;
+            }
+            } catch (e) {
+            console.error("Failed to parse currentBranch from localStorage", e);
+            this.branchData = {};
+            this.flatDiscountpercentage = 0;
+            }
+
+            // delivery share 
+            const branch = localStorage.getItem("currentBranch");
+            try {
+            if (branchJson) {
+                this.branchData = JSON.parse(branchJson);
+                const deliveryDiscount = this.branchData.totalDeliverySharePercentage;
+
+                this.deliveryDiscount = typeof deliveryDiscount === 'number'
+                ? deliveryDiscount
+                : (deliveryDiscount !== undefined ? Number(deliveryDiscount) : 0);
+            } else {
+                this.branchData = {};
+                this.deliveryDiscount = 0;
+            }
+            } catch (e) {
+            console.error("Failed to parse currentBranch from localStorage", e);
+            this.branchData = {};
+            this.deliveryDiscount = 0;
+            }
+
+      // console.log("flatDiscountpercentage =", this.flatDiscountpercentage);
+
+
+       
         this.checkWorkingHours();
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
         });
-
-
-
-
         const foodItem: any = localStorage.getItem("foodBasket");
         const menuData: any = localStorage.getItem("menu");
         this.foodBasket = JSON.parse(foodItem);
@@ -232,8 +259,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                     }
                 });
-                console.log(existingDeliveryQuoteData, 'existingDeliveryQuoteData');
-
+                console.log(existingDeliveryQuoteData,'existingDeliveryQuoteData');
+                
                 if (this.workingHours && Object.entries(existingDeliveryQuoteData).length > 0) {
                     // this.getdeliveryQuoteshareddata();
                     this.prepareOrderItems();
@@ -327,7 +354,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 orderAddonItems: []
             }
             element.item.taxes.forEach((taxElement: any) => {
-                // console.log(taxElement, 'taxElement',element);
+                // console.log(taxElement, 'taxElement', element.item.price, parseFloat(element.item.price) - ((this.flatDiscountpercentage / 100) * parseFloat(element.item.price)));
                 let itemPricePostDiscount = parseFloat(element.item.price) - ((this.flatDiscountpercentage / 100) * parseFloat(element.item.price));
                 const taxFormat: any = {
                     id: taxElement.id,
@@ -367,7 +394,6 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                             }
                             item.orderAddonItems.push(detail);
 
-                            //  item.orderItemTax[index].amount =  element.item.taxes
                         }
                     });
                 });
@@ -392,17 +418,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     item.finalPrice = ((itemWithVariationPrice - itemdiscountValue) + addonSumPrice).toFixed(2), // added for discount on discout value
 
                     item.orderItemTax.forEach((varientItemTax: any, taxIndex: number) => {
-                        // console.log(varientItemTax,'varientItemTax',(this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price));
+                        // console.log(varientItemTax);
                         if (parseFloat(varientItemTax.amount) == 0.00) {
-                            varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2);
+                            varientItemTax.amount = ((parseFloat(varientItemTax.price) / 100) * parseFloat(element.addonVariation.varients.price)).toFixed(2)
                         }
-                        if (parseFloat(varientItemTax.amount) != 0.00) {
-                            item.orderItemTax[taxIndex].amount = ((parseFloat(varientItemTax.price) / 100) * (element.addonVariation.varients.price - itemdiscountValue - (this.flatDiscountpercentage / 100) * parseFloat(element.addonVariation.varients.price))).toFixed(2);
-                        }
-                        // console.log(item.orderItemTax[taxIndex].amount, 'item.price',parseFloat(varientItemTax.price),element.addonVariation.varients.price);
-                        // console.log(element.addonVariation.varients.price - itemdiscountValue, itemdiscountValue)
                     })
-                // console.log(item, 'item.price');
+                // console.log(item.price, 'item.price');
 
 
             } else {
@@ -609,19 +630,10 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
                 },
                 error: (error: { error: string; }) => {
-                    console.log('getQuote ' + JSON.parse(JSON.stringify(error.error)).message);
+                    console.log('getQuote ' + error.error);
                     this.quoteLoading = false;
+                    this.unKnownError = true;
                     this.showAddAddressButton = true;
-                    if (JSON.parse(JSON.stringify(error.error)).message == "The location is not deliverable.") {
-                        this.router.navigate(['/address'], {
-                            state: { message:  JSON.parse(JSON.stringify(error.error)).message}
-                        });
-                        
-                    } else {
-                        this.unKnownError = true;
-                    }
-
-
 
                     //  this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
@@ -650,7 +662,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      * @param quoteData Qelivery Quote value response
      */
     assignQuoteData(addressId: any, quoteData: any) {
-        this.orderPriceDetails['deliveryCharge'] = 0;
+         this.orderPriceDetails['deliveryCharge'] = 0;
         // console.log(this.deliveryWaiver.applicable, this.orderPriceDetails.itemSubtotal + this.orderPriceDetails.addOnPriceSum - this.orderPriceDetails.discount + this.orderPriceDetails.tax.CGST + this.orderPriceDetails.tax.SGST, this.deliveryWaiver.offsetValue,'deliveryWaiver');
         if (this.deliveryWaiver.applicable == true && (this.orderPriceDetails.itemSubtotal + this.orderPriceDetails.addOnPriceSum - this.orderPriceDetails.discount + this.orderPriceDetails.tax.CGST + this.orderPriceDetails.tax.SGST > this.deliveryWaiver.offsetValue)) {
             this.orderPriceDetails['deliveryCharge'] = 0;
@@ -975,7 +987,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         localStorage.setItem("foodBasket", JSON.stringify(this.foodBasket));
     }
     selectAddress() {
-        this.router.navigate(['/address'],{});
+        this.router.navigate(['/address']);
         this.sharedData.sendDeliveryQuotedata({});
     }
 
@@ -1009,7 +1021,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
      * Order Track URL redirect
      */
     orderTrack() {
-        this.router.navigate(['/order-today-history']);
+        this.router.navigate(['/order-tracking']);
     }
 
     getOrderType(orderType: any) {
@@ -1019,6 +1031,4 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
         this.prepareOrderItems();
     }
-
-
 }
