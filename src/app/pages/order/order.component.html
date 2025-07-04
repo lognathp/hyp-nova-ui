@@ -3,7 +3,7 @@
     <p>Loading, please wait...</p>
 </div>
 
-<div *ngIf="!loading" class="scroll-container" [ngClass]="{'storeClosed':restaurentActive == false}">
+<div *ngIf="!loading" class="scroll-container" [ngClass]="{'storeClosed':restaurentActive == false, 'service-unavailable': !serviceable}">
     <!-- Header -->
     <div class="topSection">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
@@ -68,20 +68,20 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="!serviceable" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
-                <!-- Zomato-style banners -->
-                <div *ngIf="weatherAlert" class="p-10 overflow-hidden">
-                  <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
-                    {{ weatherAlert }}
-                  </marquee>
-                </div>
-                <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
-                  <span class="zomato-icon">📞</span>
-                  <span class="zomato-text">{{ customerMessage }}</span>
-                </div> -->
-              </div>
         </div>
         }
+        <div *ngIf="!serviceable && restaurentActive == true" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
+            <!-- Zomato-style banners -->
+            <div *ngIf="weatherAlert" class="p-10 overflow-hidden">
+              <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
+                {{ weatherAlert }}
+              </marquee>
+            </div>
+            <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
+              <span class="zomato-icon">📞</span>
+              <span class="zomato-text">{{ customerMessage }}</span>
+            </div> -->
+          </div>
         <!-- Search Box -->
 
         <div class="container my-2 bg-transparent ">
@@ -339,18 +339,18 @@
 
                         @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
                         item.variation.length == 0) {
-                        <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false"
+                        <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
                             (click)="selectItem(item)"> + Add</button>
                         }
 
                         @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
                         {
-                        <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false" (click)="selectItem(item)"> +
+                        <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false || serviceable == false" (click)="selectItem(item)"> +
                             Add</button>
                         }
 
                         @if (seletedItemId.includes(item.id) && item.active === '1') {
-                        <button [disabled]="restaurentActive == false" class="btn btn-transparent qtyButton">
+                        <button [disabled]="restaurentActive == false || serviceable == false" class="btn btn-transparent qtyButton">
                             <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
                             {{item | displayQuantity}}
                             <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
@@ -538,7 +538,7 @@
     </div> -->
     
     <!-- Show only when liveOrderId exists -->
-    <div *ngIf="showLiveOrders && restaurentActive" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
+    <div *ngIf="showLiveOrders && restaurentActive && serviceable" class="floating-menu track" [ngClass]="{'cart-active': foodBasket.length > 0}">
         <div class="live-orders-pills">
             <span
                 class="live-order-pill fa-bounce"
@@ -563,7 +563,7 @@
         <div class="row ">
             <div class="col-md-12 ">
                 <div class="card border-0 ">
-                    <div class="card-body bg-cart" [ngClass]="{'disable-block' : restaurentActive == false}">
+                    <div class="card-body bg-cart" [ngClass]="{'disable-block' : restaurentActive == false || serviceable == false}">
                         <p class="card-text cartItems">
                             
                             <!-- ₹{{cartItemPrice | discountPrice: flatDiscountpercentage}} -->
