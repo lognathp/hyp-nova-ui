@@ -8,8 +8,8 @@ export const environment = {
     title:'Chaitanya Food Court',
     contactRestaurant:"7801057583",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 55,
+    // flatDiscountpercentage : 25,
+    // deliveryDiscount : 55,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
