@@ -8,7 +8,7 @@ export const environment = {
     title:'My Village Recipes',
     contactRestaurant:"8886111384",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 25,
+    flatDiscountpercentage : 30,
     deliveryDiscount : 25,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
