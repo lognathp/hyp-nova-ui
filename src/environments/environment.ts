@@ -8,7 +8,7 @@ export const environment = {
     title:'Priya Darshini',
     contactRestaurant:"9700313687",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 0,
+    flatDiscountpercentage : 10,
     deliveryDiscount : 25,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
