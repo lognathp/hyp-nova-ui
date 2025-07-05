@@ -127,12 +127,12 @@
                         data-bs-interval="2000">
                         <div class="carousel-inner ">
                             <!-- Offer Slide -->
-                            <!-- <div class="carousel-item active ">
+                            <div class="carousel-item active ">
                                 <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">25% Off on all items</h2>
+                                    <h2 class="wwdTitle ">10% Off on all items</h2>
                                     <span class="wwdDes ">Don’t miss out!</span>
                                 </div>
-                            </div> -->
+                            </div>
                             <div class="carousel-item active ">
                                 <div class="hc bg-transparent text-dark ">
                                     <h2 class="wwdTitle ">No Hidden Charges</h2>
@@ -155,8 +155,8 @@
                                 aria-label="Slide 1 "></button>
                             <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="1"
                                 aria-label="Slide 2 "></button>
-                            <!-- <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="2"
-                                aria-label="Slide 3 "></button> -->
+                            <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="2"
+                                aria-label="Slide 3 "></button>
                             <!-- <button type="button " data-bs-target="#offerCarousel" data-bs-slide-to="3"
                                 aria-label="Slide 4 "></button> -->
                         </div>
@@ -331,8 +331,8 @@
 
                         <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
                         <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                        <!-- <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp; -->
-                        <!-- <span class="offer "> {{flatDiscountpercentage}}% OFF</span> -->
+                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
+                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
                         <p class="card-text foodDes "> {{ item.itemDescription }}
                         </p>
                         <!-- <span class="foodDesMore ">more</span> -->
