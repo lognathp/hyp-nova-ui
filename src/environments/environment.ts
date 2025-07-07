@@ -8,8 +8,8 @@ export const environment = {
     title:'Ankapur Village',
     contactRestaurant:"9642883377",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 30,
+    // flatDiscountpercentage : 25,
+    // deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
@@ -19,7 +19,6 @@ export const environment = {
     deliveryOptions: [
         // Un-comment to add options Comment to remove delivery options
         { label: 'Delivery', value: '1', index: 0 },   // Default type dont-touch
-        // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Take Away', value: '3', index: 1 },
         // { label: 'Dine In', value: '2', index: 2 }
     ],

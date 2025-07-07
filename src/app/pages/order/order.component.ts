@@ -174,28 +174,6 @@ export class OrderComponent implements OnInit, DoCheck {
     } else {
       this.ngAfterViewInit();
     }
-    const branchJson = localStorage.getItem("currentBranch");
-      try {
-        const parsed = branchJson ? JSON.parse(branchJson) : null;
-
-        if (parsed) {
-          
-          this.branchData = parsed;
-
-          
-          const percentage = parsed.discountPercentage;
-
-          this.flatDiscountpercentage = typeof percentage === 'number'
-            ? percentage
-            : (percentage !== undefined ? Number(percentage) : 0);
-        } else {
-          this.flatDiscountpercentage = 0;
-        }
-      } catch (e) {
-        console.error("Failed to parse currentBranch from localStorage", e);
-        this.flatDiscountpercentage = 0;
-      }
-
 
     const branchJson = localStorage.getItem("currentBranch");
       try {
