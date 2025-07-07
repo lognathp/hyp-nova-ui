@@ -8,8 +8,8 @@ export const environment = {
     title:'Shah Ghouse',
     contactRestaurant:"8483884639",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 0,
-    deliveryDiscount : 45,
+    // flatDiscountpercentage : 0,
+    // deliveryDiscount : 45,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
