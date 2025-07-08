@@ -5,11 +5,11 @@ export const environment = {
     partnerId:'5BBiPSqr3m',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'The Nawaabs Restaurant',
-    contactRestaurant:"8179644836",
+    title:'United Kitchen Of India',
+    contactRestaurant:"7702446611",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    // flatDiscountpercentage : 15,
+    // deliveryDiscount : 45,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
