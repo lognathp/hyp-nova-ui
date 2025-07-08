@@ -5,14 +5,14 @@ export const environment = {
     partnerId:'5BBiPSqr3m',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Saharsh Udupi Grand',
-    contactRestaurant:"9000901009",
+    title:'United Kitchen Of India',
+    contactRestaurant:"7702446611",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    // flatDiscountpercentage : 15,
+    // deliveryDiscount : 45,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
-    packingTaxPercentage:0,  // Packing charge tax in percentage 
+    packingTaxPercentage:0,  // Packing charge tax in percentage
     googleMapApiKey: 'AIzaSyDROVRwoyWdPPqvrzrA947dxZ-9F0HgRWw',
     WHATSAPP_API_URL: 'https://graph.facebook.com/v22.0/112915418570784/messages',
     WHATSAPP_TOKEN: 'EAAxcoXYnGfgBO1qwf4g9ZBCatP9PO8ZCTZA8ZBR50gLBXeF0Kd9rlP6uT4hwvyzuOQRnPF6iRH9r8e7bRMGqCHgnEce87AF3duKFvzwBjoZCZBJMHilifHqS7DOHiGVU28pnYmPhe6uHvB9MmsuAARoV1ZBm6E2SyCtuMGojskokRZAZCKCw4ZB3gIlufSVEKBfQJhEAZDZD',
