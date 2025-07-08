@@ -4,11 +4,17 @@ export const environment = {
     restId:'103889',
     partnerId:'glEoSsiMOp',
     production: true,
+<<<<<<< HEAD
+    razorPayKey:'rzp_test_dUt1jZJm3Whtxk',
+    title:'The Nawaabs Restaurant',
+    contactRestaurant:"8179644836",
+=======
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Saharsh Udupi Grand',
-    contactRestaurant:"9000901009",
+    title:'Babai Hotel',
+    contactRestaurant:"9000358000",
+>>>>>>> 841df41 (rebased with main)
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
+    // flatDiscountpercentage : 10,
     // deliveryDiscount : 25,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable

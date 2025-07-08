@@ -5,10 +5,10 @@ export const environment = {
     partnerId:'glEoSsiMOp',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Saharsh Udupi Grand',
-    contactRestaurant:"9000901009",
+    title:'Babai Hotel',
+    contactRestaurant:"9000358000",
     contactHyperapps:"7801057583",
-    // flatDiscountpercentage : 25,
+    // flatDiscountpercentage : 10,
     // deliveryDiscount : 25,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
