@@ -80,7 +80,7 @@ export class AddressComponent implements OnInit {
    * Back Button
    */
   goBack(): void {
-    this.router.navigate(['/order']);
+    this.router.navigate(['/cart']);
   }
 
   ngOnInit(): void {
