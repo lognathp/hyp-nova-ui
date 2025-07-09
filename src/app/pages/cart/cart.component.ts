@@ -161,6 +161,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
        
         this.checkWorkingHours();
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+            console.log(webSocketResponse,'cart webSocketResponse');
+            
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
         });
         const foodItem: any = localStorage.getItem("foodBasket");
@@ -279,6 +281,8 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     ngDoCheck() {
 
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+             console.log(webSocketResponse,'webSocketResponse');
+            
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
             // this.restaurentActive = false;
         });

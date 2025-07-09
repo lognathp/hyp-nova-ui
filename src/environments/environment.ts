@@ -4,7 +4,7 @@ export const environment = {
     restId:'345121',
     partnerId:'ju8tCXSeun',
     production: true,
-    razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
+    razorPayKey:'rzp_test_dUt1jZJm3Whtxk',
     title:'The Nawaabs Restaurant',
     contactRestaurant:"8179644836",
     contactHyperapps:"7801057583",
