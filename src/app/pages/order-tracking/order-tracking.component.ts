@@ -29,11 +29,12 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
   viewSummary: boolean = false;
   cancelled: boolean = false;
 
-//   weatherAlert: string | null = "Heavy rain in your area. Deliveries may be delayed.";
-// customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
+  //   weatherAlert: string | null = "Heavy rain in your area. Deliveries may be delayed.";
+  // customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
 
-weatherAlert: string | null = null;
+  weatherAlert: string | null = null;
   customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
+  customerDetails: any;
 
   constructor(
     public sharedData: SharedService,
@@ -45,6 +46,9 @@ weatherAlert: string | null = null;
   ) { }
 
   async ngOnInit(): Promise<void> {
+    let tempcustomerDetails: any = localStorage.getItem('customerDetails');
+    // if (!tempcustomDetails) {
+    this.customerDetails = JSON.parse(tempcustomerDetails);
     // Get order id from query params
     this.route.queryParams.subscribe(async params => {
       const orderId = params['id'];
@@ -73,10 +77,13 @@ weatherAlert: string | null = null;
       // WebSocket subscription (for both cases)
       this.wsSubscription = this.wsService.getOrderStatusUpdates().subscribe((webSocketResponse: any) => {
         console.log(JSON.stringify(webSocketResponse))
-        this.orderStatus = webSocketResponse;
-        if (this.orderStatus.status == 'CANCELLED') {
-          this.cancelled = true;
+        if (webSocketResponse.customerId === this.customerDetails.id) {
+          this.orderStatus = webSocketResponse;
+          if (this.orderStatus.status == 'CANCELLED') {
+            this.cancelled = true;
+          }
         }
+
       });
     });
   }
