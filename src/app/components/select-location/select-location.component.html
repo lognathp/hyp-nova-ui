@@ -20,6 +20,7 @@
                 (input)="search($event)">
         </div>
     </div>
+    <p class="btmCurLoc cursor-pointer" (click)="getMyCurrentLocation()">Use my current location</p>
     <div class="container">
         <div class="row addressDetailPageContainer">
             @if (editLocationValue && searchResults.length == 0) {

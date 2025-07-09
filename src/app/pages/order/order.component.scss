@@ -322,6 +322,20 @@
   scrollbar-width: none;     
 }
 
+.outlet-distance {
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: #555;
+  float: right;
+}
+
+.unavailableStore {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
 // .scroll-container::-webkit-scrollbar {
 //   display: none;            
 // }

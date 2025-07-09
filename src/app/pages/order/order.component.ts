@@ -169,6 +169,32 @@ export class OrderComponent implements OnInit, DoCheck {
       this.ngAfterViewInit();
     }
 
+        // Update the branch selection logic in ngOnInit
+    const shouldShowBranchSelection = () => {
+      // If we have a valid restaurant ID, no need to show branch selection
+      if (this.restaurentId && !isNaN(Number(this.restaurentId))) {
+        return false;
+      }
+      
+      // Check if we have multiple branches available
+      const hasMultipleBranches = this.partnerData?.restaurants?.length > 1;
+      const hasAvailableBranches = this.availableBranchData?.length > 0;
+      
+      return hasMultipleBranches && hasAvailableBranches;
+    };
+
+    if (shouldShowBranchSelection()) {
+      this.openSelectBranch = true;
+      // Use setTimeout to ensure the view is fully initialized
+      setTimeout(() => {
+        this.openOffcanvas('selectOutlet');
+      });
+    } else {
+      this.ngAfterViewInit();
+    }
+
+    
+
     this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
       this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
       // this.restaurentActive = false;
@@ -243,12 +269,13 @@ export class OrderComponent implements OnInit, DoCheck {
     }
     
     this.orderUpdateSubscription = this.wsService.getOrderStatusUpdates().subscribe((orderUpdate: any) => {
+      if (orderUpdate.customerId === this.customerDetails.id) {
       this.ngZone.run(() => {
         // Update the live orders list
         this.updateLiveOrders([orderUpdate]);
         this.cdr.detectChanges();
       });
-    });
+    }});
   }
 
   /**
@@ -1106,6 +1133,44 @@ ngOnDestroy() {
   //       });
   //   }
   // }
+
+calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): string {
+  const R = 6371; // Radius of the earth in km
+  const dLat = this.deg2rad(lat2 - lat1);
+  const dLon = this.deg2rad(lon2 - lon1);
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2); 
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  const distance = (R * c)+ 1.4; // Distance in km
+  return distance.toFixed(1); // Return distance with 1 decimal place
+}
+
+private deg2rad(deg: number): number {
+  return deg * (Math.PI/180);
+}
+
+getCurrentLocation(): { latitude: number, longitude: number } | null {
+  const location = localStorage.getItem('selectedLocation');  
+  if (location) {
+    const loc = JSON.parse(location);
+    return loc?.location || null;
+  }
+  return null;
+}
+
+getOutletDistance(item: any): string {
+  const currentLocation = this.getCurrentLocation();
+  if (!currentLocation || !item?.location) return '';
+  
+  return this.calculateDistance(
+    currentLocation.latitude,
+    currentLocation.longitude,
+    item.location.latitude,
+    item.location.longitude
+  );
+}
 
   getCurrentLiveOrderIds(orders: any[]): number[] {
     const liveStatuses = [
