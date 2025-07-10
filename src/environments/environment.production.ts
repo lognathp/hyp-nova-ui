@@ -8,13 +8,8 @@ export const environment = {
     title:'kochin-spices Restaurant',
     contactRestaurant:"9544186712",
     contactHyperapps:"7801057583",
-<<<<<<< HEAD
     // flatDiscountpercentage : 25,
     // deliveryDiscount : 25,
-=======
-    flatDiscountpercentage : 0,
-    deliveryDiscount : 25,
->>>>>>> 0d392bb (config details updated)
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
