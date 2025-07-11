@@ -22,7 +22,7 @@
 
     <div class="container my-3 bg-transparent ">
         <div class="row ">
-            @for (order of orderHistory; track $index){
+            @for (order of pagedAddresses; track $index){
                     <div class="col-md-12 orderContainer">
                         <div class="block1">
                             <!-- <span class="orderDelivered"> Order Delivered</span>   Nood to check the status showing format -->
@@ -54,6 +54,19 @@
                     </div>
                 
             }
+            
+            <!-- Pagination Controls -->
+            <div class="pagination-controls" *ngIf="totalItems > itemsPerPage">
+                <div class="pagination-buttons">
+                    <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <span class="page-counter">Page {{currentPage}} of {{totalPages()}}</span>
+                    <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === totalPages()" (click)="nextPage()">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
 
             <!-- <div class="col-md-12 orderContainer">
                     <div class="block1">

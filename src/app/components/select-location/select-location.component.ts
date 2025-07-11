@@ -262,7 +262,12 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
       
         // this.selectedLocation.emit({ selectedLocation: locationData });
 
-        this.router.navigate(['/order']);    
+        this.router.navigate(['/order'], {
+          state: {
+            showOutletSelection: true,
+            checkChangeBranch: true
+          }
+        });    
 
         // Reset searchTerm and searchResults
         this.searchTerm = '';
@@ -279,6 +284,39 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
     });
   }
 
+  public getMyCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+          
+          console.log('Current location:', location);
+          
+          // Instead of directly checking serviceability, set the location as a marker
+          this.editLocationValue = location;
+          
+          // Optionally, you can also update the selected location
+          this.selectedLocation = {
+            ...this.selectedLocation,
+            location: location
+          };
+          
+          // Emit the location change event if needed
+          this.changedLocationEmit.emit({ selectedLocation: this.selectedLocation });
+        },
+        (error) => {
+          console.error('Error getting current location:', error);
+          this.unServiceable();
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      this.unServiceable();
+    }
+  }
 
   // getMyCurrentLocation() {
   //   if (navigator.geolocation) {

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SharedService } from '../../core/services/shared.service';
 import { AddressFormComponent } from "../../components/address-form/address-form.component";
+import { NgZone } from '@angular/core';
 
 
 
@@ -23,7 +24,7 @@ export class AddressComponent implements OnInit {
   addressForm!: FormGroup;
   submitted = false;
 
-  currentPage: string = "address";
+  // currentPage: string = "address";
   addNew: boolean = false;
   addrSearch: boolean = false;
   editAddr: boolean = false;
@@ -59,12 +60,18 @@ export class AddressComponent implements OnInit {
 
   addresslist = [{ "id": "1100102", "createdAt": "2025-04-09T18:10:50.577112188", "updatedAt": "2025-02-20T16:03:36.334", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Testaddress", "addressTwo": "Madhapur", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "641652", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100103", "createdAt": "2025-04-09T18:10:50.577333879", "updatedAt": "2025-02-20T16:06:04.014", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Testaddress", "addressTwo": "HITEC City", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.4434646, "longitude": 78.3771953 } }, { "id": "1100108", "createdAt": "2025-04-09T18:10:50.577404069", "updatedAt": "2025-03-31T17:34:30.888", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Road Number 36 , Aditya Enclave", "addressTwo": "Venkatagiri , Madhapur", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500033", "location": { "latitude": 17.4367684, "longitude": 78.40071019999999 } }, { "id": "1100109", "createdAt": "2025-04-09T18:10:50.577442861", "updatedAt": "2025-03-31T19:06:46.726", "restaurantId": null, "customerId": "100024", "addressType": "Work", "addressOne": "test", "addressTwo": null, "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100110", "createdAt": "2025-04-09T18:10:50.577477124", "updatedAt": "2025-04-02T20:53:02.095", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, 2nd street", "addressTwo": "138, Rd Number 10, Ayyappa Society, Mega Hills, Madhapur, Hyderabad, Telangana 500081, India", "landmark": "Test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100102", "createdAt": "2025-04-09T18:10:50.577112188", "updatedAt": "2025-02-20T16:03:36.334", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Testaddress", "addressTwo": "Madhapur", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "641652", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100103", "createdAt": "2025-04-09T18:10:50.577333879", "updatedAt": "2025-02-20T16:06:04.014", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Testaddress", "addressTwo": "HITEC City", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.4434646, "longitude": 78.3771953 } }, { "id": "1100108", "createdAt": "2025-04-09T18:10:50.577404069", "updatedAt": "2025-03-31T17:34:30.888", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Road Number 36 , Aditya Enclave", "addressTwo": "Venkatagiri , Madhapur", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500033", "location": { "latitude": 17.4367684, "longitude": 78.40071019999999 } }, { "id": "1100109", "createdAt": "2025-04-09T18:10:50.577442861", "updatedAt": "2025-03-31T19:06:46.726", "restaurantId": null, "customerId": "100024", "addressType": "Work", "addressOne": "test", "addressTwo": null, "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100110", "createdAt": "2025-04-09T18:10:50.577477124", "updatedAt": "2025-04-02T20:53:02.095", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, 2nd street", "addressTwo": "138, Rd Number 10, Ayyappa Society, Mega Hills, Madhapur, Hyderabad, Telangana 500081, India", "landmark": "Test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100102", "createdAt": "2025-04-09T18:10:50.577112188", "updatedAt": "2025-02-20T16:03:36.334", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Testaddress", "addressTwo": "Madhapur", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "641652", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100103", "createdAt": "2025-04-09T18:10:50.577333879", "updatedAt": "2025-02-20T16:06:04.014", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Testaddress", "addressTwo": "HITEC City", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.4434646, "longitude": 78.3771953 } }, { "id": "1100108", "createdAt": "2025-04-09T18:10:50.577404069", "updatedAt": "2025-03-31T17:34:30.888", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, Road Number 36 , Aditya Enclave", "addressTwo": "Venkatagiri , Madhapur", "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500033", "location": { "latitude": 17.4367684, "longitude": 78.40071019999999 } }, { "id": "1100109", "createdAt": "2025-04-09T18:10:50.577442861", "updatedAt": "2025-03-31T19:06:46.726", "restaurantId": null, "customerId": "100024", "addressType": "Work", "addressOne": "test", "addressTwo": null, "landmark": "test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }, { "id": "1100110", "createdAt": "2025-04-09T18:10:50.577477124", "updatedAt": "2025-04-02T20:53:02.095", "restaurantId": null, "customerId": "100024", "addressType": "Home", "addressOne": "3/8E, 2nd street", "addressTwo": "138, Rd Number 10, Ayyappa Society, Mega Hills, Madhapur, Hyderabad, Telangana 500081, India", "landmark": "Test", "city": "Hyderabad", "state": "Telangana", "country": "India", "pincode": "500081", "location": { "latitude": 17.448583499999998, "longitude": 78.39080349999999 } }]
 
+  currentPage: number = 1;
+  itemsPerPage: number = 4; // Number of items per page
+  totalItems: number = 0;
+  pagedAddresses: any[] = [];
+
   constructor(
     public apiService: ApiService,
     public sharedService: SharedService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private location: Location
+    private location: Location,
+    private ngZone: NgZone
   ) { }
 
 
@@ -98,12 +105,16 @@ export class AddressComponent implements OnInit {
     console.log('method call getAddresssDetails');
 
     this.apiService.getMethod(`/address?customerId_eq=${this.customerDetails.id}`).subscribe({
-      next: (reponse) => {
-        console.log(reponse);
+      next: (response) => {
+        console.log(response);
 
-        if (reponse.data.length > 0) {
-          this.address = reponse.data;
-          // this.address = this.addresslist;
+        if (response.data.length > 0) {
+          // Sort addresses by createdAt in descending order (newest first)
+          this.address = response.data.sort((a:any, b:any) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+          this.totalItems = this.address.length;
+          this.setPage(1); // Initialize first page
         }
       },
       error: (error) => { console.log(error) }
@@ -111,8 +122,9 @@ export class AddressComponent implements OnInit {
   }
 
   selectedAddress(index: number) {
-    this.pickedAddressindex = index;
-  }
+    this.ngZone.run(() => {
+      this.pickedAddressindex = index;
+    });  }
 
   proceedOrder() {
     this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
@@ -170,5 +182,28 @@ export class AddressComponent implements OnInit {
       },
       error: (error) => { console.log(error) }
     })
+  }
+
+  setPage(page: number): void {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.totalItems);
+    this.pagedAddresses = this.address.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.setPage(this.currentPage + 1);
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.setPage(this.currentPage - 1);
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 }

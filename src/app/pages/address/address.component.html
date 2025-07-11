@@ -36,7 +36,7 @@
         <div class="container my-3  ">
             <div class="row ">
                 <div class="col-md-12  scrollable">
-                    @for (item of address; let index =$index ;track item){
+                    @for (item of pagedAddresses; let index =$index ;track item){
                         <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(index)">
                             <p class="" [ngClass]="{'home': item?.addressType == 'Home' , 'work' :  item?.addressType == 'Work', 'other' :  item?.addressType == 'Other' }" >
                                 {{item.addressType}}
@@ -47,31 +47,27 @@
                                     <img src="assets/images/icons/edit3.png">
                                 </button>
                             </p>
-                            <!-- <span> {{item.addressOne}}, {{item.addressTwo}}, {{item.landmark}},
-                                <br> {{item.city}}, {{item.state}}, {{item.country}} - {{item.pincode}}.</span> -->
-                                <span>{{item.addressTwo}}</span>
+                            <span>{{item.addressTwo}}</span>
                         </div>
                     }
                     
-                    <!-- <div class="addressTile">
-                        <p class="work">Work
-                            <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
-                            <button class="btn simpleBtn"><img src="assets/images/icons/edit3.png"></button>
-                        </p>
-                        <span>Cessana Park, Block 4D, IBM, Mindspace Madhapur, Hyderabad, Telangana 504320, India</span>
+                    <!-- Pagination Controls -->
+                    <div class="pagination-controls" *ngIf="totalItems > itemsPerPage">
+                        <div class="pagination-buttons">
+                            <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </button>
+                            <span class="page-counter">Page {{currentPage}} of {{totalPages()}}</span>
+                            <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === totalPages()" (click)="nextPage()">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="addressTile">
-                        <p class="other">Other
-                            <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete"><img src="assets/images/icons/delete.png"></button>
-                            <button class="btn simpleBtn"><img src="assets/images/icons/edit3.png"></button>
-                        </p>
-                        <span>63, Ameenpur, Madhura Nagar Colony, Beeramguda, Ramachandrpuram, Telangana 522034, India</span>
-                    </div> -->
+                    
                     <div class="container my-3 bg-transparent ">
                         <div class="row ">
                             <div class="col-md-12  ">
-                                <!-- <button class="btn cartAddressBtn" (click)="newAddress()" > Add New Address</button> -->
-                                 @if (pickedAddressindex != null) {
+                                @if (pickedAddressindex != null) {
                                     <button class="btn cartAddressBtn "  (click)="proceedOrder()">Proceed </button>
                                  } 
                                  @else {

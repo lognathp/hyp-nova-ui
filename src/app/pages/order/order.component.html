@@ -726,17 +726,27 @@
         <div class="offcanvas-body">
 
             <ul class="outletBtm">
-                @for (item of partnerData?.restaurantDetails; track $index){
+                @for (item of partnerData?.restaurantDetails; track $index) {
                 <li class="mb-1" (click)="selectBranch($index)">
-                    <img src="assets/images/icons/forward.png " class="forwardIcon">
+                  <img src="assets/images/icons/forward.png" class="forwardIcon">
+                  <div class="outlet-info">
                     <p class="outletAddr" [ngClass]="{'unavailableStore': !availableBranchData?.includes(item.id)}">
-                        {{item.restaurantName}} </p>
-                    <span class="outletDes"> {{item.address}}
-                        <!-- <span>30-40 mins</span> -->
-                    </span>
+                      {{item.restaurantName}}
+                    </p>
+
+                    <div class="outlet-meta">
+                      <span class="outletDes">{{item.address}}</span>
+                      <span class="badge" [ngClass]="item.serviceable ? 'bg-success' : 'bg-danger'">
+                        {{item.serviceable ? 'Open Now' : 'Closed'}}
+                        </span>
+                    @if (getOutletDistance(item)) {
+                        <span class="outlet-distance">~ {{getOutletDistance(item)}} km away</span>
+                        }
+                    </div>
+                  </div>
                 </li>
                 }
-            </ul>
+              </ul>
         </div>
         }
     </div>

@@ -19,6 +19,10 @@ export class OrderHistoryComponent {
   restaurentId: number | undefined;
   loading: boolean = false;
 
+  currentPage: number = 1;
+  itemsPerPage: number = 3; // Number of items per page
+  totalItems: number = 0;
+  pagedAddresses: any[] = [];
 
   constructor(
     private location: Location,
@@ -75,6 +79,8 @@ export class OrderHistoryComponent {
       next: (reponse) => {
         this.loading = false;
         this.orderHistory = reponse.data;
+        this.totalItems = this.orderHistory.length;
+        this.pagedAddresses = this.orderHistory.slice(0, this.itemsPerPage);
         // let SNo:number = 1;
         // this.orderHistory.map((ele:any) => {
         //   ele['SNo'] = SNo;
@@ -84,6 +90,29 @@ export class OrderHistoryComponent {
       },
       error: (error) => { console.log(error) }
     });
+  }
+
+  handlePagination(page: number): void {
+    this.currentPage = page;
+    const start = (page - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.pagedAddresses = this.orderHistory.slice(start, end);
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.handlePagination(this.currentPage - 1);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.handlePagination(this.currentPage + 1);
+    }
   }
 
   /**
