@@ -79,9 +79,19 @@ export class AddressComponent implements OnInit {
   /**
    * Back Button
    */
+  // goBack(): void {
+  //   this.router.navigate(['/cart']);
+  // }
   goBack(): void {
+  const cartItems = JSON.parse(localStorage.getItem('foodBasket') || '[]');
+
+  if (cartItems.length > 0) {
     this.router.navigate(['/cart']);
+  } else {
+    this.router.navigate(['/order']);
   }
+}
+
 
   ngOnInit(): void {
     let custDetail: any = localStorage.getItem('customerDetails');
