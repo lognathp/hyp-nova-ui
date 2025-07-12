@@ -2,7 +2,7 @@
 <app-quote-loader></app-quote-loader>
 }
 @if(unKnownError){
-<app-something-went-wrong></app-something-went-wrong>
+<app-something-went-wrong [errorMessage]="errorMessage"></app-something-went-wrong>
 }
 @if (restaurentClosed) {
 <app-restaurent-closed></app-restaurent-closed>

@@ -36,18 +36,18 @@
         <div class="container my-3  ">
             <div class="row ">
                 <div class="col-md-12  scrollable">
-                    @for (item of pagedAddresses; let index =$index ;track item){
-                        <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(index)">
-                            <p class="" [ngClass]="{'home': item?.addressType == 'Home' , 'work' :  item?.addressType == 'Work', 'other' :  item?.addressType == 'Other' }" >
-                                {{item.addressType}}
-                                <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete" (click)="deleteAddress(item)" >
+                    @for (address of pagedAddresses; let index =$index ;track address){
+                        <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(address, index)">
+                            <p class="" [ngClass]="{'home': address?.addressType == 'Home' , 'work' :  address?.addressType == 'Work', 'other' :  address?.addressType == 'Other' }" >
+                                {{address.addressType}}
+                                <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete" (click)="deleteAddress(address)" >
                                     <img src="assets/images/icons/delete.png">
                                 </button>
-                                <button class="btn simpleBtn" (click)="editAddress(item)" >
+                                <button class="btn simpleBtn" (click)="editAddress(address)" >
                                     <img src="assets/images/icons/edit3.png">
                                 </button>
                             </p>
-                            <span>{{item.addressTwo}}</span>
+                            <span>{{address.addressTwo}}</span>
                         </div>
                     }
                     

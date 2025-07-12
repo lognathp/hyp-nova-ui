@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {  Location } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
@@ -10,12 +10,18 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './something-went-wrong.component.scss'
 })
 export class SomethingWentWrongComponent {
+  @Input() errorMessage!: string | { message: string };
+
   constructor(
     private location: Location,
      private router: Router,
   ) { }
 
   goBack(): void {
-    this.router.navigate(['/order']);
+    if(this.errorMessage == 'The location is not deliverable.'){
+      this.router.navigate(['/address']);
+    }else{
+      this.router.navigate(['/order']);
+    }
   }
 }

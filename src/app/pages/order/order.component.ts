@@ -413,11 +413,11 @@ export class OrderComponent implements OnInit, DoCheck {
       next: (response) => {
         localStorage.setItem('restaurantDetails', JSON.stringify(response.data[0]));
 
-
+        console.log('restaurantDetails', response.data[0]);
         const restaurantDetails: any = response.data[0];
         this.restaurentActive = restaurantDetails.active;
         this.serviceable = restaurantDetails.serviceable;
-        this.weatherAlert = restaurantDetails.serviceableMessage;
+        this.weatherAlert = restaurantDetails.serviceableMessage || 'restaurant is closed';
         // this.customerMessage = restaurantDetails.customerMessage;
         // this.restaurentActive = false;
         const workingHoursData = restaurantDetails.deliveryHours;
@@ -919,9 +919,10 @@ export class OrderComponent implements OnInit, DoCheck {
    * Method to navigate to cart page
    */
   public navigateCart(): void {
-    if (this.restaurentActive) {
+    if (this.restaurentActive && this.serviceable) {
       this.router.navigate(['/cart']);
     }
+
 
   }
 
