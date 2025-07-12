@@ -67,6 +67,10 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     connectingGateway: boolean = false;
 
     flatDiscountpercentage: any;
+    /**
+     * API error message to show in SomethingWentWrongComponent
+     */
+    errorMessage: string = '';
     unKnownError: boolean = false;
     restaurentClosed: boolean = false;
 
@@ -633,11 +637,13 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     // console.log(this.orderPriceDetails, this.quoteData, this.deliveryDetails);
 
                 },
-                error: (error: { error: string; }) => {
-                    console.log('getQuote ' + error.error);
+                error: (error: any) => {
+                    console.log('getQuote ' + error.error.message);
                     this.quoteLoading = false;
                     this.unKnownError = true;
                     this.showAddAddressButton = true;
+                    this.errorMessage = error.error?.message || 'Failed to fetch delivery quote';
+                    
 
                     //  this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
@@ -766,8 +772,9 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 await this.callPaymentAPI(reponse.data[0].id);
 
             },
-            error: (error: { error: string; }) => {
-                console.log('getQuote ' + error.error);
+            error: (error: any) => {
+                console.log('getQuote ' + error.error.message);
+                this.errorMessage = error.error?.message || 'Failed to place order';
                 // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 this.restaurentClosed = true;
                 this.isMakePaymentEnabled = false;
@@ -790,7 +797,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                 this.showPayment = true;
                 this.router.navigateByUrl('/payment', { state: { orderData: this.orderSaveResponse } });
             },
-            error: (error: any) => { console.log(error) }
+            error: (error: any) => { console.log(error); this.errorMessage = error.error?.message || 'Failed to place order'; }
         })
         this.isMakePaymentEnabled = false;
     }
