@@ -20,22 +20,38 @@ export class HomeComponent {
 
 
 
-  ngOnInit(): void {
-    // localStorage.clear();
-    localStorage.removeItem('foodBasket');
+      ngOnInit(): void {
+      localStorage.removeItem('foodBasket');
 
-    let url = window.location.href;
-    let domain = new URL(url).origin;
-    console.log('isDevMode', isDevMode());
-    if (isDevMode()) {
-      domain = "https://vasireddyswagruhafoods.hyperapps.in"
+      let url = window.location.href;
+      let domain = new URL(url).origin;
+
+      console.log('isDevMode', isDevMode());
+      if (isDevMode()) {
+        domain = "https://vasireddyswagruhafoods.hyperapps.in";
+      }
+
+      this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
+        next: (response) => {
+          this.loading = false;
+
+          const vendor = response.data[0];
+          if (!vendor) {
+            console.warn('No vendor data found for domain:', domain);
+            return;
+          }
+
+          localStorage.setItem('vendorData', JSON.stringify(vendor));
+
+          setTimeout(() => {
+            const storedVendor = localStorage.getItem('vendorData');
+    
+          }, 100); 
+        },
+        error: (error) => {
+          console.error('Error fetching partner:', error);
+        }
+      });
     }
-    this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
-      next: (response) => {
-        this.loading = false;
-        localStorage.setItem('vendorData', JSON.stringify(response.data[0]));
-      },
-      error: (error) => { console.log(error) }
-    })
-  }
+
 }
