@@ -43,6 +43,26 @@
     <!-- <p class="btmCurLoc cursor-pointer">Use my current location</p> -->
     <!-- (click)="getMyCurrentLocation()" -->
 
+        <div class="offcanvas-body">
+            <h5 class="section-title">Our Outlets</h5>
+            <ul class="locationBtm">
+                @for (item of partnerData?.restaurantDetails; track $index) {
+                <li class="cursor-pointer" (click)="selectBranch($index)" 
+                    [ngClass]="{'unavailable-item': !availableBranchData?.includes(item.id)}" style="border-bottom: none">
+                    <div>
+                        <p class="locationAddr">{{item.restaurantName}}</p>
+                        <div class="outlet-meta">
+                            <span class="locationDes">{{ getLocationDisplay(item) }}</span>
+                            <span class="status-badge" [ngClass]="item.serviceable ? 'status-open' : 'status-closed'">
+                                {{item.serviceable ? 'Open Now' : 'Closed'}}
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                }
+            </ul>
+        </div>
+
     <ul class="locationBtm">
         <ng-container *ngFor="let result of searchResults">
             <li title="Click to Select" class="cursor-pointer" (click)="selectResult(result)">
