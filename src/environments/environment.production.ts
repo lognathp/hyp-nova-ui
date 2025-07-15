@@ -5,11 +5,11 @@ export const environment = {
     partnerId:'3Ze9YGDJpw',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Saharsh Udupi Grand',
-    contactRestaurant:"9000901009",
+    title:'Terrai',
+    contactRestaurant:"8988358888",
     contactHyperapps:"7801057583",
     // flatDiscountpercentage : 25,
-    // deliveryDiscount : 25,
+    // deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
