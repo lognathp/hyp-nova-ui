@@ -25,11 +25,14 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
   searchPlaceId: string = '';
   searchResults: { placeId: string, text: string }[] = [];
 
-  restaurentId: number | undefined;
+  restaurentId: any;
   partnerId: string = '';
   restaurentActive: boolean = true;
   locationEnabled: boolean = true;
   unServiceableValue: boolean = false;
+  checkChangeBranch: boolean = false;
+  partnerData: any;
+  availableBranchData: any;
 
   editLocationValue: any;
   selectedLocation: any = {
@@ -61,6 +64,7 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
     // console.log(vdata,vendorDetail);
     let restId: any = localStorage.getItem("selectedRestId")
     this.restaurentId = parseInt(restId);
+    this.partnerData = JSON.parse(vendorDetail);
 
     if (vdata != undefined) {
       this.partnerId = vdata?.id;
@@ -86,6 +90,44 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
 
   ngOnDestroy() {
     this.clearAll();
+  }
+
+  selectBranch(index: number): void {
+    this.apiService.getMethod(`/restaurant/${this.restaurentId}`).subscribe({
+      next: (response) => {
+        const restaurantData = response.data[0];
+
+        // Save restaurant status and full details
+        this.restaurentActive = restaurantData.active;
+        localStorage.setItem('restaurantDetails', JSON.stringify(restaurantData));
+
+        // Persist branch information
+        this.availableBranchData = restaurantData.restaurants;
+        localStorage.setItem('availableBranches', JSON.stringify(this.availableBranchData));
+
+        // Store the branch that was clicked (if it exists in the array)
+        const selectedBranchId = this.availableBranchData[index];
+        if (selectedBranchId) {
+          localStorage.setItem('selectedRestId', selectedBranchId);
+        }
+
+        // Notify parent / listening components of the branch change
+        this.changedLocationEmit.emit({ selectedLocation: restaurantData });
+
+        // Prompt the user to provide their current delivery location.  Once the
+        // map component emits the final location, `getSelectedLocation()` →
+        // `checkServiceable()` will navigate to the Order page with both
+        // locations (customer + branch).
+        this.getMyCurrentLocation();
+      },
+      error: (error) => {
+        if (error.status === 400 || error.status === 404) {
+          this.unServiceable();
+          console.error('Restaurant get request error:', error);
+        }
+        console.error('Error fetching restaurant Details:', error);
+      }
+    });
   }
 
   public isLocationEnabled() {
@@ -260,7 +302,7 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
         // this.foodMenuComponent.loadAddress();
         this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
       
-        // this.selectedLocation.emit({ selectedLocation: locationData });
+        this.changedLocationEmit.emit({ selectedLocation: locationData });
 
         this.router.navigate(['/order'], {
           state: {
@@ -306,6 +348,8 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
           
           // Emit the location change event if needed
           this.changedLocationEmit.emit({ selectedLocation: this.selectedLocation });
+          this.selectedLocationEmit.emit({ selectedLocation: this.selectedLocation });
+
         },
         (error) => {
           console.error('Error getting current location:', error);
@@ -318,54 +362,19 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
     }
   }
 
-  // getMyCurrentLocation() {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const latitude = position.coords.latitude;
-  //         const longitude = position.coords.longitude;
-
-  //         this.apiService.getMethod(`/location/maps/geocode/${this.partnerId}?latitude=${latitude}&longitude=${longitude}`).subscribe({
-  //           next: (response: { data: any }) => {
-  //             const locationData = response.data[0];
-  //             locationData.formattedAddress = '';
-  //             if (Object(locationData).addressOne != null) locationData.formattedAddress += Object(locationData).addressOne + ', ';
-  //             if (Object(locationData).addressTwo != null) locationData.formattedAddress += Object(locationData).addressTwo + ', ';
-  //             if (Object(locationData).addressType != null) locationData.formattedAddress += Object(locationData).addressType + ', ';
-  //             if (Object(locationData).city != null) locationData.formattedAddress += Object(locationData).city + ', ';
-  //             if (Object(locationData).country != null) locationData.formattedAddress += Object(locationData).country + ', ';
-  //             if (Object(locationData).landmark != null) locationData.formattedAddress += Object(locationData).landmark + ', ';
-  //             if (Object(locationData).state != null) locationData.formattedAddress += Object(locationData).state;
-  //             if (Object(locationData).pincode != null) locationData.formattedAddress += ' - ' + Object(locationData).pincode + '. ';
-
-  //             localStorage.setItem('selectedLocation', JSON.stringify(locationData));
-
-  //             // this.closeSearchBar();
-  //             // this.foodMenuComponent.closeDeliveryMode();
-  //             // this.foodMenuComponent.loadAddress();
-  //             // this.closeDelivery.emit({ action: 'closeDelivery' })
-
-  //             // Reset searchTerm and searchResults
-  //             this.searchTerm = '';
-  //             this.searchResults = [];
-
-  //           },
-  //           error: (error) => {
-  //             this.unServiceable()
-  //             console.error('Error fetching location data:', error);
-  //           }
-  //         });
-  //       },
-  //       (error) => {
-  //         console.error('Error getting current location:', error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error('Geolocation is not supported by this browser.');
-  //   }
-  // }
-
-
+  // Add this method to format the location display
+  getLocationDisplay(restaurant: any): string {
+    const parts = [];
+    
+    // Try to get area, locality, or landmark
+    const locationPart = restaurant.area || restaurant.locality || restaurant.landmark || '';
+    const city = restaurant.city || '';
+    
+    if (locationPart) parts.push(locationPart);
+    if (city && city !== locationPart) parts.push(city);
+    
+    return parts.join(', ');
+  }
 
   public unServiceable(): void {
     this.unServiceableValue = true;
