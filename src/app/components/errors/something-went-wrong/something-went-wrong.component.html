@@ -6,7 +6,7 @@
             </button> -->
             <div class="orderConfirmContainer d-flex justify-content-center">
                 <img src="assets/images/icons/dish.png" class="br-0">
-                <p class="text1">Something Went Wrong</p>
+                <p class="text1">{{ errorMessage || 'Something Went Wrong' }}</p>
                 <p class="text2">Please try again later.</p>
                 <button class="btn plainButton" (click)="goBack()">Retry</button>
             </div>

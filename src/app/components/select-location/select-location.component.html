@@ -43,11 +43,11 @@
     <!-- <p class="btmCurLoc cursor-pointer">Use my current location</p> -->
     <!-- (click)="getMyCurrentLocation()" -->
 
-        <div class="offcanvas-body">
+        <div class="offcanvas-body" *ngIf="!editLocationValue && searchResults.length == 0">
             <h5 class="section-title">Our Outlets</h5>
             <ul class="locationBtm">
                 @for (item of partnerData?.restaurantDetails; track $index) {
-                <li class="cursor-pointer" (click)="selectBranch($index)" 
+                <li class="cursor-pointer" 
                     [ngClass]="{'unavailable-item': !availableBranchData?.includes(item.id)}" style="border-bottom: none">
                     <div>
                         <p class="locationAddr">{{item.restaurantName}}</p>

@@ -1,109 +1,109 @@
 @if(unServiceableValue){
-<div id="locationNotServiceable">
-    <div class="offcanvas-body vh-100">
-        <img src="assets/images/icons/locationNotServiceable.png">
-        <p class="title">Oops! Out of Reach</p>
-        <p class="desc">We can't deliver to this location yet.</p>
-        <button class="btn solidButton" (click)="unServiceableValue = false;"> Change Location </button>
+    <div id="locationNotServiceable">
+        <div class="offcanvas-body vh-100">
+            <img src="assets/images/icons/locationNotServiceable.png">
+            <p class="title">Oops! Out of Reach</p>
+            <p class="desc">We can't deliver to this location yet.</p>
+            <button class="btn solidButton" (click)="unServiceableValue = false;"> Change Location </button>
+        </div>
     </div>
-</div>
-}
-@if(!addNew && !unServiceableValue) {
-    <div class="cartBody">
-
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container p-0 d-flex">
-                <button class="navbar-toggler headerButtonLeft " type="button" >
-                    <img src="assets/images/icons/back.png" (click)="goBack();" class="headerIconLeft "  >
+    }
+    @if(!addNew && !unServiceableValue) {
+        <div class="cartBody">
+    
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container p-0 d-flex">
+                    <button class="navbar-toggler headerButtonLeft " type="button" >
+                        <img src="assets/images/icons/back.png" (click)="goBack();" class="headerIconLeft "  >
+                    </button>
+                    <div class="d-inline-block">
+                        <a class="navbar-brand cartHeader" href="">Addresses</a>
+                    </div>
+                    <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
+                    <img src="assets/images/icons/support.png " class="headerIcon "  >
                 </button>
-                <div class="d-inline-block">
-                    <a class="navbar-brand cartHeader" href="">Addresses</a>
                 </div>
-                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas" data-bs-target="#contactSupport">
-                <img src="assets/images/icons/support.png " class="headerIcon "  >
-            </button>
-            </div>
-        </nav>
-    
-        <div class="container my-3 bg-transparent ">
-            <div class="row ">
-                <div class="col-md-12 savedAddresses ">
-                    <p>Select an Address</p>
+            </nav>
+        
+            <div class="container my-3 bg-transparent ">
+                <div class="row ">
+                    <div class="col-md-12 savedAddresses ">
+                        <p>Select an Address</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    
-        <div class="container my-3  ">
-            <div class="row ">
-                <div class="col-md-12  scrollable">
-                    @for (item of pagedAddresses; let index =$index ;track item){
-                        <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(index)">
-                            <p class="" [ngClass]="{'home': item?.addressType == 'Home' , 'work' :  item?.addressType == 'Work', 'other' :  item?.addressType == 'Other' }" >
-                                {{item.addressType}}
-                                <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete" (click)="deleteAddress(item)" >
-                                    <img src="assets/images/icons/delete.png">
+        
+            <div class="container my-3  ">
+                <div class="row ">
+                    <div class="col-md-12  scrollable">
+                        @for (address of pagedAddresses; let index =$index ;track address){
+                            <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(address, index)">
+                                <p class="" [ngClass]="{'home': address?.addressType == 'Home' , 'work' :  address?.addressType == 'Work', 'other' :  address?.addressType == 'Other' }" >
+                                    {{address.addressType}}
+                                    <button class="btn simpleBtn" data-bs-toggle="modal" data-bs-target="#addressDelete" (click)="deleteAddress(address)" >
+                                        <img src="assets/images/icons/delete.png">
+                                    </button>
+                                    <button class="btn simpleBtn" (click)="editAddress(address)" >
+                                        <img src="assets/images/icons/edit3.png">
+                                    </button>
+                                </p>
+                                <span>{{address.addressTwo}}</span>
+                            </div>
+                        }
+                        
+                        <!-- Pagination Controls -->
+                        <div class="pagination-controls" *ngIf="totalItems > itemsPerPage">
+                            <div class="pagination-buttons">
+                                <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+                                    <i class="fas fa-chevron-left"></i> Previous
                                 </button>
-                                <button class="btn simpleBtn" (click)="editAddress(item)" >
-                                    <img src="assets/images/icons/edit3.png">
+                                <span class="page-counter">Page {{currentPage}} of {{totalPages()}}</span>
+                                <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === totalPages()" (click)="nextPage()">
+                                    Next <i class="fas fa-chevron-right"></i>
                                 </button>
-                            </p>
-                            <span>{{item.addressTwo}}</span>
+                            </div>
                         </div>
-                    }
-                    
-                    <!-- Pagination Controls -->
-                    <div class="pagination-controls" *ngIf="totalItems > itemsPerPage">
-                        <div class="pagination-buttons">
-                            <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
-                                <i class="fas fa-chevron-left"></i> Previous
-                            </button>
-                            <span class="page-counter">Page {{currentPage}} of {{totalPages()}}</span>
-                            <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === totalPages()" (click)="nextPage()">
-                                Next <i class="fas fa-chevron-right"></i>
-                            </button>
+                        
+                        <div class="container my-3 bg-transparent ">
+                            <div class="row ">
+                                <div class="col-md-12  ">
+                                    @if (pickedAddressindex != null) {
+                                        <button class="btn cartAddressBtn "  (click)="proceedOrder()">Proceed </button>
+                                     } 
+                                     @else {
+                                        <button class="btn plainButton" (click)="newAddress()"> Add New Address</button>
+                                     }
+                                    
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="container my-3 bg-transparent ">
-                        <div class="row ">
-                            <div class="col-md-12  ">
-                                @if (pickedAddressindex != null) {
-                                    <button class="btn cartAddressBtn "  (click)="proceedOrder()">Proceed </button>
-                                 } 
-                                 @else {
-                                    <button class="btn plainButton" (click)="newAddress()"> Add New Address</button>
-                                 }
-                                
+                </div>
+            </div>
+        
+        
+            <div class="modal fade" id="addressDelete" tabindex="-1" aria-labelledby="addressDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <img src="assets/images/icons/close3.png " >
+                            </button>
+                            <div class="addressDeleteContainer">
+                                <span class="text1">Are you sure you want to delete this address?</span>
+                                <div class="button-group">
+                                    <button class="btn simpleBtn" data-bs-dismiss="modal" aria-label="Close">No</button>
+                                    <button class="btn simpleBtn" data-bs-dismiss="modal" aria-label="Close" (click)="confirmDeleteAddress();" >Yes</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+    }
     
-    
-        <div class="modal fade" id="addressDelete" tabindex="-1" aria-labelledby="addressDeleteLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <img src="assets/images/icons/close3.png " >
-                        </button>
-                        <div class="addressDeleteContainer">
-                            <span class="text1">Are you sure you want to delete this address?</span>
-                            <div class="button-group">
-                                <button class="btn simpleBtn" data-bs-dismiss="modal" aria-label="Close">No</button>
-                                <button class="btn simpleBtn" data-bs-dismiss="modal" aria-label="Close" (click)="confirmDeleteAddress();" >Yes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-}
-
-@if (addNew) {
-    <app-address-form [addressToEdit]="addressToEdit" (addressSaved)="getSavedAddress($event)"></app-address-form>
-}
+    @if (addNew) {
+        <app-address-form [addressToEdit]="addressToEdit" (addressSaved)="getSavedAddress($event)"></app-address-form>
+    }
