@@ -65,6 +65,7 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
     let restId: any = localStorage.getItem("selectedRestId")
     this.restaurentId = parseInt(restId);
     this.partnerData = JSON.parse(vendorDetail);
+    // console.log(this.partnerData);
 
     if (vdata != undefined) {
       this.partnerId = vdata?.id;
@@ -92,43 +93,6 @@ export class SelectLocationComponent implements OnInit, DoCheck,OnDestroy {
     this.clearAll();
   }
 
-  selectBranch(index: number): void {
-    this.apiService.getMethod(`/restaurant/${this.restaurentId}`).subscribe({
-      next: (response) => {
-        const restaurantData = response.data[0];
-
-        // Save restaurant status and full details
-        this.restaurentActive = restaurantData.active;
-        localStorage.setItem('restaurantDetails', JSON.stringify(restaurantData));
-
-        // Persist branch information
-        this.availableBranchData = restaurantData.restaurants;
-        localStorage.setItem('availableBranches', JSON.stringify(this.availableBranchData));
-
-        // Store the branch that was clicked (if it exists in the array)
-        const selectedBranchId = this.availableBranchData[index];
-        if (selectedBranchId) {
-          localStorage.setItem('selectedRestId', selectedBranchId);
-        }
-
-        // Notify parent / listening components of the branch change
-        this.changedLocationEmit.emit({ selectedLocation: restaurantData });
-
-        // Prompt the user to provide their current delivery location.  Once the
-        // map component emits the final location, `getSelectedLocation()` →
-        // `checkServiceable()` will navigate to the Order page with both
-        // locations (customer + branch).
-        this.getMyCurrentLocation();
-      },
-      error: (error) => {
-        if (error.status === 400 || error.status === 404) {
-          this.unServiceable();
-          console.error('Restaurant get request error:', error);
-        }
-        console.error('Error fetching restaurant Details:', error);
-      }
-    });
-  }
 
   public isLocationEnabled() {
     if ('permissions' in navigator) {

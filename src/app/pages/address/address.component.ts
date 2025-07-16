@@ -129,14 +129,22 @@ export class AddressComponent implements OnInit {
     })
   }
 
-  selectedAddress(index: number) {
+  selectedAddress(address: any, index: number): void {
     this.ngZone.run(() => {
-      this.pickedAddressindex = index;
-    });  }
+      // Find the index in the full address array
+      const fullIndex = this.address.findIndex((addr:any) => addr.id === address.id);
+      this.pickedAddressindex = fullIndex;
+      this.proceedOrder();
+    });
+  }
 
   proceedOrder() {
-    this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
-    this.router.navigateByUrl('/cart');
+    if (this.pickedAddressindex !== undefined) {
+      // Clear any previously stored delivery quote
+      this.sharedService.sendDeliveryQuotedata({});
+      this.sharedService.SelecetdAddress(this.address[this.pickedAddressindex]);
+      this.router.navigateByUrl('/cart');
+    }
   }
 
 
