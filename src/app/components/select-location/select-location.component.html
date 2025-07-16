@@ -47,10 +47,11 @@
             <h5 class="section-title">Our Outlets</h5>
             <ul class="locationBtm">
                 @for (item of partnerData?.restaurantDetails; track $index) {
-                <li class="cursor-pointer" 
+                <li class="cursor-pointer"
                     [ngClass]="{'unavailable-item': !availableBranchData?.includes(item.id)}" style="border-bottom: none">
                     <div>
-                        <p class="locationAddr">{{item.restaurantName}}</p>
+                            <img src="https://img.icons8.com/?size=100&id=2BeIdZyy0fFG&format=png&color=000000" alt="Restaurant Icon" style="width:32px; height:32px; margin-right:6px; margin-top: 3%; vertical-align:middle;">
+                            {{item.restaurantName}}
                         <div class="outlet-meta">
                             <span class="locationDes">{{ getLocationDisplay(item) }}</span>
                             <span class="status-badge" [ngClass]="item.serviceable ? 'status-open' : 'status-closed'">
