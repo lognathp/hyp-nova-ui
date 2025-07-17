@@ -241,6 +241,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
   ngAfterViewInit(): void {
     this.loading = false;
+    this.getFoodMenuCategoryApi();
     if (this.restaurentId != undefined && !isNaN(this.restaurentId)) {
 
       if (!isNaN(this.restaurentId)) {
@@ -270,7 +271,6 @@ export class OrderComponent implements OnInit, DoCheck {
         document.body.style.overflow = 'auto'; // ensure scroll is enabled
       }, 0);
 
-      this.getFoodMenuCategoryApi();
       this.openSelectBranch = false;
 
     }

@@ -11,7 +11,7 @@
         <button class="btn solidButton" (click)="unServiceableValue = false;"> Change Location </button>
     </div>
 </div>
-}@else {
+}@if(!unServiceableValue) {
 <div class="offcanvas-body">
     <div class="row ">
         <div class="col-md-12 pos-rel ">
@@ -43,15 +43,14 @@
     <!-- <p class="btmCurLoc cursor-pointer">Use my current location</p> -->
     <!-- (click)="getMyCurrentLocation()" -->
 
-        <div class="offcanvas-body" *ngIf="!editLocationValue && searchResults.length == 0">
+        <!-- <div class="offcanvas-body" *ngIf="!editLocationValue && searchResults.length == 0">
             <h5 class="section-title">Our Outlets</h5>
             <ul class="locationBtm">
                 @for (item of partnerData?.restaurantDetails; track $index) {
                 <li class="cursor-pointer"
                     [ngClass]="{'unavailable-item': !availableBranchData?.includes(item.id)}" style="border-bottom: none">
                     <div>
-                            <img src="https://img.icons8.com/?size=100&id=2BeIdZyy0fFG&format=png&color=000000" alt="Restaurant Icon" style="width:32px; height:32px; margin-right:6px; margin-top: 3%; vertical-align:middle;">
-                            {{item.restaurantName}}
+                        <p class="locationAddr">{{item.restaurantName}}</p>
                         <div class="outlet-meta">
                             <span class="locationDes">{{ getLocationDisplay(item) }}</span>
                             <span class="status-badge" [ngClass]="item.serviceable ? 'status-open' : 'status-closed'">
@@ -59,6 +58,25 @@
                             </span>
                         </div>
                     </div>
+                </li>
+                }
+            </ul>
+        </div> -->
+
+        <div *ngIf="!editLocationValue && searchResults.length == 0">
+            <ul class="locationBtm">
+                @for (location of getSuggestedLocations(); track $index) {
+                <li  title="Click to Select" class="cursor-pointer" 
+                    (click)="selectSuggestedLocation(location)">
+                    <p class="locationAddr">{{ location.name.split(' ')[0] }}</p>
+                    <span class="locationDes">{{ location.name.split(' ').slice(1).join(' ') }}</span>
+                        <!-- <div class="outlet-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+                            <span class="locationDes" style="color: #666; font-size: 13px;">Tap to select</span>
+                            <span class="status-badge status-open" *ngIf="location.isServiceable" 
+                                  style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 500;">
+                                Available
+                            </span>
+                        </div> -->
                 </li>
                 }
             </ul>
