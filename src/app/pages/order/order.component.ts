@@ -99,6 +99,7 @@ export class OrderComponent implements OnInit, DoCheck {
   serviceable: any;
   weatherAlert: string | null = null;
   customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
+  restaurentDetails: any;
 
 
   constructor(
@@ -227,12 +228,20 @@ export class OrderComponent implements OnInit, DoCheck {
       this.updateItemStock(webSocketResponse);
     });
 
+    this.wsSubscription = this.wsService.getRestaurentDetails().subscribe((webSocketResponse: any) => {
+      this.restaurentDetails = webSocketResponse;
+      this.restaurentActive = webSocketResponse.active;
+      this.serviceable = webSocketResponse.serviceable;
+      console.log("restaurentDetails ngOnInit", this.restaurentDetails);
+    });
+
     this.fetchOrders();
 
   }
 
   ngAfterViewInit(): void {
     this.loading = false;
+    this.getFoodMenuCategoryApi();
     if (this.restaurentId != undefined && !isNaN(this.restaurentId)) {
 
       if (!isNaN(this.restaurentId)) {
@@ -262,7 +271,6 @@ export class OrderComponent implements OnInit, DoCheck {
         document.body.style.overflow = 'auto'; // ensure scroll is enabled
       }, 0);
 
-      this.getFoodMenuCategoryApi();
       this.openSelectBranch = false;
 
     }
@@ -284,6 +292,13 @@ export class OrderComponent implements OnInit, DoCheck {
       this.updateItemStock(webSocketResponse);
     });
 
+    this.wsSubscription = this.wsService.getRestaurentDetails().subscribe((webSocketResponse: any) => {
+      this.restaurentDetails = webSocketResponse;
+      this.serviceable = webSocketResponse.serviceable;
+      this.restaurentActive = webSocketResponse.active;
+      console.log("restaurentDetails ngDoCheck", this.restaurentDetails);
+    });
+
     const localstrfoodItem: any = localStorage.getItem("foodBasket");
     if (localstrfoodItem != null) {
       this.foodBasket = JSON.parse(localstrfoodItem);
@@ -299,6 +314,7 @@ export class OrderComponent implements OnInit, DoCheck {
         this.cdr.detectChanges();
       });
     }});
+    // this.checkWorkingHours();
   }
 
   /**
@@ -413,11 +429,11 @@ export class OrderComponent implements OnInit, DoCheck {
       next: (response) => {
         localStorage.setItem('restaurantDetails', JSON.stringify(response.data[0]));
 
-
+        console.log('restaurantDetails', response.data[0]);
         const restaurantDetails: any = response.data[0];
         this.restaurentActive = restaurantDetails.active;
         this.serviceable = restaurantDetails.serviceable;
-        this.weatherAlert = restaurantDetails.serviceableMessage;
+        this.weatherAlert = restaurantDetails.serviceableMessage || 'restaurant is closed';
         // this.customerMessage = restaurantDetails.customerMessage;
         // this.restaurentActive = false;
         const workingHoursData = restaurantDetails.deliveryHours;
@@ -433,9 +449,9 @@ export class OrderComponent implements OnInit, DoCheck {
         } else {
           this.workingHours = false;
         }
-
+        console.log("this.workingHours",this.workingHours);
       },
-      error: (error) => { console.error('Error fetching restaurant Details:', error); }
+      error: (error) => { console.error('Error fetching restaurant Details:', error.error.message); }
     });
   }
 
@@ -919,9 +935,10 @@ export class OrderComponent implements OnInit, DoCheck {
    * Method to navigate to cart page
    */
   public navigateCart(): void {
-    if (this.restaurentActive) {
+    if (this.restaurentActive && this.serviceable) {
       this.router.navigate(['/cart']);
     }
+
 
   }
 

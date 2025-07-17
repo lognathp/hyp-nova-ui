@@ -14,6 +14,7 @@ export class WebSocketService {
   private restaurantStatusSubject = new Subject<string>();
   private itemStatusSubject = new Subject<string>();
   private orderStatusSubject = new Subject<string>();
+  private restaurentDetailsSubject = new Subject<string>();
 
   constructor() {
     this.client = new Client({
@@ -35,6 +36,9 @@ export class WebSocketService {
       this.client.subscribe('/topic/order-status', (message: Message) => {
         this.orderStatusSubject.next(JSON.parse(message.body));
       });
+      this.client.subscribe('/topic/restaurant-serviceable', (message: Message) => {
+        this.restaurentDetailsSubject.next(JSON.parse(message.body));
+      });
     };
 
     this.client.onStompError = (frame) => {
@@ -54,5 +58,8 @@ export class WebSocketService {
   }
   getOrderStatusUpdates(): Observable<string> {
     return this.orderStatusSubject.asObservable();
+  }
+  getRestaurentDetails(): Observable<string> {
+    return this.restaurentDetailsSubject.asObservable();
   }
 }
