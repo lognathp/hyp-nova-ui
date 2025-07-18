@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-<<<<<<< HEAD
-      - yum-yum
-=======
       - chaitanya-food-court
       - kanchi-cafe
       - wacky-wok
