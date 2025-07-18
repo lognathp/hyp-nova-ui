@@ -78,10 +78,12 @@
                 {{ weatherAlert }}
               </marquee>
             </div>
-            <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
-              <span class="zomato-icon">📞</span>
-              <span class="zomato-text">{{ customerMessage }}</span>
-            </div> -->
+            <br>
+            <div *ngIf="workingHours == false" class="p-10 overflow-hidden">
+                <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
+                  {{ "can't place order after working hours" }}
+                </marquee>
+              </div>
           </div>
         <!-- Search Box -->
 
@@ -327,17 +329,27 @@
                              }">
                         <!-- If item is inactive -->
                         @if (item.active === '0') {
-                        @if (item.itemImageUrl) {
-                        <img [src]="item.itemImageUrl" class="card-img-top greyImage">
-                        }
-                        <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
-                        <span class="outOfStock">Out of Stock</span>
-                        }
-                        @else {
-                        @if (item.itemImageUrl) {
-                        <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
-                        }
-
+                          @if (item.itemImageUrl) {
+                            <img 
+                              [src]="item.itemImageUrl" 
+                              class="card-img-top greyImage" 
+                              loading="lazy"
+                              [alt]="item.itemName + ' (Out of Stock)'">
+                          }
+                          <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
+                          <span class="outOfStock">Out of Stock</span>
+                        } @else {
+                          @if (item.itemImageUrl) {
+                            <img 
+                              [src]="item.itemImageUrl" 
+                              class="card-img-top" 
+                              loading="lazy"
+                              [alt]="item.itemName">
+                          } @else {
+                            <div class="image-placeholder">
+                              <i class="bi bi-image"></i>
+                            </div>
+                          }
                         @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
                         item.variation.length == 0) {
                         <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
@@ -722,6 +734,13 @@
         }
         @if (!checkChangeBranch){
         <div class="offcanvas-header">
+            <div class="offcanvas-close-wrapper">
+  <button type="button" class="circle-close-btn" (mousedown)="$event.preventDefault()" (click)="closeOffcanvas('selectOutlet')">&times;</button>
+</div>
+
+<div class="offcanvas-header">
+  <h5 class="offcanvas-title">Select Outlet</h5>
+</div>
             <!-- <img src="assets/images/icons/back.png " class="backIcon "> -->
             <h5 class="offcanvas-title btmHeaderOut"> Select Outlet</h5>
             <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
@@ -733,14 +752,14 @@
                 <li class="mb-1" (click)="selectBranch($index)">
                   <img src="assets/images/icons/forward.png" class="forwardIcon">
                   <div class="outlet-info">
-                    <p class="outletAddr" [ngClass]="{'unavailableStore': !availableBranchData?.includes(item.id)}">
+                    <p class="outletAddr" >
                       {{item.restaurantName}}
                     </p>
 
                     <div class="outlet-meta">
                       <span class="outletDes">{{item.address}}</span>
-                      <span class="badge" [ngClass]="item.serviceable ? 'bg-success' : 'bg-danger'">
-                        {{item.serviceable ? 'Open Now' : 'Closed'}}
+                      <span class="badge" [ngClass]="item.active ? 'bg-success' : 'bg-danger' ">
+                        {{item.active ? 'Open Now' : 'Closed'}}
                         </span>
                     @if (getOutletDistance(item)) {
                         <span class="outlet-distance">~ {{getOutletDistance(item)}} km away</span>

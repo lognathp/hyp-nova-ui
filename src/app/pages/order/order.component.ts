@@ -232,7 +232,7 @@ export class OrderComponent implements OnInit, DoCheck {
       this.restaurentDetails = webSocketResponse;
       this.restaurentActive = webSocketResponse.active;
       this.serviceable = webSocketResponse.serviceable;
-      console.log("restaurentDetails ngOnInit", this.restaurentDetails);
+      // localStorage.setItem('restaurantDetails', JSON.stringify(webSocketResponse));
     });
 
     this.fetchOrders();
@@ -248,6 +248,7 @@ export class OrderComponent implements OnInit, DoCheck {
         this.checkWorkingHours();
         this.LocationData();
 
+        this.restaurentDetails = localStorage.getItem('restaurantDetails');
         const vendorDetail: any = localStorage.getItem('vendorData');
         this.vendorData = JSON.parse(vendorDetail)
         // console.log(vdata);

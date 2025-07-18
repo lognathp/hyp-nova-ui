@@ -107,10 +107,10 @@ export class PaymentComponent {
       this.ngZone.runOutsideAngular(() => {
         this.apiService.postMethod(`/payment/verify/${currentOrderId}`, response).subscribe({
           next: (reponse) => { console.log(response);
-            this.router.navigate(['/order-tracking']);
+            this.router.navigate(['/order-tracking'],{state:{orderData:reponse}});
            },
           error: (error) => { console.log(error)
-            this.router.navigate(['/order-tracking']);
+            this.router.navigate(['/order-tracking'],{state:{orderData:error}});
            }
       });
         

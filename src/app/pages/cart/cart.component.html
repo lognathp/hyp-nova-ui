@@ -1,13 +1,11 @@
 @if(quoteLoading){
     <app-quote-loader></app-quote-loader>
-    }
-    @if(unKnownError){
+}
+@if(unKnownError){
     <app-something-went-wrong [errorMessage]="errorMessage"></app-something-went-wrong>
-    }
-    @if (restaurentClosed) {
-    <app-restaurent-closed></app-restaurent-closed>
-    }
-    @if (!quoteLoading && !restaurentClosed && !unKnownError) {
+}
+
+@if (!quoteLoading && !unKnownError) {
     <div class="cartBody">
     
         <nav class="navbar navbar-expand-lg navbar-dark">
@@ -18,6 +16,9 @@
                 <div class="d-inline-block">
                     <a class="navbar-brand cartHeader" href="" data-bs-toggle="offcanvas"
                         data-bs-target="#selectDeliveryLocation">Your Cart</a>
+                    <span class="badge" [ngClass]="restaurentActive ? 'bg-success' : 'bg-danger'">
+                        {{ restaurentActive ? 'Open' : 'Closed' }}
+                    </span>
                 </div>
                 <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
                     data-bs-target="#contactSupport">
@@ -26,7 +27,22 @@
             </div>
         </nav>
     
-    
+        @if(restaurentActive == false){
+            <div class="container my-2 bg-transparent outletclosedContainer">
+                <div class="outletClosed">
+                    <div class="row p-0">
+                        <div class="col-3 p-0">
+                            <img src="assets/images/icons/storeClosed.png" alt="Store Closed">
+                        </div>
+                        <div class="col-9 pad">
+                            <button (click)="back()" class="btn btn-link p-0" [disabled]="restaurentActive == false">Change</button>
+                            <p class="title">Oops! Outlet Closed</p>
+                            <p>This outlet isn't accepting orders right now. We'll be back at 11:00 AM.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     
     
         <div class="container  cartOffer" *ngIf="orderPriceDetails.discount">
@@ -53,8 +69,8 @@
                             </span>
     
                         </div>
-                        <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
-                            <button class="btn btn-transparent cartQtyButton ">
+                        <div class="col-4 col-md-4 food-item foodItemImage cartPrice " [class.disabled]="restaurentActive == false">
+                            <button class="btn btn-transparent cartQtyButton " [disabled]="restaurentActive == false">
                                 <span (click)="sameAddonConfirmation(basketitem.item, $index,'reduce')">-</span>
                                 {{basketitem.item.quantity}}
                                 <span (click)="sameAddonConfirmation(basketitem.item, $index,'add')">+</span>
@@ -90,7 +106,7 @@
         <div class="container menubrowse">
             <div class="row ">
                 <div class="col-12">
-                    <p class="coupon-content mt-1" title="Back to Menu" (click)="back()">Add more Items </p>
+                    <p class="coupon-content mt-1" title="Back to Menu" [class.disabled]="restaurentActive == false" (click)="back()">Add more Items </p>
                 </div>
             </div>
         </div>
@@ -164,7 +180,7 @@
         <div class="row address-block">
             <div class="col-md-12 addressDetails">
                 <p>Delivery Address
-                    <button class="btn simpleBtn" (click)="selectAddress()">
+                    <button class="btn simpleBtn" (click)="selectAddress()" [disabled]="restaurentActive == false">
                         <img src="assets/images/icons/edit3.png">
                     </button>
                 </p>
@@ -186,26 +202,31 @@
     }
 
 
-    <div class="container my-3 bg-transparent ">
-        <div class="row ">
-            <div class="col-md-12 ">
+    <div class="container my-3 bg-transparent " [class.disabled]="restaurentActive == false">
+        <div class="row">
+            <div class="col-md-12">
                 @if (orderOptionsType == "1") {
-                @if (showAddAddressButton){
-                <button class="btn cartAddressBtn" (click)="selectAddress()"> <span>Add / Select Address</span></button>
-                } @else if(!quoteLoading) {
-                <input type="text " class="form-control my-3"  [(ngModel)]="deliveryInstructions" placeholder="Delivery Instructions">
-                <button class="btn cartAddressBtn" [class.disabled]="isMakePaymentEnabled"
-                    (click)="onPrepareOrderClick()"> <span>Proceed to Payment </span></button>
-                <!-- data-bs-toggle="modal" data-bs-target="#orderPlaced" -->
+                    @if (showAddAddressButton) {
+                        <button class="btn cartAddressBtn" (click)="selectAddress()" [disabled]="restaurentActive == false">
+                            <span>Add / Select Address</span>
+                        </button>
+                    } @else if (!quoteLoading) {
+                        <input type="text" class="form-control my-3" [(ngModel)]="deliveryInstructions" placeholder="Delivery Instructions">
+                        <button class="btn cartAddressBtn" 
+                                [class.disabled]="isMakePaymentEnabled" 
+                                [disabled]="restaurentActive == false"
+                                (click)="onPrepareOrderClick()">
+                            <span>Proceed to Payment</span>
+                        </button>
+                    }
+                } @else if (orderOptionsType == "3") {
+                    <input type="text" class="form-control my-3" [(ngModel)]="deliveryInstructions" placeholder="Delivery Instructions">
+                    <button class="btn cartAddressBtn" 
+                            [disabled]="restaurentActive == false" 
+                            (click)="checkLoginandProceed()">
+                        <span>Proceed to Payment</span>
+                    </button>
                 }
-                } @else if(orderOptionsType == "3") {
-                <input type="text " class="form-control my-3"  [(ngModel)]="deliveryInstructions" placeholder="Delivery Instructions">
-                <button class="btn cartAddressBtn" (click)="checkLoginandProceed()"> 
-                    <span>Proceed to Payment</span>
-                </button>
-
-                }
-
             </div>
         </div>
     </div>
