@@ -8,8 +8,8 @@ export const environment = {
     title:'Ideal Kitchen',
     contactRestaurant:"9642887733",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 30,
+    // flatDiscountpercentage : 25,
+    // deliveryDiscount : 30,
     itemdiscountValue : 0,
     itempackagingCharge: 10,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
