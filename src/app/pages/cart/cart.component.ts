@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, DoCheck, OnInit } from '@angular/core';
-import { debounceTime, Subject, Subscription } from 'rxjs';
+import { debounceTime, Subject, Subscription, tap } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -90,7 +90,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
     isMakePaymentEnabled: boolean = false;
 
-    restaurentActive: boolean = true;
+    restaurentActive: boolean = false; // Initialize with a default value
 
     private wsSubscription!: Subscription;
     workingHours: boolean = true;
@@ -108,7 +108,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // private messageService: MessageService,
         // private primengConfig: PrimeNGConfig,
         private wsService: WebSocketService,
-    ) { }
+    ) { 
+        // Initialize with current status from shared service if available
+        this.sharedData.getRestaurantDetails().pipe(take(1)).subscribe((data: any) => {
+            this.restaurentActive = data.active;
+        });
+    }
 
 
     ngOnInit(): void {
@@ -164,11 +169,14 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
        
         this.checkWorkingHours();
+        
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
-            console.log(webSocketResponse,'cart webSocketResponse');
+            // console.log(webSocketResponse,'cart webSocketResponse');
             
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
+            console.log(this.restaurentActive,'this.restaurentActive in ws');
         });
+        
         const foodItem: any = localStorage.getItem("foodBasket");
         const menuData: any = localStorage.getItem("menu");
         this.foodBasket = JSON.parse(foodItem);
@@ -285,7 +293,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     ngDoCheck() {
 
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
-             console.log(webSocketResponse,'webSocketResponse');
+            //  console.log(webSocketResponse,'webSocketResponse');
             
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
             // this.restaurentActive = false;
@@ -608,7 +616,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // const tQuoteData = {"data":[{"service":"flash","manifest":false,"quote":{"price":72.33,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":72.33,"total_gst_amount":0.0,"additional_charges":[]}},"error":null,"token":null,"network_id":60,"network_name":"Flash by Shadowfax","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
         // const tQuoteData = {"data":[{"service":"pidge-lbnp","manifest":false,"quote":{"price":51.92,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":40.6392,"total_gst_amount":8.9208,"additional_charges":[]}},"error":null,"token":null,"network_id":345,"network_name":"Ola ONDC","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
         if (this.quoteLoading) {
-            this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
+            this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(100), take(1)).subscribe({
                 next: (reponse: any) => {
                     // console.log("delivery/quote", reponse);
                     this.quoteLoading = false;
@@ -643,9 +651,6 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     this.unKnownError = true;
                     this.showAddAddressButton = true;
                     this.errorMessage = error.error?.message || 'Failed to fetch delivery quote';
-                    
-
-                    //  this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 }
 
@@ -773,9 +778,10 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
             },
             error: (error: any) => {
-                console.log('getQuote ' + error.error.message);
+                console.log('getQuote ' + error.error?.message);
+                this.quoteLoading = false;
+                this.unKnownError = true;
                 this.errorMessage = error.error?.message || 'Failed to place order';
-                // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 this.restaurentClosed = true;
                 this.isMakePaymentEnabled = false;
             },
@@ -1044,5 +1050,9 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         this.sharedData.sendorderTypeDatadata(orderType);
 
         this.prepareOrderItems();
+    }
+
+    ngOnDestroy(): void {
+        this.wsSubscription.unsubscribe();
     }
 }

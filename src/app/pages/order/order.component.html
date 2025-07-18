@@ -44,13 +44,13 @@
                     <li><a (click)="scrollToSections('gallery')" class="gallery dropdown-item">Gallery</a></li>
                     <!-- <li><a class="contact dropdown-item" >Contact</a></li> -->
                 </ul>
-                <!-- <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
                     data-bs-target="#contactSupport">
                     <img src="assets/images/icons/support.png " class="headerIcon ">
-                    @if(showTracking){
+                    <!-- @if(showTracking){
                         <img  src="assets/images/icons/preparingFood.png" title="Track Order" (click)="orderTrack()" class="headerIcon mx-2">
-                    }
-                </button> -->
+                    } -->
+                </button>
             </div>
         </nav>
 
@@ -73,15 +73,17 @@
         
         <div *ngIf="!serviceable || !restaurentActive || workingHours==false" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
             <!-- Zomato-style banners -->
-            <div *ngIf="weatherAlert" class="p-10 overflow-hidden">
+            <div *ngIf="weatherAlert || workingHours == false" class="p-10 overflow-hidden">
               <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
-                {{ weatherAlert }}
+                {{ weatherAlert || "can't place order after working hours" }}
               </marquee>
             </div>
-            <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
-              <span class="zomato-icon">📞</span>
-              <span class="zomato-text">{{ customerMessage }}</span>
-            </div> -->
+            <br>
+            <!-- <div *ngIf="workingHours == false" class="p-10 overflow-hidden">
+                <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
+                  {{ "can't place order after working hours" }}
+                </marquee>
+              </div> -->
           </div>
         <!-- Search Box -->
 
@@ -117,7 +119,7 @@
                             <!-- Offer Slide -->
                             <div class="carousel-item active ">
                                 <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">25% Off on all items</h2>
+                                    <h2 class="wwdTitle ">20% Off on all items</h2>
                                     <span class="wwdDes ">Don’t miss out!</span>
                                 </div>
                             </div>
@@ -292,83 +294,88 @@
         </div>
     </div>
     <div class="container mt-4 ">
+        <!-- Loading State -->
+        @if (menuLoading) {
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <img src="../../../../assets/images/icons/loading.gif" class="br-0 h-auto w-25">
+            </div>
+        } @else {
+            <!-- Food Tile -->
+            @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
+            @if (category.items.length > 0) {
+            <div class="card foodCard" [id]="'section-' + $index">
+                <h5 class="card-title foodCategory">{{category!.categoryName | titlecase }} ({{category.items.length}})</h5>
+                @for (item of category.items; track $index){
+                <div class="card-body foodTile ">
+                    <div class="row ">
+                        <div class="col-7 col-md-7 food-item veg ">
+                            @if (item.itemAttributeId == '1'){
+                            <img src="assets/images/icons/veg.png " class="filterIcon ">
+                            }
+                            @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
+                            <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                            }
 
-        <!-- Food Tile -->
-        @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
-        @if (category.items.length > 0) {
-        <div class="card foodCard" [id]="'section-' + $index">
-            <h5 class="card-title foodCategory ">{{category!.categoryName | titlecase }} ({{category.items.length}})
-            </h5>
-            @for (item of category.items; track $index){
-            <div class="card-body foodTile ">
-                <div class="row ">
-                    <div class="col-7 col-md-7 food-item veg ">
-                        @if (item.itemAttributeId == '1'){
-                        <img src="assets/images/icons/veg.png " class="filterIcon ">
-                        }
-                        @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
-                        <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                        }
+                            <!-- Best Seller Badge
+                            <span class="badge bestSeller ">Bestseller</span> -->
 
-                        <!-- Best Seller Badge
-                        <span class="badge bestSeller ">Bestseller</span> -->
+                            <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
+                            <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
+                            <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
+                            <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
+                            <p class="card-text foodDes "> {{ item.itemDescription }}
+                            </p>
+                            <!-- <span class="foodDesMore ">more</span> -->
+                        </div>
+                        <div class="col-5 col-md-5 food-item" [ngClass]="{
+                                   'foodItemImage': !!item.itemImageUrl,
+                                   'foodItemNoImage': !item.itemImageUrl
+                                 }">
+                            <!-- If item is inactive -->
+                            @if (item.active === '0') {
+                            @if (item.itemImageUrl) {
+                            <img [src]="item.itemImageUrl" class="card-img-top greyImage">
+                            }
+                            <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
+                            <span class="outOfStock">Out of Stock</span>
+                            }
+                            @else {
+                            @if (item.itemImageUrl) {
+                            <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
+                            }
 
-                        <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
-                        <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
-                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
-                        <p class="card-text foodDes "> {{ item.itemDescription }}
-                        </p>
-                        <!-- <span class="foodDesMore ">more</span> -->
-                    </div>
-                    <div class="col-5 col-md-5 food-item" [ngClass]="{
-                               'foodItemImage': !!item.itemImageUrl,
-                               'foodItemNoImage': !item.itemImageUrl
-                             }">
-                        <!-- If item is inactive -->
-                        @if (item.active === '0') {
-                        @if (item.itemImageUrl) {
-                        <img [src]="item.itemImageUrl" class="card-img-top greyImage">
-                        }
-                        <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
-                        <span class="outOfStock">Out of Stock</span>
-                        }
-                        @else {
-                        @if (item.itemImageUrl) {
-                        <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
-                        }
+                            @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
+                            item.variation.length == 0) {
+                            <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
+                                (click)="selectItem(item)"> + Add</button>
+                            }
 
-                        @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
-                        item.variation.length == 0) {
-                        <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
-                            (click)="selectItem(item)"> + Add</button>
-                        }
+                            @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
+                            {
+                            <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false || serviceable == false" (click)="selectItem(item)"> +
+                                Add</button>
+                            }
 
-                        @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
-                        {
-                        <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false || serviceable == false" (click)="selectItem(item)"> +
-                            Add</button>
-                        }
+                            @if (seletedItemId.includes(item.id) && item.active === '1') {
+                            <button [disabled]="restaurentActive == false || serviceable == false" class="btn btn-transparent qtyButton">
+                                <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
+                                {{item | displayQuantity}}
+                                <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
+                            </button>
+                            }
 
-                        @if (seletedItemId.includes(item.id) && item.active === '1') {
-                        <button [disabled]="restaurentActive == false || serviceable == false" class="btn btn-transparent qtyButton">
-                            <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
-                            {{item | displayQuantity}}
-                            <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
-                        </button>
-                        }
-
-                        @if (item.addon.length > 0 || item.variation.length > 0) {
-                        <span class="customisable">Customisable</span>
-                        }
-                        }
+                            @if (item.addon.length > 0 || item.variation.length > 0) {
+                            <span class="customisable">Customisable</span>
+                            }
+                            }
+                        </div>
                     </div>
                 </div>
+                }
             </div>
             }
-        </div>
-        }
 
+            }
         }
     </div>
 
@@ -402,7 +409,7 @@
                 <div class="card border-0 ">
                     <div class="card-body p-0 ">
                         <h5 class="card-title aboutTitle ">📍 About Us</h5>
-                        <p class="card-text m-0 aboutDes ">The Nawaabs Restaurant in Gachibowli, Hyderabad, offers a regal dining experience, blending traditional Hyderabadi, Mughlai, and North Indian cuisines. Known for its royal ambiance and attentive service, it's a preferred destination for food enthusiasts seeking authentic flavors. Signature dishes like the Zafraani Mutton Dum Biryani and Mutton Ghee Roast Mandi have garnered acclaim, making it a must-visit for those craving rich, flavorful meals.</p>
+                        <p class="card-text m-0 aboutDes ">At Yum Yum Tree Hyderabad, we’re passionate about delivering scrumptious meals that spark joy in every bite. Rooted in Hyderabad’s vibrant food culture, we craft our dishes using the freshest, locally sourced ingredients and time‑tested recipes. Whether you’re craving comforting classics or daring fusion flavors, our menu promises consistent quality, on‑time delivery, and flavors that feel like home—because every meal should be an experience worth savoring.</p>
                     </div>
                 </div>
             </div>
@@ -475,7 +482,7 @@
             <div class="col-md-12 ">
                 <div class="card p-0 ">
                     <div class="card-body p-0 mapCont ">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.780956298623!2d78.36316197516679!3d17.470195083431147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb92348d2f2ddd%3A0x6af5336c8d64a736!2sUdipi&#39;s%20Upahar%20Kondapur!5e0!3m2!1sen!2sin!4v1746024800433!5m2!1sen!2sin" width="100%" 
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.6081721091964!2d78.32190437516584!3d17.430581783464017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb936f8238cc77%3A0x170954685a40fb08!2sYum%20Yum%20Tree%20Arabian%20Food%20Court%20gachibowli!5e0!3m2!1sen!2sin!4v1750687672266!5m2!1sen!2sin" width="100%" 
                         height="400"
                         style="border:0;" 
                         allowfullscreen 
@@ -722,6 +729,13 @@
         }
         @if (!checkChangeBranch){
         <div class="offcanvas-header">
+            <div class="offcanvas-close-wrapper">
+  <button type="button" class="circle-close-btn" (mousedown)="$event.preventDefault()" (click)="closeOffcanvas('selectOutlet')">&times;</button>
+</div>
+
+<div class="offcanvas-header">
+  <h5 class="offcanvas-title">Select Outlet</h5>
+</div>
             <!-- <img src="assets/images/icons/back.png " class="backIcon "> -->
             <h5 class="offcanvas-title btmHeaderOut"> Select Outlet</h5>
             <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
@@ -733,14 +747,14 @@
                 <li class="mb-1" (click)="selectBranch($index)">
                   <img src="assets/images/icons/forward.png" class="forwardIcon">
                   <div class="outlet-info">
-                    <p class="outletAddr" [ngClass]="{'unavailableStore': !availableBranchData?.includes(item.id)}">
+                    <p class="outletAddr" >
                       {{item.restaurantName}}
                     </p>
 
                     <div class="outlet-meta">
                       <span class="outletDes">{{item.address}}</span>
-                      <span class="badge" [ngClass]="item.serviceable ? 'bg-success' : 'bg-danger'">
-                        {{item.serviceable ? 'Open Now' : 'Closed'}}
+                      <span class="badge" [ngClass]="item.active ? 'bg-success' : 'bg-danger' ">
+                        {{item.active ? 'Open Now' : 'Closed'}}
                         </span>
                     @if (getOutletDistance(item)) {
                         <span class="outlet-distance">~ {{getOutletDistance(item)}} km away</span>

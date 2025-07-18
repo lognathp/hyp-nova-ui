@@ -67,7 +67,7 @@ export class PaymentComponent {
       currency: 'INR',
       name: this.partnerData?.name, // company name or product name
       description: this.partnerData?.type,  // product description
-      image: '../../../assets/images/nawaabs-logo.png', // company logo or product image
+      image: '../../../assets/images/yum-yum.png', // company logo or product image
       order_id: orderData.id, // order_id created by you in backend
       // modal: {
       //   // We should prevent closing of the form when esc key is pressed.
@@ -107,10 +107,10 @@ export class PaymentComponent {
       this.ngZone.runOutsideAngular(() => {
         this.apiService.postMethod(`/payment/verify/${currentOrderId}`, response).subscribe({
           next: (reponse) => { console.log(response);
-            this.router.navigate(['/order-tracking']);
+            this.router.navigate(['/order-tracking'],{state:{orderData:reponse}});
            },
           error: (error) => { console.log(error)
-            this.router.navigate(['/order-tracking']);
+            this.router.navigate(['/order-tracking'],{state:{orderData:error}});
            }
       });
         
