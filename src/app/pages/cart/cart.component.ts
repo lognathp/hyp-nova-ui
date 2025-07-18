@@ -165,7 +165,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
        
         this.checkWorkingHours();
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
-            console.log(webSocketResponse,'cart webSocketResponse');
+            // console.log(webSocketResponse,'cart webSocketResponse');
             
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
         });
@@ -285,7 +285,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
     ngDoCheck() {
 
         this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
-             console.log(webSocketResponse,'webSocketResponse');
+            //  console.log(webSocketResponse,'webSocketResponse');
             
             this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
             // this.restaurentActive = false;
@@ -608,7 +608,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // const tQuoteData = {"data":[{"service":"flash","manifest":false,"quote":{"price":72.33,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":72.33,"total_gst_amount":0.0,"additional_charges":[]}},"error":null,"token":null,"network_id":60,"network_name":"Flash by Shadowfax","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
         // const tQuoteData = {"data":[{"service":"pidge-lbnp","manifest":false,"quote":{"price":51.92,"eta":{"pickup":null,"drop":null,"pickup_min":null,"drop_min":null},"price_breakup":{"surge":0.0,"items":null,"base_delivery_charge":40.6392,"total_gst_amount":8.9208,"additional_charges":[]}},"error":null,"token":null,"network_id":345,"network_name":"Ola ONDC","pickup_now":true}],"error":false,"message":"Delivery Quotes Fetched"}
         if (this.quoteLoading) {
-            this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(300), take(1)).subscribe({
+            this.apiService.getMethod(`/delivery/quote/${this.restaurentId}?addressId=${addressId}`).pipe(debounceTime(100), take(1)).subscribe({
                 next: (reponse: any) => {
                     // console.log("delivery/quote", reponse);
                     this.quoteLoading = false;

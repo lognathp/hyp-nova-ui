@@ -1,14 +1,20 @@
-@if(quoteLoading){
-    <app-quote-loader></app-quote-loader>
-    }
     @if(unKnownError){
     <app-something-went-wrong [errorMessage]="errorMessage"></app-something-went-wrong>
     }
     @if (restaurentClosed) {
     <app-restaurent-closed></app-restaurent-closed>
     }
-    @if (!quoteLoading && !restaurentClosed && !unKnownError) {
-    <div class="cartBody">
+    @if (!restaurentClosed && !unKnownError) {
+        <div class="cartBody cartBody-with-loader">
+            <!-- Loader overlay (shows only when quoteLoading) -->
+            <div class="cart-modern-loader-overlay" *ngIf="quoteLoading">
+              <div class="cart-modern-loader-blur"></div>
+              <div class="cart-modern-loader-card">
+                <img src="assets/images/icons/delivery.gif" alt="Loading" class="cart-modern-loader-img" />
+                <div class="cart-modern-loader-text">Finding the best delivery price for you...</div>
+                <!-- Optionally, add a progress bar or animated dots here -->
+              </div>
+            </div>
     
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container p-0 d-flex">

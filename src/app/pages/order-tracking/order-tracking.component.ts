@@ -76,7 +76,7 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
 
       // WebSocket subscription (for both cases)
       this.wsSubscription = this.wsService.getOrderStatusUpdates().subscribe((webSocketResponse: any) => {
-        console.log(JSON.stringify(webSocketResponse))
+        // console.log(JSON.stringify(webSocketResponse))
         if (webSocketResponse.customerId === this.customerDetails.id) {
           this.orderStatus = webSocketResponse;
           if (this.orderStatus.status == 'CANCELLED') {
