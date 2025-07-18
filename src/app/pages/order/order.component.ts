@@ -18,6 +18,7 @@ import { BranchChangeComponent } from "../../components/alert-box/branch-change/
 import { WebSocketService } from '../../core/services/websocket.service';
 import { interval, Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
+import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -39,7 +40,8 @@ declare var bootstrap: any; // Bootstrap is using from assets
     RouterLink,
     RouterModule,
     BranchChangeComponent,
-    SplitFirstCommaPipe
+    SplitFirstCommaPipe,
+    MenuLoaderComponent
 ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
@@ -1156,8 +1158,175 @@ export class OrderComponent implements OnInit, DoCheck {
       })
     }
   }
-  orderTrack() {
-    this.router.navigate(['/order-tracking']);
+
+
+
+// Add this method to handle order updates
+setupOrderUpdates() {
+  this.orderUpdateSubscription = this.wsService.getOrderStatusUpdates().subscribe((orderUpdate: any) => {
+    this.ngZone.run(() => {
+      // Update the live orders list
+      this.updateLiveOrders([orderUpdate]);
+      this.cdr.detectChanges();
+    });
+  });
+}
+
+// Update the fetchOrders method to handle initial load
+fetchOrders() {
+  if (!this.customerDetails?.id) return;
+
+  this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails?.id}`).subscribe({
+    next: (response) => {
+      this.updateLiveOrders(response.data);
+      // If we don't have a WebSocket subscription yet, set it up
+      if (!this.orderUpdateSubscription) {
+        this.setupOrderUpdates();
+      }
+    },
+    error: (error) => { 
+      console.error('Error fetching orders:', error);
+      // Still try to set up WebSocket in case of error
+      if (!this.orderUpdateSubscription) {
+        this.setupOrderUpdates();
+      }
+    }
+  });
+}
+
+// Helper method to update live orders
+private updateLiveOrders(orders: any[]) {
+  const liveStatuses = [
+    'PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP',
+    'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY'
+  ];
+  
+  const today = new Date();
+  this.liveOrders = orders
+    .filter(order => {
+      const orderDate = new Date(order.createdAt);
+      return liveStatuses.includes(order.status) && 
+             orderDate.getDate() === today.getDate() &&
+             orderDate.getMonth() === today.getMonth() &&
+             orderDate.getFullYear() === today.getFullYear();
+    })
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  
+  this.showLiveOrders = this.liveOrders.length > 0;
+}
+
+// Update the orderTrack method to handle navigation better
+orderTrack(event: MouseEvent, order: any) {
+  event.stopPropagation();
+  if (order?.id) {
+    this.router.navigate(['/order-tracking'], { 
+      queryParams: { id: order.id },
+      state: { orderData: order } // Pass order data for immediate display
+    }).catch((err) => {
+      console.error('Navigation failed:', err);
+      this.router.navigate(['/order']);
+    });
+  }
+}
+
+// Add to ngOnDestroy to clean up subscriptions
+ngOnDestroy() {
+  if (this.wsSubscription) {
+    this.wsSubscription.unsubscribe();
+  }
+  if (this.orderUpdateSubscription) {
+    this.orderUpdateSubscription.unsubscribe();
+  }
+  // this.stopOrderPolling(); // Clean up polling subscription
+}
+
+  /**
+   * To fetch live order
+   */
+  // fetchOrders() {
+  //   this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
+  //     next: (response) => {
+  //       this.liveOrderId = this.getCurrentLiveOrderIds(response.data);
+  //       console.log('Live Order ID:', this.liveOrderId); // Debug: see if it's set
+  //     },
+  //     error: (error) => { console.log(error) }
+  //   });
+  // }
+
+  goToTodayList() {
+    if (this.liveOrders) {
+      this.router.navigate(['/order-tracking'], { 
+        queryParams: { id: this.liveOrders[0].id },
+        state: { orderData: this.liveOrders } // Pass order data for immediate display
+      }).catch((err) => {
+        console.error('Navigation failed:', err);
+        this.router.navigate(['/order']);
+      });
+    }
+  }
+  
+  // orderTrack(event: MouseEvent, id: number) {
+  //   event.stopPropagation(); // Prevents the button's click event
+  //   if (this.liveOrderId && this.liveOrderId != null && this.liveOrderId.length > 0) {
+  //     this.router.navigate(['/order-tracking'], { queryParams: { id: id } })
+  //       .catch((err) => {
+  //         console.error('Navigation failed:', err);
+  //         this.router.navigate(['/order-today-history']);
+  //       });
+  //   }
+  // }
+
+calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): string {
+  const R = 6371; // Radius of the earth in km
+  const dLat = this.deg2rad(lat2 - lat1);
+  const dLon = this.deg2rad(lon2 - lon1);
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2); 
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  const distance = (R * c)+ 1.4; // Distance in km
+  return distance.toFixed(1); // Return distance with 1 decimal place
+}
+
+private deg2rad(deg: number): number {
+  return deg * (Math.PI/180);
+}
+
+getCurrentLocation(): { latitude: number, longitude: number } | null {
+  const location = localStorage.getItem('selectedLocation');  
+  if (location) {
+    const loc = JSON.parse(location);
+    return loc?.location || null;
+  }
+  return null;
+}
+
+getOutletDistance(item: any): string {
+  const currentLocation = this.getCurrentLocation();
+  if (!currentLocation || !item?.location) return '';
+  
+  return this.calculateDistance(
+    currentLocation.latitude,
+    currentLocation.longitude,
+    item.location.latitude,
+    item.location.longitude
+  );
+}
+
+  getCurrentLiveOrderIds(orders: any[]): number[] {
+    const liveStatuses = [
+      'PAID', 'ACCEPTED', 'MARK_FOOD_READY', 'OUT_FOR_PICKUP',
+      'REACHED_PICKUP', 'PICKED_UP', 'OUT_FOR_DELIVERY', 'REACHED_DELIVERY'
+    ];
+    const today = new Date();
+    // Filter all orders with a live status for today and map to their IDs
+    return orders
+      .filter(order => {
+        const orderDate = new Date(order.createdAt);
+        return liveStatuses.includes(order.status) && orderDate.getDate() === today.getDate();
+      })
+      .map(order => order.id);
   }
 
   // Add this method to handle successful feedback submission
