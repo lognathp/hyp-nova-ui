@@ -8,8 +8,8 @@ export const environment = {
     title:'Kolkata House',
     contactRestaurant:"6301701366",
     contactHyperapps:"8885026686",
-    flatDiscountpercentage : 25,
-    deliveryDiscount : 0,
+    // flatDiscountpercentage : 25,
+    // deliveryDiscount : 0,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
