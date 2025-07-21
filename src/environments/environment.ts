@@ -22,6 +22,6 @@ export const environment = {
     ],
     deliveryWaiver:{
         applicable:true,
-        offsetValue:199,
+        offsetValue:349,
     }
 };
