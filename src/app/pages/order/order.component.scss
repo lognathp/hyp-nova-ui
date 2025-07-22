@@ -198,6 +198,20 @@
     scroll-snap-type: x mandatory;
   
   }
+  .offcanvas-close-wrapper {
+  position: absolute;
+  top: 10px;  
+  right: 10px; 
+  z-index: 1055; 
+}
+
+.circle-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
 
   .slider::-webkit-scrollbar {
     display: none; 
