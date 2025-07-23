@@ -6,7 +6,7 @@ export const environment = {
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'The Blue Sea',
-    contactRestaurant:"7893701960",
+    contactRestaurant:"7801057583",
     contactHyperapps:"7801057583",
     // flatDiscountpercentage : 25,
     // deliveryDiscount : 25,
