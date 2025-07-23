@@ -16,9 +16,10 @@ import { SearchFilterPipe } from "../../core/pipes/search-filter.pipe";
 import { VegNonvegFilterPipe } from "../../core/pipes/veg-nonveg-filter.pipe";
 import { BranchChangeComponent } from "../../components/alert-box/branch-change/branch-change.component";
 import { WebSocketService } from '../../core/services/websocket.service';
-import { interval, Subscription } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
 import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -96,6 +97,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
 
   loading = true;
+  menuLoading = true;  // Add this line for menu loading state
   serviceable: any;
   weatherAlert: string | null = null;
   customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
@@ -109,7 +111,8 @@ export class OrderComponent implements OnInit, DoCheck {
     private wsService: WebSocketService,
     private ngZone: NgZone,
     private elementRef: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private analyticsService: AnalyticsService
   ) {
    // Initialize polling when component is created
   //  this.startOrderPolling();
@@ -133,6 +136,33 @@ export class OrderComponent implements OnInit, DoCheck {
     //     this.orderPollingSubscription.unsubscribe();
     //   }
     // }
+    onClickTrack() {
+      this.analyticsService.logEvent('button_click', {
+        event_category: 'user_interaction',
+        event_label: 'Order Page CTA'
+      });
+    }
+
+        // Example method to log button clicks
+        logButtonClick(buttonName: string, additionalParams: Record<string, any> = {}) {
+          this.analyticsService.logEvent('button_click', {
+            button_name: buttonName,
+            page: 'home',
+            ...additionalParams,
+            timestamp: new Date().toISOString()
+          });
+        }
+      
+        // Example method to log menu interactions
+        logMenuInteraction(menuItem: string, action: string, additionalParams: Record<string, any> = {}) {
+          this.analyticsService.logEvent('menu_interaction', {
+            menu_item: menuItem,
+            action,
+            page: 'home',
+            ...additionalParams,
+            timestamp: new Date().toISOString()
+          });
+        }
 
   ngOnInit(): void {
     this.loading = true;
@@ -236,6 +266,7 @@ export class OrderComponent implements OnInit, DoCheck {
     });
 
     this.fetchOrders();
+    this.getFoodMenuCategoryApi();
 
   }
 
@@ -377,6 +408,7 @@ export class OrderComponent implements OnInit, DoCheck {
    * Method to call menu category
    */
   public getFoodMenuCategoryApi(): void {
+    this.menuLoading = true;  // Set loading to true when starting API call
     this.closeOffcanvas('selectOutlet');
     this.apiService.getMethod("/menu/category?restaurantId=" + this.restaurentId).subscribe({
       next: (reponse) => {
@@ -396,8 +428,10 @@ export class OrderComponent implements OnInit, DoCheck {
         // });
 
         // console.log(this.menuResponseFiltered);
-        this.selectCategory(this.menuCategoryData[0], 0);
-        localStorage.setItem("menuCategoryData", JSON.stringify(this.menuCategoryData));
+        if (this.menuCategoryData.length > 0) {
+          this.selectedCategory = this.menuCategoryData[0];
+          this.selectedCategoryIndex = 0;
+        }
         this.scrollToSection(0)
         // this.mainLoading = false;
         // this.sharedData.sendMenuData(this.menuResponse)
@@ -412,8 +446,11 @@ export class OrderComponent implements OnInit, DoCheck {
 
 
       },
-      error: (error) => { console.log(error); }
-
+      error: (error) => { console.log(error); },
+      complete: () => {
+        this.loading = false;
+        this.menuLoading = false;  // Set loading to false when data is loaded
+      }
     });
 
 

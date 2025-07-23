@@ -15,6 +15,7 @@ import { RestaurentClosedComponent } from "../../components/errors/restaurent-cl
 import { SliderSwitchComponent } from "../../components/slider-switch/slider-switch.component";
 import { AuthService } from '../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
     selector: 'app-cart',
@@ -108,6 +109,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
         // private messageService: MessageService,
         // private primengConfig: PrimeNGConfig,
         private wsService: WebSocketService,
+        private analyticsService: AnalyticsService
     ) { }
 
 
@@ -226,6 +228,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             }
         });
 
+    }
+    onClickTrack() {
+      this.analyticsService.logEvent('button_click', {
+        event_category: 'user_interaction',
+        event_label: 'Cart Page CTA'
+      });
     }
     ngAfterViewInit(): void {
         // throw new Error('Method not implemented.');

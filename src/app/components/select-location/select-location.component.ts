@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
 import { Router } from '@angular/router';
 import { LocationPickerComponent } from "../location-picker/location-picker.component";
+import { AnalyticsService } from '../../core/services/analytics.service';
 @Component({
   selector: 'app-select-location',
   standalone: true,
@@ -75,7 +76,8 @@ SUGGESTED_AREAS = [
   constructor(
     public apiService: ApiService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private analyticsService: AnalyticsService
     // private wsService: WebSocketService
   ) { }
 
@@ -112,6 +114,12 @@ SUGGESTED_AREAS = [
 
   ngOnDestroy() {
     this.clearAll();
+  }
+  onClickTrack() {
+    this.analyticsService.logEvent('button_click', {
+      event_category: 'user_interaction',
+      event_label: 'Select Location CTA'
+    });
   }
 
 
