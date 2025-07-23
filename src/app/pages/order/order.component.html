@@ -71,21 +71,19 @@
         </div>
     }
         
-        <div *ngIf="!serviceable || !restaurentActive || workingHours==false" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
-            <!-- Zomato-style banners -->
-            <div *ngIf="weatherAlert || workingHours == false" class="p-10 overflow-hidden">
-              <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
-                {{ weatherAlert || "can't place order after working hours" }}
-              </marquee>
-            </div>
-            <br>
-            <!-- <div *ngIf="workingHours == false" class="p-10 overflow-hidden">
-                <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
-                  {{ "can't place order after working hours" }}
-                </marquee>
-              </div> -->
-          </div>
-        <!-- Search Box -->
+    <div *ngIf="!serviceable || !restaurentActive || workingHours==false" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
+        <!-- Zomato-style banners -->
+        <div *ngIf="weatherAlert" class="p-10 overflow-hidden">
+          <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
+            {{ weatherAlert }}
+          </marquee>
+        </div>
+        <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
+          <span class="zomato-icon">📞</span>
+          <span class="zomato-text">{{ customerMessage }}</span>
+        </div> -->
+      </div>
+    <!-- Search Box -->
 
         <div class="container my-2 bg-transparent ">
             <div class="row ">
