@@ -44,13 +44,13 @@
                     <li><a (click)="scrollToSections('gallery')" class="gallery dropdown-item">Gallery</a></li>
                     <!-- <li><a class="contact dropdown-item" >Contact</a></li> -->
                 </ul>
-                <!-- <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
                     data-bs-target="#contactSupport">
                     <img src="assets/images/icons/support.png " class="headerIcon ">
-                    @if(showTracking){
+                    <!-- @if(showTracking){
                         <img  src="assets/images/icons/preparingFood.png" title="Track Order" (click)="orderTrack()" class="headerIcon mx-2">
-                    }
-                </button> -->
+                    } -->
+                </button>
             </div>
         </nav>
 
@@ -73,17 +73,17 @@
         
         <div *ngIf="!serviceable || !restaurentActive || workingHours==false" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
             <!-- Zomato-style banners -->
-            <div *ngIf="weatherAlert" class="p-10 overflow-hidden">
+            <div *ngIf="weatherAlert || workingHours == false" class="p-10 overflow-hidden">
               <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
-                {{ weatherAlert }}
+                {{ weatherAlert || "can't place order after working hours" }}
               </marquee>
             </div>
             <br>
-            <div *ngIf="workingHours == false" class="p-10 overflow-hidden">
+            <!-- <div *ngIf="workingHours == false" class="p-10 overflow-hidden">
                 <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
                   {{ "can't place order after working hours" }}
                 </marquee>
-              </div>
+              </div> -->
           </div>
         <!-- Search Box -->
 
@@ -294,93 +294,88 @@
         </div>
     </div>
     <div class="container mt-4 ">
+        <!-- Loading State -->
+        @if (menuLoading) {
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <img src="../../../../assets/images/icons/loading.gif" class="br-0 h-auto w-25">
+            </div>
+        } @else {
+            <!-- Food Tile -->
+            @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
+            @if (category.items.length > 0) {
+            <div class="card foodCard" [id]="'section-' + $index">
+                <h5 class="card-title foodCategory">{{category!.categoryName | titlecase }} ({{category.items.length}})</h5>
+                @for (item of category.items; track $index){
+                <div class="card-body foodTile ">
+                    <div class="row ">
+                        <div class="col-7 col-md-7 food-item veg ">
+                            @if (item.itemAttributeId == '1'){
+                            <img src="assets/images/icons/veg.png " class="filterIcon ">
+                            }
+                            @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
+                            <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                            }
 
-        <!-- Food Tile -->
-        @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
-        @if (category.items.length > 0) {
-        <div class="card foodCard" [id]="'section-' + $index">
-            <h5 class="card-title foodCategory ">{{category!.categoryName | titlecase }} ({{category.items.length}})
-            </h5>
-            @for (item of category.items; track $index){
-            <div class="card-body foodTile ">
-                <div class="row ">
-                    <div class="col-7 col-md-7 food-item veg ">
-                        @if (item.itemAttributeId == '1'){
-                        <img src="assets/images/icons/veg.png " class="filterIcon ">
-                        }
-                        @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
-                        <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                        }
+                            <!-- Best Seller Badge
+                            <span class="badge bestSeller ">Bestseller</span> -->
 
-                        <!-- Best Seller Badge
-                        <span class="badge bestSeller ">Bestseller</span> -->
+                            <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
+                            <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
+                            <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
+                            <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
+                            <p class="card-text foodDes "> {{ item.itemDescription }}
+                            </p>
+                            <!-- <span class="foodDesMore ">more</span> -->
+                        </div>
+                        <div class="col-5 col-md-5 food-item" [ngClass]="{
+                                   'foodItemImage': !!item.itemImageUrl,
+                                   'foodItemNoImage': !item.itemImageUrl
+                                 }">
+                            <!-- If item is inactive -->
+                            @if (item.active === '0') {
+                            @if (item.itemImageUrl) {
+                            <img [src]="item.itemImageUrl" class="card-img-top greyImage">
+                            }
+                            <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
+                            <span class="outOfStock">Out of Stock</span>
+                            }
+                            @else {
+                            @if (item.itemImageUrl) {
+                            <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
+                            }
 
-                        <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
-                        <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
-                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
-                        <p class="card-text foodDes "> {{ item.itemDescription }}
-                        </p>
-                        <!-- <span class="foodDesMore ">more</span> -->
-                    </div>
-                    <div class="col-5 col-md-5 food-item" [ngClass]="{
-                               'foodItemImage': !!item.itemImageUrl,
-                               'foodItemNoImage': !item.itemImageUrl
-                             }">
-                        <!-- If item is inactive -->
-                        @if (item.active === '0') {
-                          @if (item.itemImageUrl) {
-                            <img 
-                              [src]="item.itemImageUrl" 
-                              class="card-img-top greyImage" 
-                              loading="lazy"
-                              [alt]="item.itemName + ' (Out of Stock)'">
-                          }
-                          <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
-                          <span class="outOfStock">Out of Stock</span>
-                        } @else {
-                          @if (item.itemImageUrl) {
-                            <img 
-                              [src]="item.itemImageUrl" 
-                              class="card-img-top" 
-                              loading="lazy"
-                              [alt]="item.itemName">
-                          } @else {
-                            <div class="image-placeholder">
-                              <i class="bi bi-image"></i>
-                            </div>
-                          }
-                        @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
-                        item.variation.length == 0) {
-                        <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
-                            (click)="selectItem(item)"> + Add</button>
-                        }
+                            @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
+                            item.variation.length == 0) {
+                            <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
+                                (click)="selectItem(item)"> + Add</button>
+                            }
 
-                        @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
-                        {
-                        <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false || serviceable == false" (click)="selectItem(item)"> +
-                            Add</button>
-                        }
+                            @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
+                            {
+                            <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false || serviceable == false" (click)="selectItem(item)"> +
+                                Add</button>
+                            }
 
-                        @if (seletedItemId.includes(item.id) && item.active === '1') {
-                        <button [disabled]="restaurentActive == false || serviceable == false" class="btn btn-transparent qtyButton">
-                            <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
-                            {{item | displayQuantity}}
-                            <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
-                        </button>
-                        }
+                            @if (seletedItemId.includes(item.id) && item.active === '1') {
+                            <button [disabled]="restaurentActive == false || serviceable == false" class="btn btn-transparent qtyButton">
+                                <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
+                                {{item | displayQuantity}}
+                                <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
+                            </button>
+                            }
 
-                        @if (item.addon.length > 0 || item.variation.length > 0) {
-                        <span class="customisable">Customisable</span>
-                        }
-                        }
+                            @if (item.addon.length > 0 || item.variation.length > 0) {
+                            <span class="customisable">Customisable</span>
+                            }
+                            }
+                        </div>
                     </div>
                 </div>
+                }
             </div>
             }
-        </div>
-        }
 
+            }
         }
     </div>
 

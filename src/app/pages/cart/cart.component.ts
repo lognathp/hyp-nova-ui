@@ -651,9 +651,6 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     this.unKnownError = true;
                     this.showAddAddressButton = true;
                     this.errorMessage = error.error?.message || 'Failed to fetch delivery quote';
-                    
-
-                    //  this.quoteData = tQuoteData;  // For Deve purpose. Need to remove
                     // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 }
 
@@ -781,9 +778,10 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
             },
             error: (error: any) => {
-                console.log('getQuote ' + error.error.message);
+                console.log('getQuote ' + error.error?.message);
+                this.quoteLoading = false;
+                this.unKnownError = true;
                 this.errorMessage = error.error?.message || 'Failed to place order';
-                // this.messageService.add({ severity: 'error', detail: error.error.message, life: 10000 });
                 this.restaurentClosed = true;
                 this.isMakePaymentEnabled = false;
             },

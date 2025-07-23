@@ -100,6 +100,7 @@ export class OrderComponent implements OnInit, DoCheck {
   weatherAlert: string | null = null;
   customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
   restaurentDetails: any;
+  menuLoading: any;
 
 
   constructor(
@@ -379,6 +380,7 @@ export class OrderComponent implements OnInit, DoCheck {
    */
   public getFoodMenuCategoryApi(): void {
     this.closeOffcanvas('selectOutlet');
+    this.menuLoading = true;
     this.apiService.getMethod("/menu/category?restaurantId=" + this.restaurentId).subscribe({
       next: (reponse) => {
         console.log('menucategoryResponse', reponse);
@@ -410,10 +412,10 @@ export class OrderComponent implements OnInit, DoCheck {
         // setTimeout(() => {
         //     this.restaurentLoading = false;
         //   }, 2000);
-
+        this.menuLoading = false;  
 
       },
-      error: (error) => { console.log(error); }
+      error: (error) => { console.log(error); this.menuLoading = false; }
 
     });
 
