@@ -1,15 +1,10 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-body">
-            <!-- <button type="button" class="btn-close close-icon">
-                <img src="assets/images/icons/close3.png " >
-            </button> -->
-            <div class="orderConfirmContainer d-flex justify-content-center">
-                <img src="assets/images/icons/dish.png" class="br-0">
-                <p class="text1">{{ errorMessage || 'Something Went Wrong' }}</p>
-                <p class="text2">Please try again later.</p>
-                <button class="btn plainButton" (click)="goBack()">Retry</button>
-            </div>
-        </div>
+<div class="cart-modern-loader-overlay">
+    <div class="cart-modern-loader-blur"></div>
+    <div class="cart-modern-loader-card">
+      <img src="assets/images/icons/dish.png" alt="Error" class="cart-modern-loader-img" />
+      <div class="cart-modern-loader-text">
+        {{ errorMessage || 'Something went wrong. Please try again.' }}
+      </div>
+      <button class="btn btn-primary mt-3" (click)="goBack()">Retry</button>
     </div>
-</div>
+</div> 

@@ -21,14 +21,35 @@ export class HomeComponent {
 
 
   ngOnInit(): void {
-    // localStorage.clear();
+    // Save customer details before clearing storage
+    const customerDetails = localStorage.getItem('customerDetails');
+    
+    // Clear all storage
+    localStorage.clear();
+    sessionStorage.clear();
+    this.clearCookies();
+    
+    // Restore customer details if they existed
+    if (customerDetails) {
+      localStorage.setItem('customerDetails', customerDetails);
+    }
+
+    // Clear IndexedDB (if needed)
+    indexedDB.databases?.().then((databases) => {
+      databases?.forEach((db) => {
+        if (db.name) indexedDB.deleteDatabase(db.name);
+      });
+    });
+
     localStorage.removeItem('foodBasket');
 
     let url = window.location.href;
     let domain = new URL(url).origin;
     console.log('isDevMode', isDevMode());
     if (isDevMode()) {
+      // domain = "https://rasyumm.hyperapps.cloud"
       domain = "https://yumyumtree.hyperapps.in"
+
     }
     this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
       next: (response) => {
@@ -38,4 +59,14 @@ export class HomeComponent {
       error: (error) => { console.log(error) }
     })
   }
+
+  clearCookies() {
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    }
+  }
+  
 }

@@ -32,10 +32,37 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Pagination Controls -->
+            <div class="pagination-controls" *ngIf="totalItems > itemsPerPage">
+                <div class="pagination-buttons">
+                    <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <span class="page-counter">Page {{currentPage}} of {{totalPages()}}</span>
+                    <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === totalPages()" (click)="nextPage()">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
         
             <div class="container my-3  ">
                 <div class="row ">
                     <div class="col-md-12  scrollable">
+                        <div class="container my-3 bg-transparent ">
+                            <div class="row ">
+                                <div class="col-md-12  ">
+                                    @if (pickedAddressindex != null) {
+                                        <button class="btn cartAddressBtn "  (click)="proceedOrder()">Proceed </button>
+                                     } 
+                                     @else {
+                                        <button class="btn plainButton" (click)="newAddress()"> Add New Address</button>
+                                     }
+                                    
+                                </div>
+                            </div>
+                        </div>
+
                         @for (address of pagedAddresses; let index =$index ;track address){
                             <div class="addressTile" [ngClass]="{'selectedAddress': pickedAddressindex ==  index}"  title="Select Address" (click)="selectedAddress(address, index)">
                                 <p class="" [ngClass]="{'home': address?.addressType == 'Home' , 'work' :  address?.addressType == 'Work', 'other' :  address?.addressType == 'Other' }" >
@@ -51,32 +78,6 @@
                             </div>
                         }
                         
-                        <!-- Pagination Controls -->
-                        <div class="pagination-controls" *ngIf="totalItems > itemsPerPage">
-                            <div class="pagination-buttons">
-                                <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === 1" (click)="prevPage()">
-                                    <i class="fas fa-chevron-left"></i> Previous
-                                </button>
-                                <span class="page-counter">Page {{currentPage}} of {{totalPages()}}</span>
-                                <button class="btn simpleBtn pagination-btn" [disabled]="currentPage === totalPages()" (click)="nextPage()">
-                                    Next <i class="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="container my-3 bg-transparent ">
-                            <div class="row ">
-                                <div class="col-md-12  ">
-                                    @if (pickedAddressindex != null) {
-                                        <button class="btn cartAddressBtn "  (click)="proceedOrder()">Proceed </button>
-                                     } 
-                                     @else {
-                                        <button class="btn plainButton" (click)="newAddress()"> Add New Address</button>
-                                     }
-                                    
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
