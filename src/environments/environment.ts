@@ -8,8 +8,8 @@ export const environment = {
     title:'Rokali',
     contactRestaurant:"8143595374",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 0,
-    deliveryDiscount : 55,
+    // flatDiscountpercentage : 0,
+    // deliveryDiscount : 55,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
