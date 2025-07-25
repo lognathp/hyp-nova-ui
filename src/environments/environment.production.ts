@@ -8,8 +8,8 @@ export const environment = {
     title:'Hi Tech Bawarchi Food Court',
     contactRestaurant:"9618291465",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 40,
-    deliveryDiscount : 25,
+    // flatDiscountpercentage : 40,
+    // deliveryDiscount : 25,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
