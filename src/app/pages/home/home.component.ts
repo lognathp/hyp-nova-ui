@@ -2,15 +2,17 @@ import { Component, isDevMode } from '@angular/core';
 import { SelectLocationComponent } from "../../components/select-location/select-location.component";
 import { ApiService } from '../../core/services/api.service';
 import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SelectLocationComponent, MenuLoaderComponent],
+  imports: [SelectLocationComponent, MenuLoaderComponent, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  restaurantDetails: any;
   constructor(
     public apiService: ApiService
   ) { }
@@ -43,18 +45,22 @@ export class HomeComponent {
 
     localStorage.removeItem('foodBasket');
 
-    let url = window.location.href;
-    let domain = new URL(url).origin;
-    console.log('isDevMode', isDevMode());
-    if (isDevMode()) {
-      // domain = "https://rasyumm.hyperapps.cloud"
-      domain = "https://yumyumtree.hyperapps.in"
+    // let url = window.location.href;
+    let domain = "https://"+window.location.hostname;
+    // let domain = "https://"+window.location.hostname;
+    console.log(domain);
+    // console.log('isDevMode', isDevMode());
+    // if (isDevMode()) {
+    //   // domain = "https://rasyumm.hyperapps.cloud"
+    //   domain = "https://yumyumtree.hyperapps.in"
 
-    }
+    // }
     this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
       next: (response) => {
         this.loading = false;
         localStorage.setItem('vendorData', JSON.stringify(response.data[0]));
+        console.log('Vendor Data: in home : ', response.data[0]); // Debug log
+        this.restaurantDetails = response.data[0];
       },
       error: (error) => { console.log(error) }
     })

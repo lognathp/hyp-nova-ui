@@ -159,7 +159,7 @@ SUGGESTED_AREAS = [
 
   public fetchPlacePrediction(): Observable<{ placeId: string, text: string }[]> {
     return this.apiService.getMethod(`/location/maps/predict?search=${this.searchTerm}`).pipe(
-      debounceTime(1000),
+      debounceTime(100),
       distinctUntilChanged(),
       switchMap(response => {
         const suggestions: any[] = response?.data?.[0]?.suggestions || [];

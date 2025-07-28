@@ -132,7 +132,7 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
       },
       error: (error:any) => {
         // this.unServiceable();
-        console.error('Error fetching location data:', error);
+        console.error('Error fetching location data:', error.error.message);
         this.messageService.add({ severity: 'error', detail: 'Sorry!! Undelivarable location.', life: 5000 });
       }
     });
