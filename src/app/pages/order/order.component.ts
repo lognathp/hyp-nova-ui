@@ -233,6 +233,7 @@ export class OrderComponent implements OnInit, DoCheck {
     });
 
     this.wsSubscription = this.wsService.getRestaurentDetails().subscribe((webSocketResponse: any) => {
+      console.log("restaurentDetails onInit", webSocketResponse);
       this.restaurentDetails = webSocketResponse;
       this.restaurentActive = webSocketResponse.active;
       this.serviceable = webSocketResponse.serviceable;
@@ -290,6 +291,7 @@ export class OrderComponent implements OnInit, DoCheck {
   ngDoCheck() {
     this.loading = false;
     this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+      console.log("restaurentActive ngDoCheck", webSocketResponse);
       this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
       // this.restaurentActive = false;
     });
@@ -299,6 +301,7 @@ export class OrderComponent implements OnInit, DoCheck {
     });
 
     this.wsSubscription = this.wsService.getRestaurentDetails().subscribe((webSocketResponse: any) => {
+      console.log("restaurentDetails ngDoCheck", webSocketResponse);
       this.restaurentDetails = webSocketResponse;
       this.serviceable = webSocketResponse.serviceable;
       this.restaurentActive = webSocketResponse.active;
@@ -320,7 +323,7 @@ export class OrderComponent implements OnInit, DoCheck {
         this.cdr.detectChanges();
       });
     }});
-    // this.checkWorkingHours();
+    this.checkWorkingHours();
   }
 
   /**

@@ -9,8 +9,8 @@
                 <div class="col-12 p-8">
                     <img class="resLogo" src="../../../assets/images/yum-yum.png">
                     <p class="text1">Welcome to</p>
-                    <p class="text2">Yum Yum Tree Hyderabad!</p>
-                    <p class="text3">Enjoy your favorite food delivered right to your doorstep and experience authentic South Indian flavors by ordering directly from our website for smart savings.</p>
+                    <p class="text2">{{restaurantDetails?.name}} Hyderabad!</p>
+                    <p class="text3">Enjoy your favorite food delivered right to your doorstep and experience authentic South Indian flavors by ordering directly from our website for smart savings.</p>
                     <p class="text4">Set your delivery location to get started</p>
                     <div class="col-md-12 ">
                         <button class="btn searchLocationBtn " data-bs-toggle="offcanvas" data-bs-target="#selectDeliveryLocation"> <span class="btnText ">Select your location </span></button>
@@ -21,7 +21,7 @@
                     <div class="row ">
                         <div class="col-4 p-05">
                             <div class="off bg-transparent text-dark landingDeals ">
-                                <h2>Flat 20% off on all items</h2>
+                                <h2>Flat {{restaurantDetails?.restaurantDetails[0].discountPercentage}}% off on all items</h2>
                             </div>
                         </div>
                         <div class="col-4 p-05">
@@ -40,7 +40,7 @@
                     <div class="row ">
                         <div class="col-12">
                             <p class="laandingHeading">📍 About Us</p>
-                            <span class="landingAboutTitle">At Yum Yum Tree Hyderabad, we’re passionate about delivering scrumptious meals that spark joy in every bite. Rooted in Hyderabad’s vibrant food culture, we craft our dishes using the freshest, locally sourced ingredients and time‑tested recipes. Whether you’re craving comforting classics or daring fusion flavors, our menu promises consistent quality, on‑time delivery, and flavors that feel like home—because every meal should be an experience worth savoring.</span>
+                            <span class="landingAboutTitle">At {{restaurantDetails?.name}} Hyderabad, we’re passionate about delivering scrumptious meals that spark joy in every bite. Rooted in Hyderabad’s vibrant food culture, we craft our dishes using the freshest, locally sourced ingredients and time‑tested recipes. Whether you’re craving comforting classics or daring fusion flavors, our menu promises consistent quality, on‑time delivery, and flavors that feel like home—because every meal should be an experience worth savoring.</span>
                         </div>
                     </div>
                 </div>
@@ -142,32 +142,47 @@
                         <div class="col-12 landing">
                             <p class="laandingHeading mt-15">Our Locations</p>
     
-                            <div class="accordion" id="accordionExample">
-                                <!-- Item 1 -->
-                                <div class="accordion-item">
-                                    <!-- Commenting h2 here because it's affecting the button styles -->
-                                    <!-- <h2 class="accordion-header" id="headingOne"> -->
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                           Gachibowli
+                            <div class="accordion" id="restaurantAccordion">
+                                <!-- Dynamic Restaurant Items -->
+                                <div class="accordion-item" *ngFor="let restaurant of restaurantDetails?.restaurantDetails; let i = index">
+                                    <h2 class="accordion-header" [id]="'heading' + i">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" 
+                                            [attr.aria-expanded]="i === 0 ? 'true' : 'false'" [attr.aria-controls]="'collapse' + i">
+                                            {{restaurant.restaurantName}}
                                         </button>
-                                    <!-- </h2> -->
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    </h2>
+                                    <div [id]="'collapse' + i" class="accordion-collapse collapse" [class.show]="i === 0" 
+                                        [attr.aria-labelledby]="'heading' + i" data-bs-parent="#restaurantAccordion">
                                         <div class="accordion-body">
-                                            <ul class="m-0 p-0 ">
-                                                <li class="contact-info ">
-                                                    <span class="map ">DOOR NO 3-46, Jayabheri - 4 Seasons, Jayabheri - 4 Seasons gachibowli FINANCIAL DISTRICT GOWLIDODDI Opposite Karachi Bakery PLOT NO 4, J45/4, Hyderabad, Telangana 500032</span>
+                                            <ul class="m-0 p-0">
+                                                <li class="contact-info">
+                                                    <span class="map">{{restaurant.address}}, {{restaurant.landmark}}, {{restaurant.city}}, {{restaurant.state}} - {{restaurant.pincode}}</span>
                                                 </li>
-                                                <li class="contact-info ">
-                                                    <span class="phone ">+91-9100098881</span>
+                                                <li class="contact-info">
+                                                    <span class="phone">+91-{{restaurant.contact}}</span>
                                                 </li>
-                                                <li class="contact-info fw-semibold ">
-                                                    <span class="clock ">Open hours</span>
+                                                <li class="contact-info fw-semibold">
+                                                    <span class="clock">Open hours</span>
                                                 </li>
-                                                <li class="contact-info "><span class="pl-30 ">Monday – Friday from 11 A.M to 11:00 P.M <br> Saturday & Sunday from 11 A.M to 11:00 P.M</span></li>
+                                                <li class="contact-info">
+                                                    <span class="pl-30">
+                                                        <div *ngFor="let hours of restaurant.deliveryHours">
+                                                            {{hours.from}} - {{hours.to}}
+                                                        </div>
+                                                    </span>
+                                                </li>
                                             </ul>
     
-                                            <div class="card-body p-0 mapCont ">
-                                               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.6081721091964!2d78.32190437516584!3d17.430581783464017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb936f8238cc77%3A0x170954685a40fb08!2sYum%20Yum%20Tree%20Arabian%20Food%20Court%20gachibowli!5e0!3m2!1sen!2sin!4v1750687672266!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                            <div class="card-body p-0 mapCont mt-3" *ngIf="restaurant.location">
+                                               <iframe  
+                                               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.6081721091964!2d78.32190437516584!3d17.430581783464017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb936f8238cc77%3A0x170954685a40fb08!2sYum%20Yum%20Tree%20Arabian%20Food%20Court%20gachibowli!5e0!3m2!1sen!2sin!4v1750687672266!5m2!1sen!2sin" 
+                                                   width="100%" 
+                                                   height="300" 
+                                                   style="border:0;" 
+                                                   allowfullscreen="" 
+                                                   loading="lazy" 
+                                                   referrerpolicy="no-referrer-when-downgrade">
+                                               </iframe>
                                             </div>
                                         </div>
                                     </div>

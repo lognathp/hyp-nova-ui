@@ -22,15 +22,16 @@ export class AppComponent {
 
   ngOnInit(): void {
     
-    let url = window.location.href;
-    let domain = new URL(url).origin;
-    console.log('isDevMode',isDevMode());
-    if(isDevMode()){
-      // domain ="https://chaitanyafoodcourt.hyperapps.in"
-      domain ="https://yumyumtree.hyperapps.in"
-      // domain ="https://order.madhapurbawarchi.com"
-      // domain ="https://31.178.75.55:9090"
-    }
+    // let url = window.location.href;
+    let domain = "https://"+window.location.hostname;
+    // console.log('isDevMode',isDevMode());
+    console.log(domain);
+    // if(isDevMode()){
+    //   // domain ="https://chaitanyafoodcourt.hyperapps.in"
+    //   domain ="https://yumyumtree.hyperapps.in"
+    //   // domain ="https://order.madhapurbawarchi.com"
+    //   // domain ="https://31.178.75.55:9090"
+    // }
     // console.log(window.location.href, domain);
     this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({
       next: (response) => {
