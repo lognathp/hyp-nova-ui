@@ -6,10 +6,10 @@ export const environment = {
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'Seenu C/O Bezawada',
-    contactRestaurant:"9550888641",
+    contactRestaurant:"9991141234",
     contactHyperapps:"7801057583",
-    flatDiscountpercentage : 0,
-    deliveryDiscount : 25,
+    // flatDiscountpercentage : 0,
+    // deliveryDiscount : 25,
     itemdiscountValue : 0,
     itempackagingCharge: 0,  // Set Packing charge as applicable
     packingTaxPercentage:0,  // Packing charge tax in percentage
