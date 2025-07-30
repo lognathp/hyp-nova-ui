@@ -323,7 +323,7 @@ export class OrderComponent implements OnInit, DoCheck {
         this.cdr.detectChanges();
       });
     }});
-    this.checkWorkingHours();
+    // this.checkWorkingHours();
   }
 
   /**
