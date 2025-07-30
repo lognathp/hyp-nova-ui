@@ -8,6 +8,12 @@
         <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body addonBody">
+        <div class="offcanvas-header align-center">
+            <button class="btn btn-transparent addonQtyButton d-none"> <span (click)="minus()" title="Redeuce Count">-</span>
+                {{quantity}} <span title="Add Count" (click)="plus()">+</span></button>
+            <button class="btn btn-transparent addonAddButton " (click)="addCart()">Add Item </button>
+            <!-- ₹ {{totalPrice * quantity}} -->
+        </div>
         @if (variations.length > 0 && tvariations?.length > 0){
         <div class="addonDiv">
             <p class="text1">Quantity</p>
@@ -169,12 +175,6 @@
         </div>
         }
 
-        <div class="offcanvas-header align-center">
-            <button class="btn btn-transparent addonQtyButton d-none"> <span (click)="minus()" title="Redeuce Count">-</span>
-                {{quantity}} <span title="Add Count" (click)="plus()">+</span></button>
-            <button class="btn btn-transparent addonAddButton " (click)="addCart()">Add Item </button>
-            <!-- ₹ {{totalPrice * quantity}} -->
-        </div>
     </div>
 </div>
 

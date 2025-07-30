@@ -74,21 +74,22 @@ export class OrderHistoryComponent {
   /**
    * To fetch order history
    */
-  getOrderHistory():void {
+  getOrderHistory(): void {
     this.apiService.getMethod(`/order?sortField=id&customerId_eq=${this.customerDetails.id}`).subscribe({
-      next: (reponse) => {
+      next: (response) => {
         this.loading = false;
-        this.orderHistory = reponse.data;
+        // Filter out CANCELLED orders and sort by most recent first
+        this.orderHistory = response.data
+          .filter((order: any) => order.status !== 'CANCELLED')
+          .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        
         this.totalItems = this.orderHistory.length;
         this.pagedAddresses = this.orderHistory.slice(0, this.itemsPerPage);
-        // let SNo:number = 1;
-        // this.orderHistory.map((ele:any) => {
-        //   ele['SNo'] = SNo;
-        //   SNo += 1;
-        // })
-        console.log(this.orderHistory);
       },
-      error: (error) => { console.log(error) }
+      error: (error) => { 
+        console.error('Error fetching order history:', error);
+        this.loading = false;
+      }
     });
   }
 
