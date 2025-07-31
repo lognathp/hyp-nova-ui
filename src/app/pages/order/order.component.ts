@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import moment from 'moment';
 import { RemoveSpecialCharacterPipe } from "../../core/pipes/remove-special-character.pipe";
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import html2canvas from 'html2canvas';
 
 import { environment } from '../../../environments/environment'
 import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
@@ -100,6 +102,7 @@ export class OrderComponent implements OnInit, DoCheck {
   weatherAlert: string | null = null;
   customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
   restaurentDetails: any;
+  menuLoading: any;
 
 
   constructor(
@@ -232,7 +235,7 @@ export class OrderComponent implements OnInit, DoCheck {
       this.restaurentDetails = webSocketResponse;
       this.restaurentActive = webSocketResponse.active;
       this.serviceable = webSocketResponse.serviceable;
-      console.log("restaurentDetails ngOnInit", this.restaurentDetails);
+      // localStorage.setItem('restaurantDetails', JSON.stringify(webSocketResponse));
     });
 
     this.fetchOrders();
@@ -248,6 +251,7 @@ export class OrderComponent implements OnInit, DoCheck {
         this.checkWorkingHours();
         this.LocationData();
 
+        this.restaurentDetails = localStorage.getItem('restaurantDetails');
         const vendorDetail: any = localStorage.getItem('vendorData');
         this.vendorData = JSON.parse(vendorDetail)
         // console.log(vdata);
@@ -378,6 +382,7 @@ export class OrderComponent implements OnInit, DoCheck {
    */
   public getFoodMenuCategoryApi(): void {
     this.closeOffcanvas('selectOutlet');
+    this.menuLoading = true;
     this.apiService.getMethod("/menu/category?restaurantId=" + this.restaurentId).subscribe({
       next: (reponse) => {
         console.log('menucategoryResponse', reponse);
@@ -409,10 +414,10 @@ export class OrderComponent implements OnInit, DoCheck {
         // setTimeout(() => {
         //     this.restaurentLoading = false;
         //   }, 2000);
-
+        this.menuLoading = false;  
 
       },
-      error: (error) => { console.log(error); }
+      error: (error) => { console.log(error); this.menuLoading = false; }
 
     });
 
@@ -537,7 +542,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
       if (this.addItemQunatityIndex >= 0 && (this.sameAddonItems(event?.addonVariation?.addOnNames, event?.addonVariation?.VatiationAddOnName, this.foodBasket[this.addItemQunatityIndex]?.addonVariation?.addOnNames))) {
         if (this.foodBasket[this.addItemQunatityIndex].addonVariation.varients.id == event?.addonVariation.varients.id) {
-          this.addItemQuantity('');
+          this.addItemQuantity(this.addItemQunatityIndex);
 
         } else {
           const addItem = {
@@ -622,41 +627,148 @@ export class OrderComponent implements OnInit, DoCheck {
   /**
      * Method to add qunatity of same item
      */
-  public addItemQuantity(equivalent: string): void {
-    console.log('add qnty method', this.foodBasket[this.addItemQunatityIndex], this.addItemQunatityIndex);
-    if (equivalent == "same") {
+  public addItemQuantity(index: number = -1): void {
+    try {
+      this.sameAddon = false;
+      
+      // If index is -1, try to use addItemQunatityIndex
+      const itemIndex = index === -1 ? this.addItemQunatityIndex : index;
+      
+      // Validate inputs with more detailed error messages
+      if (typeof itemIndex === 'undefined' || itemIndex === null) {
+        console.warn('Item index is not set. Please provide a valid index.');
+        return;
+      }
+      
+      if (!Array.isArray(this.foodBasket)) {
+        console.warn('Food basket is not initialized');
+        return;
+      }
+      
+      if (itemIndex < 0 || itemIndex >= this.foodBasket.length) {
+        console.warn(`Index ${itemIndex} is out of bounds for foodBasket (length: ${this.foodBasket.length})`);
+        return;
+      }
 
-      // In case of Item with Added is selected with different configurations to avoid confusion redirected to cart page so user can select as wanted
-      this.router.navigate(['/cart']);
+      const basketItem = this.foodBasket[itemIndex];
+      
+      if (!basketItem) {
+        console.warn(`No item found at index ${itemIndex}`);
+        return;
+      }
+      
+      if (!basketItem.item) {
+        console.warn('Basket item is missing the required item property', basketItem);
+        return;
+      }
+
+      // Initialize quantity if it doesn't exist
+      if (typeof basketItem.item.quantity !== 'number' || isNaN(basketItem.item.quantity)) {
+        basketItem.item.quantity = 0;
+      }
+      
+      // Increase quantity
+      basketItem.item.quantity += 1;
+      
+      // Update storage and cart calculations
+      this.storefoodBasketData();
+      this.calculateCartPrice();
+      
+      // Close the offcanvas modal
+      this.closeOffcanvas('verifySameAddon');
+      
+    } catch (error) {
+      console.error('Error in addItemQuantity:', error);
     }
-    this.sameAddon = false;
-    if (this.foodBasket[this.addItemQunatityIndex]) {
-      this.foodBasket[this.addItemQunatityIndex].item.quantity += 1;
-    }
-
-
-    this.storefoodBasketData();
-    this.calculateCartPrice();
   }
+
   /**
-   * Method to reduce quantity of the item and remove from array if quantity is 1
-   */
-  public reduceItemQuantity(): void {
+      * Method to reduce quantity of the item and remove from array if quantity is 1
+      * @param index : Index of selected item from the foodBasket array value
+      */
+  public reduceItemQuantity(index: number): void {
     this.sameAddon = false;
-    console.log(this.seletedItemId, this.foodBasket[this.addItemQunatityIndex], this.addItemQunatityIndex);
-    if (this.foodBasket[this.addItemQunatityIndex].item.quantity == 1) {
-      this.seletedItemId = this.seletedItemId.filter((id: string) => id != this.foodBasket[this.addItemQunatityIndex].item.id);
-      this.foodBasket.splice(this.addItemQunatityIndex, 1);
-
-    } else {
-      this.foodBasket[this.addItemQunatityIndex].item.quantity -= 1;
+    
+    // Validate the index and food basket
+    if (typeof index === 'undefined') {
+      console.warn('Item index is undefined');
+      return;
+    }
+    
+    if (!Array.isArray(this.foodBasket)) {
+      console.warn('Food basket is not an array');
+      return;
+    }
+    
+    if (index < 0 || index >= this.foodBasket.length) {
+      console.warn(`Index ${index} is out of bounds for foodBasket (length: ${this.foodBasket.length})`);
+      return;
     }
 
-    if (this.foodBasket.length == 0) {
-      // this.Showfoodcart = false;
+    const basketItem = this.foodBasket[index];
+    
+    if (!basketItem) {
+      console.warn(`No item found at index ${index}`);
+      return;
     }
-    this.storefoodBasketData();
-    this.calculateCartPrice();
+    
+    if (!basketItem.item) {
+      console.warn('Basket item is missing the required item property', basketItem);
+      return;
+    }
+
+    try {
+      if (basketItem.item.quantity <= 1) {
+        // Remove the item if quantity is 1 or less
+        this.seletedItemId = this.seletedItemId.filter(
+          (id: string) => id !== basketItem.item.id
+        );
+        this.foodBasket.splice(index, 1);
+      } else {
+        // Decrease quantity
+        basketItem.item.quantity -= 1;
+      }
+
+      // Update storage and cart calculations
+      this.storefoodBasketData();
+      this.calculateCartPrice();
+    } catch (error) {
+      console.error('Error in reduceItemQuantity:', error);
+    }
+  }
+
+  public reduceItemQuantitycustom(index: number): void {
+    if (!this.foodBasket || index < 0 || index >= this.foodBasket.length) {
+      console.warn('Invalid index or food basket is empty');
+      return;
+    }
+
+    try {
+      this.sameAddon = false;
+      const basketItem = this.foodBasket[index];
+      
+      if (!basketItem?.item) {
+        console.warn('Invalid item at index:', index);
+        return;
+      }
+
+      if (basketItem.item.quantity <= 1) {
+        // Remove the item if quantity is 1 or less
+        this.seletedItemId = this.seletedItemId.filter(
+          (id: string) => id !== basketItem.item.id
+        );
+        this.foodBasket.splice(index, 1);
+      } else {
+        // Decrease quantity
+        basketItem.item.quantity -= 1;
+      }
+
+      // Update storage and cart calculations
+      this.storefoodBasketData();
+      this.calculateCartPrice();
+    } catch (error) {
+      console.error('Error in reduceItemQuantitycustom:', error);
+    }
   }
   /**
      * Method invoked on clicking + / - buttons on UI
@@ -665,52 +777,41 @@ export class OrderComponent implements OnInit, DoCheck {
      * @param operation : To add or reduce quantity of the item
      */
   public sameAddonConfirmation(opteditem: any, Itemindex: number, operation: string) {
-
-    console.log('plusbtn', opteditem, Itemindex, operation, this.foodBasket);
-    // console.log(this.foodBasket, this.cartItemPrice);
-    this.indexOfSameItemWithAddons = [];
-
-    if (opteditem.addon.length == 0 && opteditem.variation.length == 0) {
-      this.foodBasket.forEach((itemEle: any, index: number) => {
-        if (itemEle.item.id == opteditem.id) {
-          this.addItemQunatityIndex = index;
-        }
-      });
-    }
-    if (operation == 'add') {
-      this.foodBasket.forEach((itemEle: any, index: number) => {
-        if (itemEle.item.id == opteditem.id) {
-          console.log(itemEle.item.id, opteditem.id);
-
-          if (opteditem.addon.length > 0 || opteditem.variation.length > 0) {
-            this.indexOfSameItemWithAddons.push(index);
-          } else {
-            this.addItemQunatityIndex = index;
-          }
-        }
-      });
-      console.log(this.addItemQunatityIndex, Itemindex, this.indexOfSameItemWithAddons);
-
+    if (!this.foodBasket || this.foodBasket.length === 0) {
+      console.warn('Food basket is empty');
+      return;
     }
 
-    if (operation == 'reduce') {
-      if (opteditem.addon.length > 0 || opteditem.variation.length > 0) {
-        // this.Showfoodcart = true;
-        // this.openOffcanvas('verifySameAddon');
-        this.router.navigate(['/cart']);
-        this.addItemQunatityIndex = Itemindex;
-      } else {
-        this.reduceItemQuantity();
+    // Ensure the index is valid
+    const validIndex = Itemindex >= 0 && Itemindex < this.foodBasket.length && 
+                      this.foodBasket[Itemindex]?.item?.id === opteditem.id;
+    
+    if (!validIndex) {
+      // If the index is invalid, try to find the item in the basket
+      const foundIndex = this.foodBasket.findIndex((item: any) => item?.item?.id === opteditem.id);
+      if (foundIndex === -1) {
+        console.warn('Item not found in food basket');
+        return;
       }
-    } else if ((opteditem.addon.length > 0 || opteditem.variation.length > 0) && operation == 'add') {
+      Itemindex = foundIndex;
+    }
+
+    // Store the index for later use in addItemQuantity
+    this.addItemQunatityIndex = Itemindex;
+
+    if (operation === 'reduce') {
+      if (opteditem.addon?.length > 0 || opteditem.variation?.length > 0) {
+        this.reduceItemQuantitycustom(Itemindex);
+      } else {
+        this.reduceItemQuantity(Itemindex);
+      }
+    } else if ((opteditem.addon?.length > 0 || opteditem.variation?.length > 0) && operation === 'add') {
       this.sameAddon = true;
       this.openOffcanvas('verifySameAddon');
-      // this.Showfoodcart = false;
       this.selectedItemWithAddon = JSON.parse(JSON.stringify(opteditem));
     } else {
-      this.addItemQuantity('');
+      this.addItemQuantity(Itemindex);
     }
-
   }
 
   /**
