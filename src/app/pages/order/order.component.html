@@ -44,15 +44,17 @@
                     <li><a (click)="scrollToSections('gallery')" class="gallery dropdown-item">Gallery</a></li>
                     <!-- <li><a class="contact dropdown-item" >Contact</a></li> -->
                 </ul>
-                <!-- <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
+                <button class="navbar-toggler headerButton " type="button " data-bs-toggle="offcanvas"
                     data-bs-target="#contactSupport">
                     <img src="assets/images/icons/support.png " class="headerIcon ">
-                    @if(showTracking){
+                    <!-- @if(showTracking){
                         <img  src="assets/images/icons/preparingFood.png" title="Track Order" (click)="orderTrack()" class="headerIcon mx-2">
-                    }
-                </button> -->
+                    } -->
+                </button>
             </div>
         </nav>
+
+        
 
         @if(!restaurentActive || !serviceable || !workingHours){
         <div class="container my-2 bg-transparent outletclosedContainer" *ngIf="restaurentActive == false || serviceable == false || workingHours == false">
@@ -71,19 +73,19 @@
         </div>
     }
         
-        <div *ngIf="!serviceable || !restaurentActive || workingHours==false" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
-            <!-- Zomato-style banners -->
-            <div *ngIf="weatherAlert" class="p-10 overflow-hidden">
-              <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
-                {{ weatherAlert }}
-              </marquee>
-            </div>
-            <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
-              <span class="zomato-icon">📞</span>
-              <span class="zomato-text">{{ customerMessage }}</span>
-            </div> -->
-          </div>
-        <!-- Search Box -->
+    <div *ngIf="!serviceable || !restaurentActive || workingHours==false" class="my-3 bg-danger overflow-hidden" style="margin-left: -1.4rem; margin-right: -1.3rem;">
+        <!-- Zomato-style banners -->
+        <div *ngIf="weatherAlert" class="p-10 overflow-hidden">
+          <marquee behavior="scroll" direction="left" scrollamount="3" class="text-white text-decoration-bold" style="margin-left: 10%; margin-right: 10%;">
+            {{ weatherAlert }}
+          </marquee>
+        </div>
+        <!-- <div *ngIf="customerMessage" class="zomato-banner zomato-comm">
+          <span class="zomato-icon">📞</span>
+          <span class="zomato-text">{{ customerMessage }}</span>
+        </div> -->
+      </div>
+    <!-- Search Box -->
 
         <div class="container my-2 bg-transparent ">
             <div class="row ">
@@ -292,83 +294,88 @@
         </div>
     </div>
     <div class="container mt-4 ">
+        <!-- Loading State -->
+        @if (menuLoading) {
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <img src="../../../../assets/images/icons/loading.gif" class="br-0 h-auto w-25">
+            </div>
+        } @else {
+            <!-- Food Tile -->
+            @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
+            @if (category.items.length > 0) {
+            <div class="card foodCard" [id]="'section-' + $index">
+                <h5 class="card-title foodCategory">{{category!.categoryName | titlecase }} ({{category.items.length}})</h5>
+                @for (item of category.items; track $index){
+                <div class="card-body foodTile ">
+                    <div class="row ">
+                        <div class="col-7 col-md-7 food-item veg ">
+                            @if (item.itemAttributeId == '1'){
+                            <img src="assets/images/icons/veg.png " class="filterIcon ">
+                            }
+                            @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
+                            <img src="assets/images/icons/non-veg.png " class="filterIcon ">
+                            }
 
-        <!-- Food Tile -->
-        @for (category of menuCategoryData | searchFilter:searchKeyword |vegNonvegFilter:itemFilterType; track $index){
-        @if (category.items.length > 0) {
-        <div class="card foodCard" [id]="'section-' + $index">
-            <h5 class="card-title foodCategory ">{{category!.categoryName | titlecase }} ({{category.items.length}})
-            </h5>
-            @for (item of category.items; track $index){
-            <div class="card-body foodTile ">
-                <div class="row ">
-                    <div class="col-7 col-md-7 food-item veg ">
-                        @if (item.itemAttributeId == '1'){
-                        <img src="assets/images/icons/veg.png " class="filterIcon ">
-                        }
-                        @if (item.itemAttributeId == '2' || item.itemAttributeId == '24'){
-                        <img src="assets/images/icons/non-veg.png " class="filterIcon ">
-                        }
+                            <!-- Best Seller Badge
+                            <span class="badge bestSeller ">Bestseller</span> -->
 
-                        <!-- Best Seller Badge
-                        <span class="badge bestSeller ">Bestseller</span> -->
+                            <h5 class="card-title foodTitle "> {{item.itemName }} </h5>
+                            <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
+                            <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
+                            <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
+                            <p class="card-text foodDes "> {{ item.itemDescription }}
+                            </p>
+                            <!-- <span class="foodDesMore ">more</span> -->
+                        </div>
+                        <div class="col-5 col-md-5 food-item" [ngClass]="{
+                                   'foodItemImage': !!item.itemImageUrl,
+                                   'foodItemNoImage': !item.itemImageUrl
+                                 }">
+                            <!-- If item is inactive -->
+                            @if (item.active === '0') {
+                            @if (item.itemImageUrl) {
+                            <img [src]="item.itemImageUrl" class="card-img-top greyImage">
+                            }
+                            <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
+                            <span class="outOfStock">Out of Stock</span>
+                            }
+                            @else {
+                            @if (item.itemImageUrl) {
+                            <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
+                            }
 
-                        <h5 class="card-title foodTitle "> {{item.itemName | removeSpecialCharacter }} </h5>
-                        <span class="price ">₹ {{ item.price | discountPrice: flatDiscountpercentage }}</span>
-                        <span class="priceStrike ">₹ {{ item.price | number:'1.0-0'}}</span> &nbsp;
-                        <span class="offer "> {{flatDiscountpercentage}}% OFF</span>
-                        <p class="card-text foodDes "> {{ item.itemDescription }}
-                        </p>
-                        <!-- <span class="foodDesMore ">more</span> -->
-                    </div>
-                    <div class="col-5 col-md-5 food-item" [ngClass]="{
-                               'foodItemImage': !!item.itemImageUrl,
-                               'foodItemNoImage': !item.itemImageUrl
-                             }">
-                        <!-- If item is inactive -->
-                        @if (item.active === '0') {
-                        @if (item.itemImageUrl) {
-                        <img [src]="item.itemImageUrl" class="card-img-top greyImage">
-                        }
-                        <p class="badge outOfStockDes">Available at 12 PM <br> tomorrow</p>
-                        <span class="outOfStock">Out of Stock</span>
-                        }
-                        @else {
-                        @if (item.itemImageUrl) {
-                        <img [src]="item.itemImageUrl" class="card-img-top" loading="lazy">
-                        }
+                            @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
+                            item.variation.length == 0) {
+                            <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
+                                (click)="selectItem(item)"> + Add</button>
+                            }
 
-                        @if (!seletedItemId.includes(item.id) && item.active === '1' && item.addon.length == 0 &&
-                        item.variation.length == 0) {
-                        <button class="btn btn-transparent addButton" [disabled]="restaurentActive == false || serviceable == false"
-                            (click)="selectItem(item)"> + Add</button>
-                        }
+                            @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
+                            {
+                            <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false || serviceable == false" (click)="selectItem(item)"> +
+                                Add</button>
+                            }
 
-                        @if ((item.addon.length > 0 || item.variation.length > 0) && (!seletedItemId.includes(item.id)))
-                        {
-                        <button class='btn btn-transparent addButton' (click)="openOffcanvas('addOn')"  [disabled]="restaurentActive == false || serviceable == false" (click)="selectItem(item)"> +
-                            Add</button>
-                        }
+                            @if (seletedItemId.includes(item.id) && item.active === '1') {
+                            <button [disabled]="restaurentActive == false || serviceable == false" class="btn btn-transparent qtyButton">
+                                <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
+                                {{item | displayQuantity}}
+                                <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
+                            </button>
+                            }
 
-                        @if (seletedItemId.includes(item.id) && item.active === '1') {
-                        <button [disabled]="restaurentActive == false || serviceable == false" class="btn btn-transparent qtyButton">
-                            <span (click)="sameAddonConfirmation(item, $index, 'reduce')">-</span>
-                            {{item | displayQuantity}}
-                            <span (click)="sameAddonConfirmation(item, $index, 'add')">+</span>
-                        </button>
-                        }
-
-                        @if (item.addon.length > 0 || item.variation.length > 0) {
-                        <span class="customisable">Customisable</span>
-                        }
-                        }
+                            @if (item.addon.length > 0 || item.variation.length > 0) {
+                            <span class="customisable">Customisable</span>
+                            }
+                            }
+                        </div>
                     </div>
                 </div>
+                }
             </div>
             }
-        </div>
-        }
 
+            }
         }
     </div>
 
@@ -587,6 +594,27 @@
 
     <!-- Food Menu Bottom Sheet -->
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="foodMenu">
+        <!-- Floating Close Button -->
+        <div style="position: fixed; top: 28%; left: 44%;background-color: black;border-radius: 50%;">
+            <button 
+                type="button" 
+                class="btn-close"
+                aria-label="Close"
+                data-bs-dismiss="offcanvas"
+                style="
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    font-size: 21px;
+                    padding: 0;
+                    margin-left: 8px;
+                    cursor: pointer;
+                    color: white;
+                "
+                aria-label="Close"
+            >
+            </button>
+        </div>
         <div class="offcanvas-header">
             <h5 class="offcanvas-title btmHeader">Menu</h5>
             <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
@@ -629,6 +657,27 @@
     <!-- Addon variation bottom sheet -->
 
     <div class="offcanvas offcanvas-bottom bottomSheet" tabindex="-1" id="addOn">
+        <!-- Floating Close Button -->
+        <div style="position: fixed; top: 23%; left: 44%;background-color: black;border-radius: 50%;">
+            <button 
+                type="button" 
+                class="btn-close"
+                aria-label="Close"
+                data-bs-dismiss="offcanvas"
+                style="
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    font-size: 24px;
+                    padding: 0;
+                    cursor: pointer;
+                    color: white;
+                "
+                aria-label="Close"
+            >
+            </button>
+        </div>
+        
         @if (variationResponse?.length > 0 || addonResponse?.length >0 ) {
         <app-variation-addon [variations]="variationResponse" [addOnChoice]="addonResponse" [menuItem]="selectedItem"
             (addedItem)="getAddedItem($event)"></app-variation-addon>
@@ -646,7 +695,7 @@
                         <p class="title2"> The selected Item has Variation / Addon</p>
                         <span class="text1">Select same Variation /Addon or New.</span>
                         <div class="modalBtns">
-                            <button class="btn plainButton w-50" (click)="addItemQuantity('same')">Use Same</button>
+                            <button class="btn plainButton w-50" (click)="addItemQuantity(addItemQunatityIndex)">Use Same</button>
                             <button class="btn solidButton w-50" (click)="addItemwithNewAddon()">New</button>
                         </div>
                     </div>
@@ -682,9 +731,9 @@
                                                 </div>
                                                 <div class="col-4 col-md-4 food-item foodItemImage cartPrice ">
                                                     <button class="btn btn-transparent cartQtyButton ">
-                                                        <span (click)="reduceItemQuantity()">-</span>
+                                                        <span (click)="reduceItemQuantity($index)">-</span>
                                                         {{basketitem.item.quantity}}
-                                                        <span (click)="addItemQuantity('')">+</span>
+                                                        <span (click)="addItemQuantity($index)">+</span>
                                                     </button>
                                                     <div class="price-wrapper">
                                                         @if(basketitem?.addonVariation?.varients){
@@ -726,9 +775,7 @@
   <button type="button" class="circle-close-btn" (mousedown)="$event.preventDefault()" (click)="closeOffcanvas('selectOutlet')">&times;</button>
 </div>
 
-<!-- <div class="offcanvas-header">
-  <h5 class="offcanvas-title">Select Outlet</h5>
-</div> -->
+
             <!-- <img src="assets/images/icons/back.png " class="backIcon "> -->
             <h5 class="offcanvas-title btmHeaderOut"> Select Outlet</h5>
             <button type="button" class="btn-close bottomClose" data-bs-dismiss="offcanvas"></button>
@@ -740,14 +787,14 @@
                 <li class="mb-1" (click)="selectBranch($index)">
                   <img src="assets/images/icons/forward.png" class="forwardIcon">
                   <div class="outlet-info">
-                    <p class="outletAddr" [ngClass]="{'unavailableStore': !availableBranchData?.includes(item.id)}">
+                    <p class="outletAddr" >
                       {{item.restaurantName}}
                     </p>
 
                     <div class="outlet-meta">
                       <span class="outletDes">{{item.address}}</span>
-                      <span class="badge" [ngClass]="item.serviceable ? 'bg-success' : 'bg-danger'">
-                        {{item.serviceable ? 'Open Now' : 'Closed'}}
+                      <span class="badge" [ngClass]="item.active ? 'bg-success' : 'bg-danger' ">
+                        {{item.active ? 'Open Now' : 'Closed'}}
                         </span>
                     @if (getOutletDistance(item)) {
                         <span class="outlet-distance">~ {{getOutletDistance(item)}} km away</span>
