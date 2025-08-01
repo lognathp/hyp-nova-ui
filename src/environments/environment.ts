@@ -6,7 +6,7 @@ export const environment = {
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
     title:'OM Punjabi Dhaba',
-    contactRestaurant:"9876543210",
+    contactRestaurant:"7396209686",
     contactHyperapps:"7801057583",
     // flatDiscountpercentage : 25,
     // deliveryDiscount : 25,
