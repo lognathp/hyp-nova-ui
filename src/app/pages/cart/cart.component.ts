@@ -727,7 +727,12 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
 
 
         let flatDiscountAmount = parseFloat(this.orderPriceDetails.itemSubtotal) * (this.flatDiscountpercentage / 100)
-        const taxAmount: any = Object.values(this.orderPriceDetails.tax).reduce((acc: any, curr: any) => parseFloat(acc) + parseFloat(curr), 0);
+        const rawTaxTotal = (Object.values(this.orderPriceDetails.tax) as string[])
+  .reduce((acc, curr) => acc + parseFloat(curr), 0);
+
+const taxAmount = Number(rawTaxTotal.toFixed(2));
+console.log('taxAmount:', taxAmount);
+
 
         if (this.orderOptionsType != "1") {
             this.orderPriceDetails['deliveryCharge'] = 0
@@ -755,8 +760,9 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             // restaurantLiableAmt: parseFloat(this.orderPriceDetails.itemSubtotal) + parseFloat(taxAmount),
             // discountAmount: 0,
             discountAmount: flatDiscountAmount,
-            totalAmount: (parseFloat(this.orderPriceDetails.itemSubtotal) - flatDiscountAmount) + parseFloat(taxAmount), // (Sum of final price + sum of tax + delveriy charge + pck charge + service charge) - Discout 
-            restaurantLiableAmt: (parseFloat(this.orderPriceDetails.itemSubtotal) - flatDiscountAmount) + parseFloat(taxAmount),
+           totalAmount: (parseFloat(this.orderPriceDetails.itemSubtotal) - flatDiscountAmount) + taxAmount,
+restaurantLiableAmt: (parseFloat(this.orderPriceDetails.itemSubtotal) - flatDiscountAmount) + taxAmount,
+
 
 
             taxAmount: taxAmount,
@@ -771,7 +777,7 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
             // grandTotalAmount: 691
         }
 
-        console.log(orderData);
+        console.log('orderData',  orderData);
 
         await this.placeOrder(JSON.stringify(orderData));
     }
