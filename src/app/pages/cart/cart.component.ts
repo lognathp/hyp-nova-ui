@@ -574,6 +574,9 @@ export class CartComponent implements OnInit, AfterViewInit, DoCheck {
                     this.orderPriceDetails.tax[tax.name] = (parseFloat(tax.amount) * items.quantity);
                 }
                 this.orderPriceDetails.totalTax += (parseFloat(tax.amount) * items.quantity);
+                this.orderPriceDetails.totalTax = parseFloat(
+                this.orderPriceDetails.totalTax.toFixed(2)
+                );
 
                 // console.log(this.orderPriceDetails.totalTax);
 
