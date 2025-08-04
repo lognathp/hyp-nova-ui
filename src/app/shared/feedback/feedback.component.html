@@ -1,0 +1,47 @@
+<!-- Floating Feedback Tab -->
+<div class="feedback-tab" (click)="toggleFeedbackModal()" [class.active]="isModalOpen">
+  <div class="feedback-tab-text">Report Issue</div>
+</div>
+
+<!-- Feedback Modal -->
+<div *ngIf="isModalOpen" class="feedback-modal-container" [ngClass]="{'show': isModalOpen}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Report an Issue</h5>
+        <button type="button" class="btn-close" (click)="closeFeedbackModal()" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form (submit)="submitFeedback(); $event.preventDefault()">
+          <div class="mb-3">
+            <label for="feedbackMessage" class="form-label">Describe the issue</label>
+            <textarea class="form-control" 
+                      id="feedbackMessage" 
+                      rows="4"
+                      [(ngModel)]="feedbackData.message" 
+                      name="message"
+                      required></textarea>
+          </div>
+          
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" 
+                    class="btn btn-outline-secondary" 
+                    [disabled]="isSendingFeedback"
+                    (click)="closeFeedbackModal()">
+              Cancel
+            </button>
+            <button type="submit" 
+                    class="btn btn-primary"
+                    [disabled]="isSendingFeedback || !feedbackData.message.trim()">
+              <span *ngIf="!isSendingFeedback">Submit Feedback</span>
+              <span *ngIf="isSendingFeedback" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span *ngIf="isSendingFeedback" class="visually-hidden">Sending...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show" (click)="closeFeedbackModal()"></div>
+</div>

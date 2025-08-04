@@ -363,6 +363,11 @@
   cursor: pointer;
 }
 
+.overflow-hidden {
+  overflow: hidden!important;
+  width: 106%;
+}
+
 
 // .scroll-container::-webkit-scrollbar {
 //   display: none;            

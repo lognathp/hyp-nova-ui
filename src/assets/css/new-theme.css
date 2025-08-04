@@ -129,7 +129,7 @@
 
 @media (min-width: 768px) {
     .floating-menu{
-        right: 38%;
+        right: 32%;
         bottom: 30px;
     }
     .track{
@@ -1512,6 +1512,12 @@ float: right;
     }
 }
 
+@media (min-width: 1200px) {
+    .floating-menu{
+        right: 37%;
+    }
+}
+
 html {
     background-color: #fef1d7;
 }
@@ -1558,7 +1564,10 @@ html {
 }
 
 .addonBtm {
-    padding: 0px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
 }
 
 .addonVal {
