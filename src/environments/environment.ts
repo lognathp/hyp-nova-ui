@@ -5,7 +5,7 @@ export const environment = {
     partnerId:'3Ze9YGDJpw',
     production: true,
     razorPayKey:'rzp_live_oUdd0v4WZIGGRP',
-    title:'Saharsh Udupi Grand',
+    title:'Anandam',
     contactRestaurant:"9000901009",
     contactHyperapps:"7801057583",
     // flatDiscountpercentage : 25,

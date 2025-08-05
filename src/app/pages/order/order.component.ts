@@ -19,6 +19,7 @@ import { WebSocketService } from '../../core/services/websocket.service';
 import { interval, Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
 import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
+import { FeedbackComponent } from "../../shared/feedback/feedback.component";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -41,8 +42,9 @@ declare var bootstrap: any; // Bootstrap is using from assets
     RouterModule,
     BranchChangeComponent,
     SplitFirstCommaPipe,
-    MenuLoaderComponent
-],
+    MenuLoaderComponent,
+    FeedbackComponent
+  ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
