@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import moment from 'moment';
 import { RemoveSpecialCharacterPipe } from "../../core/pipes/remove-special-character.pipe";
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import html2canvas from 'html2canvas';
 
 import { environment } from '../../../environments/environment'
 import { DiscountPricePipe } from "../../core/pipes/discount-price.pipe";
@@ -21,6 +19,7 @@ import { WebSocketService } from '../../core/services/websocket.service';
 import { interval, Subscription } from 'rxjs';
 import { SplitFirstCommaPipe } from "../../core/pipes/split-first-comma.pipe";
 import { MenuLoaderComponent } from "../../components/loaders/menu-loader/menu-loader.component";
+import { FeedbackComponent } from "../../shared/feedback/feedback.component";
 
 
 declare var bootstrap: any; // Bootstrap is using from assets
@@ -43,8 +42,9 @@ declare var bootstrap: any; // Bootstrap is using from assets
     RouterModule,
     BranchChangeComponent,
     SplitFirstCommaPipe,
-    MenuLoaderComponent
-],
+    MenuLoaderComponent,
+    FeedbackComponent
+  ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
@@ -103,6 +103,7 @@ export class OrderComponent implements OnInit, DoCheck {
   customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
   restaurentDetails: any;
   menuLoading: any;
+  restaurentName: string = "";
 
 
   constructor(
@@ -260,6 +261,7 @@ export class OrderComponent implements OnInit, DoCheck {
           this.vendorData.restaurantDetails.forEach((brdata: any) => {
             if (brdata.id == this.restaurentId) {
               this.branchData = brdata;
+              this.restaurentName = this.branchData.restaurantName;
               localStorage.setItem('currentBranch',JSON.stringify(this.branchData) )
               // console.log(this.branchData);
 
@@ -439,6 +441,7 @@ export class OrderComponent implements OnInit, DoCheck {
         this.restaurentActive = restaurantDetails.active;
         this.serviceable = restaurantDetails.serviceable;
         this.weatherAlert = restaurantDetails.serviceableMessage || 'restaurant is closed';
+        this.restaurentName = restaurantDetails.restaurantName;
         // this.customerMessage = restaurantDetails.customerMessage;
         // this.restaurentActive = false;
         const workingHoursData = restaurantDetails.deliveryHours;
@@ -1326,5 +1329,20 @@ getOutletDistance(item: any): string {
         return liveStatuses.includes(order.status) && orderDate.getDate() === today.getDate();
       })
       .map(order => order.id);
+  }
+
+  // Add this method to handle successful feedback submission
+  onFeedbackSubmitted(success: boolean): void {
+    // You can add any logic here to handle successful feedback submission
+    console.log('Feedback submitted successfully:', success);
+    // For example, show a success message to the user
+    // this.toastr.success('Thank you for your feedback!');
+  }
+
+  // Add this method to handle feedback submission errors
+  onFeedbackError(error: any): void {
+    console.error('Error submitting feedback:', error);
+    // Handle the error, e.g., show an error message
+    // this.toastr.error('Failed to submit feedback. Please try again.');
   }
 }

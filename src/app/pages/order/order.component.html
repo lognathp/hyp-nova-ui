@@ -51,6 +51,16 @@
                         <img  src="assets/images/icons/preparingFood.png" title="Track Order" (click)="orderTrack()" class="headerIcon mx-2">
                     } -->
                 </button>
+                <app-feedback 
+                    [buttonText]="'Feedback'"
+                    [buttonClass]="'navbar-toggler headerButton'"
+                    [customerName]="customerDetails?.name || ''"
+                    [orderId]="customerDetails?.id || ''"
+                    [restaurantName]="restaurentName || restaurentId?.toString() || ''"
+                    [showAsButton]="true"
+                    (feedbackSubmitted)="onFeedbackSubmitted($event)"
+                    (feedbackError)="onFeedbackError($event)">
+                </app-feedback>
             </div>
         </nav>
 
