@@ -152,7 +152,11 @@ export class OrderComponent implements OnInit, DoCheck {
 
     const vendorDetail: any = localStorage.getItem('vendorData');
     if (vendorDetail) {
-      this.partnerData = JSON.parse(vendorDetail);
+      const parsedData = JSON.parse(vendorDetail);
+      if (parsedData?.restaurantDetails) {
+        parsedData.restaurantDetails = this.sortRestaurantsByDistance(parsedData.restaurantDetails);
+      }
+      this.partnerData = parsedData;
       let restId: any = localStorage.getItem("selectedRestId")
       this.restaurentId = parseInt(restId);
       // console.log(this.partnerData, this.restaurentId);
@@ -1347,5 +1351,16 @@ getOutletDistance(item: any): string {
     console.error('Error submitting feedback:', error);
     // Handle the error, e.g., show an error message
     // this.toastr.error('Failed to submit feedback. Please try again.');
+  }
+
+  // Add this method to sort restaurants by distance
+  private sortRestaurantsByDistance(restaurants: any[]): any[] {
+    if (!restaurants || !Array.isArray(restaurants)) return [];
+    
+    return [...restaurants].sort((a, b) => {
+      const distanceA = parseFloat(this.getOutletDistance(a) || '0');
+      const distanceB = parseFloat(this.getOutletDistance(b) || '0');
+      return distanceA - distanceB;
+    });
   }
 }
