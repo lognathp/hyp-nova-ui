@@ -129,7 +129,7 @@
                             <!-- Offer Slide -->
                             <div class="carousel-item active ">
                                 <div class="off bg-transparent text-dark ">
-                                    <h2 class="wwdTitle ">20% Off on all items</h2>
+                                    <h2 class="wwdTitle ">{{restaurentDetails?.discountPercentage || 25}}% Off on all items</h2>
                                     <span class="wwdDes ">Don’t miss out!</span>
                                 </div>
                             </div>
@@ -793,7 +793,7 @@
         <div class="offcanvas-body">
 
             <ul class="outletBtm">
-                @for (item of partnerData?.restaurantDetails; track $index) {
+                @for (item of outletData; track $index) {
                 <li class="mb-1" (click)="selectBranch($index)">
                   <img src="assets/images/icons/forward.png" class="forwardIcon">
                   <div class="outlet-info">

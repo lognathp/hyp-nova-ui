@@ -104,6 +104,7 @@ export class OrderComponent implements OnInit, DoCheck {
   restaurentDetails: any;
   menuLoading: any;
   restaurentName: string = "";
+  outletData: any;
 
 
   constructor(
@@ -154,13 +155,24 @@ export class OrderComponent implements OnInit, DoCheck {
     if (vendorDetail) {
       const parsedData = JSON.parse(vendorDetail);
       if (parsedData?.restaurantDetails) {
+        // First sort all restaurants by distance
         parsedData.restaurantDetails = this.sortRestaurantsByDistance(parsedData.restaurantDetails);
+        
+        // Get available branches from localStorage
+        const branchData: any = localStorage.getItem("availableBranches");
+        this.availableBranchData = JSON.parse(branchData) || [];
+        // console.log("Available branch IDs:", this.availableBranchData);
+        
+        // Filter restaurantDetails to only include available branches
+        this.outletData = parsedData.restaurantDetails.filter((restaurant: any) => 
+          this.availableBranchData.includes(restaurant.id.toString())
+        );
+        
+        console.log("Filtered outletData:", this.outletData);
       }
       this.partnerData = parsedData;
-      let restId: any = localStorage.getItem("selectedRestId")
-      this.restaurentId = parseInt(restId);
-      // console.log(this.partnerData, this.restaurentId);
-
+      let restId: any = localStorage.getItem("selectedRestId");
+      this.restaurentId = restId ? parseInt(restId) : undefined;
     }
     const branchData: any = localStorage.getItem("availableBranches");
     this.availableBranchData = JSON.parse(branchData);
@@ -335,30 +347,41 @@ export class OrderComponent implements OnInit, DoCheck {
    * @param index Selected array index of the availableBranchData array
    */
   public selectBranch(index: number): void {
-    console.log(index, this.partnerData);
-    if (this.availableBranchData.includes(this.partnerData.restaurantDetails[index].id)) {
-      // if (index == 99) {
-      //   this.ShowBranch();
-      // } else {
-      console.log(this.restaurentId, this.partnerData.restaurantDetails[index].id);
-      if (this.restaurentId != parseInt(this.partnerData.restaurantDetails[index].id)) {
-        localStorage.removeItem("foodBasket");
-        this.foodBasket = [];
-        this.seletedItemId = [];
-        this.calculateCartPrice();
-      }
-      localStorage.setItem('selectedRestId', this.partnerData.restaurantDetails[index].id);
-      this.ngOnInit();
-      this.cdr.detectChanges();
-      // this.branchId.emit(this.vendorData.restaurantDetails[index].id);
-      this.restaurentId = this.partnerData.restaurantDetails[index].id;
-      this.branchData = this.partnerData.restaurantDetails[index];
-      // this.branchName = this.vendorData.restaurantDetails[index].restaurantName;
-      // this.branchContact = this.vendorData.restaurantDetails[index].contact;
-      // this.supportContact = this.vendorData.restaurantDetails[index].supportContact;
-      // }
+    if (!this.outletData || index >= this.outletData.length) {
+      console.error('Invalid branch selection index:', index);
+      return;
     }
-
+    
+    const selectedRestaurant = this.outletData[index];
+    const selectedRestaurantId = selectedRestaurant.id;
+    
+    console.log('Current restaurant ID:', this.restaurentId, 'Selected ID:', selectedRestaurantId);
+    
+    // Clear cart only if switching to a different branch
+    if (this.restaurentId != parseInt(selectedRestaurantId)) {
+      localStorage.removeItem("foodBasket");
+      this.foodBasket = [];
+      this.seletedItemId = [];
+      this.calculateCartPrice();
+    }
+    
+    // Save the selected branch and update the UI
+    localStorage.setItem('selectedRestId', selectedRestaurantId);
+    this.restaurentId = parseInt(selectedRestaurantId);
+    this.branchData = selectedRestaurant;
+    
+    // Close the offcanvas after selection
+    const offcanvas = document.getElementById('selectOutlet');
+    if (offcanvas) {
+      const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+      if (bsOffcanvas) {
+        bsOffcanvas.hide();
+      }
+    }
+    
+    // Reload the component to reflect changes
+    this.ngOnInit();
+    this.cdr.detectChanges();
   }
 
 
@@ -445,6 +468,7 @@ export class OrderComponent implements OnInit, DoCheck {
 
         console.log('restaurantDetails', response.data[0]);
         const restaurantDetails: any = response.data[0];
+        this.restaurentDetails = restaurantDetails;
         this.restaurentActive = restaurantDetails.active;
         this.serviceable = restaurantDetails.serviceable;
         this.weatherAlert = restaurantDetails.serviceableMessage || 'restaurant is closed';
