@@ -1,0 +1,6 @@
+<div class="payment-timer">
+    <p>Complete your payment within: <strong>{{ timerDisplay }}</strong></p>
+  </div>
+  @if(unKnownError){
+    <app-something-went-wrong [errorMessage]="errorMessage"></app-something-went-wrong>
+}

@@ -94,7 +94,10 @@ export class LocationPickerComponent implements OnInit, AfterViewInit, OnChanges
       disableDefaultUI: false,
       fullscreenControl: false,
       gestureHandling: 'greedy',
-  
+      mapTypeControl: false, // Disable map type control (satellite/terrain buttons)
+      streetViewControl: false, // Disable Pegman/street view
+      zoomControl: true, // Keep zoom control
+      mapTypeId: 'roadmap' // Force roadmap view
     };
 
     this.map = new google.maps.Map(document.getElementById('map'), mapOptions);

@@ -1,36 +1,43 @@
-import { Component, Input, NgZone } from '@angular/core';
-
-import { Router,NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component, NgZone } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Config } from '../../core/config';
 import { ApiService } from '../../core/services/api.service';
 import { PaymentService } from '../../core/services/payment.service';
+import { SomethingWentWrongComponent } from "../../components/errors/something-went-wrong/something-went-wrong.component";
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [],
+  imports: [SomethingWentWrongComponent],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss'
 })
 export class PaymentComponent {
+  private razorpay_key: string = Config.razorpay_key;
 
-  private razorpay_key: string = Config.razorpay_key
-
-  orderSaveResponse:any;
+  orderSaveResponse: any;
   partnerData: any;
+  customerDetails: any = {};
 
-// orderSaveResponse: any;
+  timerCount: number = 20; // 5 minutes
+  timerDisplay: string = '00:20';
+  paymentConfirmed: boolean = false;
+  timerInterval: any;
+  razorpayInstance: any;
+  unKnownError: boolean = false;
+  errorMessage: string = '';
+
   constructor(
-    private paymentService: PaymentService, 
-    private router: Router, 
-    private ngZone:NgZone, 
+    private paymentService: PaymentService,
+    private router: Router,
+    private ngZone: NgZone,
     public apiService: ApiService,
     private route: ActivatedRoute
-  ) { 
+  ) {
     const navigation = this.router.getCurrentNavigation();
     this.orderSaveResponse = navigation?.extras.state?.['orderData'];
   }
-  customerDetails: any = {};
+
   ngOnInit() {
     // this.orderSaveResponse = this.route.snapshot.paramMap.get('orderData');
     console.log(this.orderSaveResponse);
@@ -40,94 +47,146 @@ export class PaymentComponent {
     if (vendorDetail) {
       this.partnerData = JSON.parse(vendorDetail);
     }
+
     const localCurrentOrder: any = localStorage.getItem("currentOrder");
-    let orderdataId = JSON.parse(localCurrentOrder)
-    console.log(localCurrentOrder);
-    
+    let orderdataId = JSON.parse(localCurrentOrder);
+
+    let custDetail: any = localStorage.getItem('customerDetails');
+    this.customerDetails = JSON.parse(custDetail);
+
     this.payWithRazor({
       totalAmount: this.orderSaveResponse[0].amount,
       id: this.orderSaveResponse[0].paymentOrderId
-    },orderdataId.data[0].id);
-    let custDetail: any = localStorage.getItem('customerDetails');
-    this.customerDetails = JSON.parse(custDetail);
-    // console.log(this.customerDetails);
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        window.location.reload();
-        
-      }
-    });
+    }, orderdataId.data[0].id);
+
+    this.startPaymentTimer();
   }
 
-  payWithRazor(orderData: any, currentOrderId:string) {
+  payWithRazor(orderData: any, currentOrderId: string) {
     const options: any = {
       key: this.razorpay_key,
-      amount: orderData.totalAmount, // amount should be in paise format to display Rs 1255 without decimal point
-      // amount: 125500, // amount should be in paise format to display Rs 1255 without decimal point
+      amount: orderData.totalAmount,
       currency: 'INR',
-      name: this.partnerData?.name, // company name or product name
-      description: this.partnerData?.type,  // product description
-      image: '../../../assets/images/yum-yum.png', // company logo or product image
-      order_id: orderData.id, // order_id created by you in backend
-      // modal: {
-      //   // We should prevent closing of the form when esc key is pressed.
-      //   escape: false,
-      // },
-      prefill: {//We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-        name: this.customerDetails.name, //your customer's name
+      name: this.partnerData?.name,
+      description: this.partnerData?.type,
+      image: '../../../assets/images/yum-yum.png',
+      order_id: orderData.id,
+      prefill: {
+        name: this.customerDetails.name,
         email: "",
-        contact: this.customerDetails.mobile  //Provide the customer's phone number for better conversion rates 
-
+        contact: this.customerDetails.mobile
       },
       modal: {
-        // Prevent closing the form when the ESC key is pressed
         escape: false,
         ondismiss: () => {
-          // Handle the case when the user closes the form while the transaction is in progress
           console.log('Transaction cancelled.');
           this.router.navigate(['/order']);
         }
       },
       notes: {
-        // include notes if any
         address: "Razorpay Corporate Office"
       },
       theme: {
         color: '#3399cc'
-      },
-      // callback_method: "get",
-      // redirect: true,
-      // callback_url:"http://localhost:4200/order-tracking",
-      // callback_url: window.location.origin + "/order-tracking",
+      }
     };
-    options.handler = ((response: any, error: any) => {
+
+    options.handler = (response: any) => {
       options.response = response;
-      console.log(response,error);
-      console.log(options);
+      console.log("Razorpay response:", response);
+      this.paymentConfirmed = true;
+      clearInterval(this.timerInterval);
+
       this.ngZone.runOutsideAngular(() => {
         this.apiService.postMethod(`/payment/verify/${currentOrderId}`, response).subscribe({
-          next: (reponse) => { console.log(response);
-            this.router.navigate(['/order-tracking']);
-           },
-          error: (error) => { console.log(error)
-            this.router.navigate(['/order-tracking']);
-           }
+          next: (res) => {
+            this.router.navigate(['/order-tracking'], { state: { orderData: res } });
+          },
+          error: (err) => {
+            console.log(err);
+            this.unKnownError = true;
+            this.errorMessage = "Payment failed. Please try again.";
+            this.router.navigate(['/order-tracking'], { state: { orderData: err } });
+          }
+        });
       });
-        
-      });
-      
-      // call your backend api to verify payment signature & capture transaction
-    });
-    // options.modal.ondismiss = (() => {
-    //   // handle the case when user closes the form while transaction is in progress
-    //   console.log('Transaction cancelled.');
-    // });
+    };
+
     const rzp = new this.paymentService.nativeWindow.Razorpay(options);
+    this.razorpayInstance = rzp; // Store the instance
     rzp.open();
   }
-  
+
+  startPaymentTimer() {
+    this.timerInterval = setInterval(() => {
+      this.timerCount--;
+      const minutes = Math.floor(this.timerCount / 60);
+      const seconds = this.timerCount % 60;
+      this.timerDisplay = `${this.pad(minutes)}:${this.pad(seconds)}`;
+
+      if (this.timerCount <= 0) {
+        clearInterval(this.timerInterval);
+        if (!this.paymentConfirmed) {
+          // Close Razorpay modal if it exists
+          if (this.razorpayInstance) {
+            try {
+              // Get the current order ID
+              const localCurrentOrder: any = localStorage.getItem("currentOrder");
+              const orderData = JSON.parse(localCurrentOrder);
+              const orderId = orderData?.data?.[0]?.id;
+
+              // Update order status to DROPPED_OFF
+              if (orderId) {
+                this.apiService.patchMethod(`/order/${orderId}`, { status: 'DROPPED_OFF' })
+                  .subscribe({
+                    next: () => {
+                      console.log('Order status updated to DROPPED_OFF');
+                    },
+                    error: (err) => {
+                      console.error('Failed to update order status:', err);
+                    }
+                  });
+              }
+
+              // Force close the modal
+              const modal = document.querySelector('.razorpay-container iframe');
+              if (modal && modal.parentNode) {
+                (modal.parentNode as HTMLElement).style.display = 'none';
+              }
+              
+              // Trigger Razorpay's close
+              this.razorpayInstance.close();
+              
+              // Clean up Razorpay instance
+              this.razorpayInstance = null;
+              
+              // Show error message
+              this.showErrorAndNavigate();
+            } catch (e) {
+              console.error('Error handling Razorpay modal close:', e);
+              this.showErrorAndNavigate();
+            }
+          } else {
+            this.showErrorAndNavigate();
+          }
+        }
+      }
+    }, 1000);
+  }
+
+  private showErrorAndNavigate() {
+    this.ngZone.run(() => {
+      this.unKnownError = true;
+      this.errorMessage = "Payment time expired. If any amount was deducted, it will be refunded. Please place your order again.";
+      
+      // Navigate after a delay
+      setTimeout(() => {
+        this.router.navigate(['/order']);
+      }, 6000);
+    });
+  }
+
+  pad(value: number): string {
+    return value < 10 ? '0' + value : value.toString();
+  }
 }
-
-
-
-

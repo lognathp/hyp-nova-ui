@@ -7,11 +7,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SafeUrlPipe } from '../../core/pipes/safe-url.pipe';
 
 @Component({
   selector: 'app-order-tracking',
   standalone: true,
-  imports: [DatePipe, CommonModule],
+  imports: [DatePipe, CommonModule, SafeUrlPipe],
   templateUrl: './order-tracking.component.html',
   styleUrl: './order-tracking.component.scss'
 })
@@ -35,6 +36,7 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
   weatherAlert: string | null = null;
   customerMessage: string | null = "Our delivery partner will call if they have trouble reaching you. Please keep your phone handy.";
   customerDetails: any;
+  showMap: boolean = false;
 
   constructor(
     public sharedData: SharedService,
@@ -76,7 +78,7 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
 
       // WebSocket subscription (for both cases)
       this.wsSubscription = this.wsService.getOrderStatusUpdates().subscribe((webSocketResponse: any) => {
-        console.log(JSON.stringify(webSocketResponse))
+        // console.log(JSON.stringify(webSocketResponse))
         if (webSocketResponse.customerId === this.customerDetails.id) {
           this.orderStatus = webSocketResponse;
           if (this.orderStatus.status == 'CANCELLED') {
@@ -167,7 +169,7 @@ export class OrderTrackingComponent implements OnInit, OnDestroy {
   }
 
   navigateMap() {
-    window.open(this.orderStatus.deliveryTrackingLink, "_blank");
+    this.showMap = !this.showMap;
   }
 
   goBack(): void {

@@ -129,7 +129,7 @@
 
 @media (min-width: 768px) {
     .floating-menu{
-        right: 38%;
+        right: 32%;
         bottom: 30px;
     }
     .track{
@@ -1512,6 +1512,12 @@ float: right;
     }
 }
 
+@media (min-width: 1200px) {
+    .floating-menu{
+        right: 37%;
+    }
+}
+
 html {
     background-color: #fef1d7;
 }
@@ -1558,7 +1564,10 @@ html {
 }
 
 .addonBtm {
-    padding: 0px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
 }
 
 .addonVal {
@@ -3899,3 +3908,95 @@ input {
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
   }
+
+  .cart-modern-loader-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+  }
+  
+  .cart-modern-loader-blur {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(30, 30, 30, 0.45);
+    backdrop-filter: blur(5px);
+    z-index: 1;
+  }
+  
+  .cart-modern-loader-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(255,255,255,0.95);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    padding: 2.5rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 200px;
+    max-width: 69vw;
+    animation: fadeInUp 0.5s;
+  }
+  
+  .cart-modern-loader-img {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 1rem;
+  }
+  
+  .cart-modern-loader-text {
+    font-size: 1.1rem;
+    color: #222;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+@media screen and (max-width: 350px) {
+    .landingDeals {
+        padding: 8px;
+        margin: 5px 0;
+    }
+
+    .card-img-top{
+        height: 120px;
+        width: 104px;
+    }
+
+    .offer{
+        font-size: 8px;
+    }
+
+    .priceStrike{
+        font-size: 9px;
+    }
+    .price {
+        font-size: 11px;
+    }
+    
+    .outOfStockDes{
+        width: 100%;
+    }
+    
+    .landingDeals h2 {
+        font-size: 9px;
+        width: 100%;
+        float: none;
+        margin: 5px 0 0 0;
+    }
+
+    .foodTile{
+        .row>*{
+            padding-right: 0px !important;
+        }
+    }
+}
