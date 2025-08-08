@@ -48,7 +48,7 @@ export class HomeComponent {
     console.log('isDevMode', isDevMode());
     if (isDevMode()) {
       // domain = "https://rasyumm.hyperapps.cloud"
-      domain = "https://saharshudipigrand.hyperapps.in"
+      domain = "https://yumyumtree.hyperapps.in"
 
     }
     this.apiService.getMethod(`/partner?domain_eq=${domain}`).subscribe({

@@ -144,12 +144,29 @@
             @if (orderStatus?.deliveryTrackingLink != null ){
                 <div class="row ">
                     <div class="col-md-12 ">
-                        <button class="btn solidButton"  (click)="navigateMap()"> Track Order</button>
-                        <!-- <button class="btn solidButton"> Done</button> -->
+                        <button class="btn solidButton mb-3" (click)="navigateMap()">
+                            {{ showMap ? 'Hide Map  ▼' : 'Track Order' }}
+                        </button>
+                        @if (showMap) {
+                            <div class="map-container">
+                                <div class="iframe-wrapper">
+                                    <iframe 
+                                        [src]="orderStatus?.deliveryTrackingLink | safeUrl" 
+                                        width="100%" 
+                                        height="100%"
+                                        frameborder="0"
+                                        style="border: 0; min-height: 600px;"
+                                        allowfullscreen 
+                                        loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"
+                                        class="interactive-iframe">
+                                    </iframe>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             }
-           
         </div>
     </div>
 </div>
@@ -168,4 +185,3 @@
 
         </div>
     </div>
-

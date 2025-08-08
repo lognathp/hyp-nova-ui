@@ -152,7 +152,11 @@ export class OrderComponent implements OnInit, DoCheck {
 
     const vendorDetail: any = localStorage.getItem('vendorData');
     if (vendorDetail) {
-      this.partnerData = JSON.parse(vendorDetail);
+      const parsedData = JSON.parse(vendorDetail);
+      if (parsedData?.restaurantDetails) {
+        parsedData.restaurantDetails = this.sortRestaurantsByDistance(parsedData.restaurantDetails);
+      }
+      this.partnerData = parsedData;
       let restId: any = localStorage.getItem("selectedRestId")
       this.restaurentId = parseInt(restId);
       // console.log(this.partnerData, this.restaurentId);
@@ -233,6 +237,7 @@ export class OrderComponent implements OnInit, DoCheck {
     });
 
     this.wsSubscription = this.wsService.getRestaurentDetails().subscribe((webSocketResponse: any) => {
+      console.log("restaurentDetails onInit", webSocketResponse);
       this.restaurentDetails = webSocketResponse;
       this.restaurentActive = webSocketResponse.active;
       this.serviceable = webSocketResponse.serviceable;
@@ -290,6 +295,7 @@ export class OrderComponent implements OnInit, DoCheck {
   ngDoCheck() {
     this.loading = false;
     this.wsSubscription = this.wsService.getRestaurantStatusUpdates().subscribe((webSocketResponse: any) => {
+      console.log("restaurentActive ngDoCheck", webSocketResponse);
       this.restaurentActive = webSocketResponse.store_status == 0 ? false : true;
       // this.restaurentActive = false;
     });
@@ -299,6 +305,7 @@ export class OrderComponent implements OnInit, DoCheck {
     });
 
     this.wsSubscription = this.wsService.getRestaurentDetails().subscribe((webSocketResponse: any) => {
+      console.log("restaurentDetails ngDoCheck", webSocketResponse);
       this.restaurentDetails = webSocketResponse;
       this.serviceable = webSocketResponse.serviceable;
       this.restaurentActive = webSocketResponse.active;
@@ -1344,5 +1351,16 @@ getOutletDistance(item: any): string {
     console.error('Error submitting feedback:', error);
     // Handle the error, e.g., show an error message
     // this.toastr.error('Failed to submit feedback. Please try again.');
+  }
+
+  // Add this method to sort restaurants by distance
+  private sortRestaurantsByDistance(restaurants: any[]): any[] {
+    if (!restaurants || !Array.isArray(restaurants)) return [];
+    
+    return [...restaurants].sort((a, b) => {
+      const distanceA = parseFloat(this.getOutletDistance(a) || '0');
+      const distanceB = parseFloat(this.getOutletDistance(b) || '0');
+      return distanceA - distanceB;
+    });
   }
 }
