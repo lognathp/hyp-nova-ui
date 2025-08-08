@@ -19,8 +19,8 @@ export class PaymentComponent {
   partnerData: any;
   customerDetails: any = {};
 
-  timerCount: number = 20; // 5 minutes
-  timerDisplay: string = '00:20';
+  timerCount: number = 600; // 5 minutes
+  timerDisplay: string = '10:00';
   paymentConfirmed: boolean = false;
   timerInterval: any;
   razorpayInstance: any;
